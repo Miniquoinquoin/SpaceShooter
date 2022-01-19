@@ -12,7 +12,7 @@
 
 ## Autres
 
-* Auteur:   1. **Dzarian**
-            2. **Mini_Quoinquoin**
+* Auteur:   1. **Dzarian** a
+            2. **Mini_Quoinquoin** b
 
 
