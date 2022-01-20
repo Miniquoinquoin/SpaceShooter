@@ -1,9 +1,9 @@
-"""Fichier principale du projet"""
+"""Fichier contenant l'ensemble des partition du jeu menu/game/shop ..."""
 
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Menu as Menuf
-import FichiersJeu.InterfaceDynamique as ID
+
 
 HAUTEUR = 720
 LONGEUR = 1240
@@ -14,7 +14,12 @@ Menu1 = Menuf.Menu(LONGEUR, HAUTEUR)
 Joueur1.charge()
 
 
+def menu():
 
+
+    play = True
+    while play:
+        Menu1.displayMenu(Joueur1.chargesAvant)
 
 
 
@@ -43,8 +48,3 @@ while play:
             
 
     EZ.mise_a_jour()
-
-
-EZ.destruction_fenetre()
-
-
