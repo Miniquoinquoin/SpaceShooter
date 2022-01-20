@@ -53,6 +53,10 @@ def game():
             elif EZ.touche() == "a":  #Detecte en qwerty donc == d
                 Joueur1.move_info["left"] = True
                 Game.move_info["left"] = True
+            
+            elif EZ.touche() == "space":  #Detecte en qwerty donc == d
+                if EZ.clock() - Joueur1.timeSaut >= 1.5:
+                    Joueur1.timer_saut()
         
         elif evenement == "TOUCHE_RELACHEE":
             if EZ.touche() == "d":

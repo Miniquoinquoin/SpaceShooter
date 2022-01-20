@@ -1,6 +1,7 @@
 """Fichier Contenant la Base des fonctionaliter du Joueur"""
 
 
+from pygame import time
 import FichiersJeu.Interface.EZ as EZ
 
 class Joueur:
@@ -23,8 +24,10 @@ class Joueur:
         self.equipement = equipement
         self.x = 1240//2
         self.y = 470  #Hauteur de base du joueur
+        self.y_base = 470
         self.move_info = {"right": False, "left": False}
 
+        self.timeSaut = EZ.clock()
         self.charges = None  #Si l'image est chargé ou non
 
     def charge(self):
@@ -48,6 +51,7 @@ class Joueur:
             self.charge()
         
         self.move()
+        self.effet_saut()
 
         EZ.trace_image(self.charges, self.x, self.y)
 
@@ -63,6 +67,7 @@ class Joueur:
     """
 
     def move(self):
+        """Modifie l'aparence du personnage selon sa direction"""
 
         if self.move_info["right"] == True:
             #self.moveRight()
@@ -75,8 +80,22 @@ class Joueur:
         
         else:
             self.charges = self.chargesAvant
-        
+    
+    def timer_saut(self):
+        """Prend les seconde du debut du saut"""
 
+        self.timeSaut = EZ.clock()
+
+    
+    def effet_saut(self):
+        """Trajectoir du saut du joueur"""
+
+        time = EZ.clock() - self.timeSaut
+        if self.y <= self.y_base or time < 1:
+            
+            self.y = self.y_base - 120 * self.stats["speed"] * time + 0.5 * (9.81 * 80) * time**2
+
+    
         
         
 
