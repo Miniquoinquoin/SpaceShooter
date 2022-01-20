@@ -14,5 +14,3 @@
 
 * Auteur:  1. **Dzarian**
            2. **Mini_Quoinquoin**
-
-
