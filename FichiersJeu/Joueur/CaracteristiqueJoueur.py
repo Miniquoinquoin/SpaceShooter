@@ -6,7 +6,7 @@ import FichiersJeu.Interface.EZ as EZ
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = "Perso1", stats = {"vie": 100, "damage": 10, "speed": 3 }, equipement = None):
+    def __init__(self, name, level, personnage = "Perso1", stats = {"vie": 100, "damage": 10, "speed": 5 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -22,7 +22,7 @@ class Joueur:
         self.stats = stats
         self.equipement = equipement
         self.x = 1240//2
-        self.y = 300
+        self.y = 470  #Hauteur de base du joueur
         self.move_info = {"right": False, "left": False}
 
         self.charges = None  #Si l'image est chargé ou non
@@ -31,9 +31,9 @@ class Joueur:
         """Foncton qui charge l'image du personage"""
 
         if self.personnage == "Perso1":
-            self.chargesAvant = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A1.png")
-            self.chargesDroite = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png")
-            self.chargesGauche = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png")
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png"), 0, 3)
 
 
     def display(self):
@@ -51,24 +51,26 @@ class Joueur:
 
         EZ.trace_image(self.charges, self.x, self.y)
 
+    """
     def moveRight(self):
-        """Deplace le joueur vers la droite"""
+        Deplace le joueur vers la droite
         self.x += self.stats["speed"]
 
     
     def moveLeft(self):
-        """Deplace le joueur vers la Gauche"""
+        Deplace le joueur vers la Gauche
         self.x -= self.stats["speed"]
-    
+    """
+
     def move(self):
 
         if self.move_info["right"] == True:
-            self.moveRight()
+            #self.moveRight()
             self.charges = self.chargesDroite
 
         
         elif self.move_info["left"] == True:
-            self.moveLeft()
+            #self.moveLeft()
             self.charges = self.chargesGauche
         
         else:
