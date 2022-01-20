@@ -27,7 +27,10 @@ class Joueur:
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
-        self.charges = EZ.charge_image("Test.png")
+        self.chargesAvant = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A1.png")
+        self.chargesDroite = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png")
+        self.chargesGauche = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png")
+
 
     def display(self):
         """Fonction qui trace le Joueur
@@ -57,9 +60,19 @@ class Joueur:
 
         if self.move_info["right"] == True:
             self.moveRight()
+            self.charges = self.chargesDroite
+
         
         elif self.move_info["left"] == True:
             self.moveLeft()
+            self.charges = self.chargesGauche
+        
+        else:
+            self.charges = self.chargesAvant
+        
+
+        
+        
 
     
 
