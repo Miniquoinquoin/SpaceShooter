@@ -1,5 +1,6 @@
 """Fichier contenant l'ensemble des partition du jeu menu/game/shop ..."""
 
+from telnetlib import GA
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Menu as Menuf
@@ -40,6 +41,10 @@ def game():
         Game.displayFond(Joueur1.stats["speed"])
         Joueur1.display()
         
+        if EZ.clock() - Joueur1.timeSaut >= 1.5: #temps de saut
+            Game.move_info["saut"] = False
+            Joueur1.move_info["saut"] = False
+
         evenement = EZ.recupere_evenement()
         if evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
@@ -54,9 +59,11 @@ def game():
                 Joueur1.move_info["left"] = True
                 Game.move_info["left"] = True
             
-            elif EZ.touche() == "space":  #Detecte en qwerty donc == d
+            elif EZ.touche() == "space":
                 if EZ.clock() - Joueur1.timeSaut >= 1.5:
                     Joueur1.timer_saut()
+                    Game.move_info["saut"] = True
+                    Joueur1.move_info["saut"] = True
         
         elif evenement == "TOUCHE_RELACHEE":
             if EZ.touche() == "d":

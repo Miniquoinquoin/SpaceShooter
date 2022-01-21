@@ -25,7 +25,7 @@ class Joueur:
         self.x = 1240//2
         self.y = 470  #Hauteur de base du joueur
         self.y_base = 470
-        self.move_info = {"right": False, "left": False}
+        self.move_info = {"right": False, "left": False, "saut": False}
 
         self.timeSaut = EZ.clock()
         self.charges = None  #Si l'image est chargé ou non
@@ -79,7 +79,8 @@ class Joueur:
             self.charges = self.chargesGauche
         
         else:
-            self.charges = self.chargesAvant
+            if not(self.move_info["saut"]):
+                self.charges = self.chargesAvant
     
     def timer_saut(self):
         """Prend les seconde du debut du saut"""

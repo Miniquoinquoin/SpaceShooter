@@ -64,7 +64,8 @@ class Game(Interface):
 
         self.chargesFond = None
         self.decal = 1200
-        self.move_info = {"right": False, "left": False}
+
+        self.move_info = {"right": False, "left": False, "saut": False, "rightSaut": False, "leftSaut": False}
 
 
     def chargeFond(self):
@@ -98,12 +99,22 @@ class Game(Interface):
 
     def move(self, vitesse):
 
-        if self.move_info["right"] == True:
-            #self.moveRight()
-            self.decal -= vitesse
+        if self.move_info["saut"] == False:
+            self.move_info["rightSaut"] = self.move_info["right"]
+            self.move_info["leftSaut"] = self.move_info["left"]
 
-        
-        elif self.move_info["left"] == True:
-            #self.moveLeft()
-            self.decal += vitesse
-        
+            if self.move_info["right"] == True:
+                self.decal -= vitesse
+
+            
+            elif self.move_info["left"] == True:
+                self.decal += vitesse
+
+
+        else:
+            if self.move_info["rightSaut"] == True:
+                self.decal -= vitesse
+
+            
+            elif self.move_info["leftSaut"] == True:
+                self.decal += vitesse
