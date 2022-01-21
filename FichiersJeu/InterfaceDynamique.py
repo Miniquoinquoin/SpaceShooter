@@ -28,6 +28,15 @@ def menu():
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 800 < EZ.souris_x() < 1200 and 550 < EZ.souris_y() < 680:
                 play = False
+
+        if evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "p":
+                if Joueur1.personnage < 8:
+                    Joueur1.personnage += 1
+                else:
+                    Joueur1.personnage = 1
+                Joueur1.charge()
+                
         
         EZ.mise_a_jour()
         EZ.frame_suivante()

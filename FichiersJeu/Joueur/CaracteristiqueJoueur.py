@@ -7,7 +7,7 @@ import FichiersJeu.Interface.EZ as EZ
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = "Perso1", stats = {"vie": 100, "damage": 10, "speed": 5 }, equipement = None):
+    def __init__(self, name, level, personnage = 1, stats = {"vie": 100, "damage": 10, "speed": 5 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -33,10 +33,47 @@ class Joueur:
     def charge(self):
         """Foncton qui charge l'image du personage"""
 
-        if self.personnage == "Perso1":
+        if self.personnage == 1:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A1.png"), 0, 3)
             self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png"), 0, 3)
             self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png"), 0, 3)
+
+        elif self.personnage == 2:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A4.png"), 0, 3)
+
+        elif self.personnage == 3:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A4.png"), 0, 3)
+
+        elif self.personnage == 4:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A4.png"), 0, 3)
+
+        elif self.personnage == 5:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A4.png"), 0, 3)
+
+        elif self.personnage == 6:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A4.png"), 0, 3)
+
+        elif self.personnage == 7:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A4.png"), 0, 3)
+        
+        elif self.personnage == 8:
+            self.chargesAvant = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A1.png"), 0, 3)
+            self.chargesDroite = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3)
+            self.chargesGauche = EZ.transforme_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3)
+
+
 
 
     def display(self):
