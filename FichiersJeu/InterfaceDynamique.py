@@ -27,6 +27,15 @@ def menu():
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
                 play = False
+
+        if evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "p":
+                if Joueur1.personnage < 8:
+                    Joueur1.personnage += 1
+                else:
+                    Joueur1.personnage = 1
+                Joueur1.charge()
+                
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
@@ -40,6 +49,10 @@ def game():
         Game.displayFond(Joueur1.stats["speed"])
         Joueur1.display()
         
+        if EZ.clock() - Joueur1.timeSaut >= 1.5: #temps de saut
+            Game.move_info["saut"] = False
+            Joueur1.move_info["saut"] = False
+
         evenement = EZ.recupere_evenement()
         if evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
@@ -54,9 +67,11 @@ def game():
                 Joueur1.move_info["left"] = True
                 Game.move_info["left"] = True
             
-            elif EZ.touche() == "space":  #Detecte en qwerty donc == d
+            elif EZ.touche() == "space":
                 if EZ.clock() - Joueur1.timeSaut >= 1.5:
                     Joueur1.timer_saut()
+                    Game.move_info["saut"] = True
+                    Joueur1.move_info["saut"] = True
         
         elif evenement == "TOUCHE_RELACHEE":
             if EZ.touche() == "d":
