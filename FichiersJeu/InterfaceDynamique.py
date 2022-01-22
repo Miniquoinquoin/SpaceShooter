@@ -1,6 +1,5 @@
 """Fichier contenant l'ensemble des partition du jeu menu/game/shop ..."""
 
-from telnetlib import GA
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Menu as Menuf
