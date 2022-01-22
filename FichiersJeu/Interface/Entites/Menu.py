@@ -44,7 +44,7 @@ class Menu(Interface):
     def displayPlayer(self,image):
         """Trace le personnage"""
 
-        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144)
+        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, je sais pas pourquoi
     
     def displayBoutonPlay(self):
 
