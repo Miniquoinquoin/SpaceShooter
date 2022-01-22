@@ -23,13 +23,15 @@ class Menu(Interface):
 
         self.chargesFond = None
         self.decal = 0
+        self.longeur = longeur
+        self.hauteur = hauteur
 
 
     
     def chargeFond(self):
         """Charge l'image du fond"""
 
-        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\Fond_menu.png")
+        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
 
     def displayFond(self):
         """Trace le fond du menu"""
@@ -42,11 +44,11 @@ class Menu(Interface):
     def displayPlayer(self,image):
         """Trace le personnage"""
 
-        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//3, self.hauteur//4)
+        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, je sais pas pourquoi
     
     def displayBoutonPlay(self):
 
-        Bouton.BoutonPlayMenu(800, 550)
+        Bouton.BoutonPlayMenu(465, 550)
 
     
     def displayMenu(self, personnage):
@@ -99,9 +101,10 @@ class Game(Interface):
 
     def move(self, vitesse):
 
-        if self.move_info["saut"] == False:
+        if not(self.move_info["saut"]):
             self.move_info["rightSaut"] = self.move_info["right"]
             self.move_info["leftSaut"] = self.move_info["left"]
+
 
             if self.move_info["right"] == True:
                 self.decal -= vitesse
@@ -118,3 +121,4 @@ class Game(Interface):
             
             elif self.move_info["leftSaut"] == True:
                 self.decal += vitesse
+
