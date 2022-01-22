@@ -22,7 +22,7 @@ class Joueur:
         self.personnage = personnage
         self.stats = stats
         self.equipement = equipement
-        self.x = 1240//2
+        self.x = 1240//2-72
         self.y = 470  #Hauteur de base du joueur
         self.y_base = 470
         self.move_info = {"right": False, "left": False}

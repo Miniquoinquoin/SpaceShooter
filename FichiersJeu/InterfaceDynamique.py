@@ -25,7 +25,7 @@ def menu():
 
         evenement = EZ.recupere_evenement()
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 800 < EZ.souris_x() < 1200 and 550 < EZ.souris_y() < 680:
+            if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
                 play = False
         
         EZ.mise_a_jour()
