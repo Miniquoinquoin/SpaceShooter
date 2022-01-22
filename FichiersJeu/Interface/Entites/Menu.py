@@ -66,8 +66,9 @@ class Game(Interface):
 
         self.chargesFond = None
         self.decal = 1200
+        self.decalage = 0     # decalage effectué
 
-        self.move_info = {"right": False, "left": False, "saut": False, "rightSaut": False, "leftSaut": False}
+        self.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
 
 
     def chargeFond(self):
@@ -75,13 +76,13 @@ class Game(Interface):
 
         self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\FondGame.jpg")
     
-    def displayFond(self, vitesse):
+    def displayFond(self, acc, vitesse):
         """Trace le fond du jeu"""
 
         if self.chargesFond == None:
             self.chargeFond()
         
-        self.move(vitesse)
+        self.move(acc,vitesse)
 
         while not(0 <= self.decal <= 1200):
             if self.decal > 1200:
@@ -99,26 +100,47 @@ class Game(Interface):
         
     
 
-    def move(self, vitesse):
+    def move(self, acc, vitesse):
 
         if not(self.move_info["saut"]):
-            self.move_info["rightSaut"] = self.move_info["right"]
-            self.move_info["leftSaut"] = self.move_info["left"]
-
 
             if self.move_info["right"] == True:
-                self.decal -= vitesse
+                if (self.decalage + acc) <= vitesse:
+                    self.decalage += acc
+                
+                elif self.decalage > vitesse:
+                     self.decalage -= 1
+                
 
             
             elif self.move_info["left"] == True:
-                self.decal += vitesse
+                if (self.decalage - acc) >= -vitesse:
+                    self.decalage -= acc
+
+                elif self.decalage < -vitesse:
+                     self.decalage += 1
+
+            else:
+                if self.decalage < 0:
+                    self.decalage += 1 # vitesse de d'arret
+                
+                elif self.decalage > 0:
+                    self.decalage -= 1   # vitesse de d'arret
+                    
+
+
 
 
         else:
-            if self.move_info["rightSaut"] == True:
-                self.decal -= vitesse
+            if self.move_info["right"] == True:
+                if (self.decalage + acc * 0.5) <= vitesse * 1.1:
+                    self.decalage += acc * 0.5
+                
 
             
-            elif self.move_info["leftSaut"] == True:
-                self.decal += vitesse
+            elif self.move_info["left"] == True:
+                if (self.decalage - acc * 0.5) >= -vitesse * 1.1:
+                    self.decalage -= acc * 0.5
+            
 
+        self.decal -= self.decalage # Le fond bouge dans le sens inverse
