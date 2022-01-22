@@ -7,14 +7,14 @@ import FichiersJeu.Interface.EZ as EZ
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 1, stats = {"vie": 100, "damage": 10, "speed": 5 }, equipement = None):
+    def __init__(self, name, level, personnage = 1, stats = {"vie": 100, "damage": 10, "acc": 1,"speed": 8, "jumpPower": 1 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
             name (str): nom du joueur
             level (int): level du joueur
             personnage(str): nom du personnage
-            stats (dic): toutes les stats du joueur [heal,dammage,speed]
+            stats (dic): toutes les stats du joueur {"vie": 100, "damage": 10, "acc": 1,"speed": 10, "jumpPower": 2 }
             equipement (dic): Toutes ces objet [weapon, shield]
         """
         self.name = name
@@ -23,8 +23,8 @@ class Joueur:
         self.stats = stats
         self.equipement = equipement
         self.x = 1240//2
-        self.y = 470  #Hauteur de base du joueur
-        self.y_base = 470
+        self.y = 200  #Hauteur de base du joueur
+        self.y_sol = 470
         self.move_info = {"right": False, "left": False, "saut": False}
 
         self.timeSaut = EZ.clock()
@@ -129,9 +129,12 @@ class Joueur:
         """Trajectoir du saut du joueur"""
 
         time = EZ.clock() - self.timeSaut
-        if self.y <= self.y_base or time < 1:
+        if self.y <= self.y_sol or time < 0.1:
             
-            self.y = self.y_base - 120 * self.stats["speed"] * time + 0.5 * (9.81 * 80) * time**2
+            self.y = self.y_sol - (self.stats["jumpPower"] * 100)* (self.stats["speed"] * time - ((1 + self.stats["speed"]/50)**2) * 0.5 * 9.81 * time**2)
+        
+        else:
+            self.move_info["saut"] = False
 
     
         

@@ -9,7 +9,7 @@ HAUTEUR = 720
 LONGEUR = 1240
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
-Joueur1 = CJ.Joueur("Bob", 0, "Perso1", )
+Joueur1 = CJ.Joueur("Bob", 0, "Perso1", ) 
 Menu1 = Menuf.Menu(LONGEUR, HAUTEUR)
 Joueur1.charge()
 

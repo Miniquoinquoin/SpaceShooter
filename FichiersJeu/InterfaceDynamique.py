@@ -46,12 +46,11 @@ def game():
     play = True
     
     while play:
-        Game.displayFond(Joueur1.stats["speed"])
+        Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
         Joueur1.display()
         
-        if EZ.clock() - Joueur1.timeSaut >= 1.5: #temps de saut
+        if not(Joueur1.move_info["saut"]): #temps de saut
             Game.move_info["saut"] = False
-            Joueur1.move_info["saut"] = False
 
         evenement = EZ.recupere_evenement()
         if evenement == "TOUCHE_ENFONCEE":
@@ -68,7 +67,7 @@ def game():
                 Game.move_info["left"] = True
             
             elif EZ.touche() == "space":
-                if EZ.clock() - Joueur1.timeSaut >= 1.5:
+                if not(Joueur1.move_info["saut"]):
                     Joueur1.timer_saut()
                     Game.move_info["saut"] = True
                     Joueur1.move_info["saut"] = True
