@@ -81,6 +81,9 @@ def game():
             elif EZ.touche() == "a":    #Detecte en qwerty donc == d
                 Joueur1.move_info["left"] = False
                 Game.move_info["left"] = False
+
+        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            Joueur1.shoot()
                 
 
         EZ.mise_a_jour()
