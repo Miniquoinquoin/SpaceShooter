@@ -9,5 +9,4 @@ def BoutonPlayMenu(x, y,longeur = 1240, hauteur = 720):
         longeur (int, optional): longeur de la fenetre. Defaults to 1240.
         hauteur (int, optional): hauteur de la fenetre. Defaults to 720.
     """
-    EZ.trace_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\BoutonPlay.png"),x,y)
-    
+    EZ.trace_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\BoutonPlay.png"),x,y)  #Trace le bouton play(charge incluse car dans manu 1 seule charge pour l'instant)    
