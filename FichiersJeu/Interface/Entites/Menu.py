@@ -121,14 +121,21 @@ class Game(Interface):
                      self.decalage += 1
 
             else:
-                if self.decalage < 0:
-                    self.decalage += 1 # vitesse de d'arret
+                # vitesse de d'arret
+
+                # Gauche
+                if self.decalage < -1:
+                    self.decalage += 1
                 
-                elif self.decalage > 0:
-                    self.decalage -= 1   # vitesse de d'arret
+                elif self.decalage < 0:
+                    self.decalage -= self.decalage
+                
+                # Droite
+                elif self.decalage > 1:
+                    self.decalage -= 1 
                     
-
-
+                elif self.decalage > 0:
+                    self.decalage -= self.decalage
 
 
         else:
