@@ -48,6 +48,7 @@ def game():
     while play:
         Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
         Joueur1.display()
+        Joueur1.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond a joueur
         
         if not(Joueur1.move_info["saut"]): #temps de saut
             Game.move_info["saut"] = False

@@ -1,7 +1,6 @@
 """Fichier contenant les diferant proprieter des armes / attack"""
 
 import FichiersJeu.Interface.EZ as EZ
-
 class Armes:
 
     def __init__(self, name, damage, ranges, hitbox):
@@ -13,20 +12,21 @@ class Armes:
         self.charges = None
         self.x = 1300
         self.y = 0
+        self.direction = "right"
 
 
 
-    def display(self, vitesse):
+    def display(self, vitesse, vitesseFond):
         """Trace l'arme"""
         if self.charges == None:
             self.charge()
 
-        self.move(vitesse)
+        self.move(vitesse, vitesseFond, self.direction)
 
         EZ.trace_image(self.charges, self.x, self.y)
 
 
-    def Setup(self, x, y):
+    def Setup(self, x, y, direction):
         """Charge les info au moment du lancement de l'attack
 
         Args:
@@ -35,11 +35,19 @@ class Armes:
         """
         self.x = x
         self.y = y
+        self.direction = direction
 
-    def move(self, vitesse):
+    def move(self, vitesse, vitesseFond, direction):
         """Deplace le shuriken"""
+        if direction == "right":
+            self.x += vitesse - vitesseFond
+            print(vitesse - vitesseFond)
+        else:
+            self.x -= vitesse + vitesseFond
+            print(vitesse + vitesseFond)
+        
 
-        self.x += vitesse
+            
     
 
 class Shuriken(Armes):
@@ -51,5 +59,6 @@ class Shuriken(Armes):
     def charge(self):
         """Charge l'image du shuriken"""
         self.charges = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2.png"),0,2)
+        self.speed = 10
     
     

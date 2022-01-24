@@ -2,6 +2,7 @@
 
 
 from cmath import pi
+from turtle import right
 from pygame import time
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
@@ -27,7 +28,7 @@ class Joueur:
         self.x = 1240//2
         self.y = 150  #Hauteur d'aparition du joueur
         self.y_sol = 460 #Hauteur de marche du joueur
-        self.move_info = {"right": False, "left": False, "saut": False}
+        self.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
 
         self.timeSaut = EZ.clock()
         self.charges = None  #Si l'image est chargé ou non
@@ -35,9 +36,6 @@ class Joueur:
         # Dernier charge effectuer
         self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton(0, 5)]
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition(0,5)]
-
-        #arme
-        self.timeShoot = EZ.clock()
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -84,7 +82,7 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = Armef.Shuriken("Shuriken", 10, 300, 10)
+            self.arme = {"arme": Armef.Shuriken("Shuriken", 10, 300, 10), "speed": 12, "timeShoot": EZ.clock()}  # {Type d'arme, vitesse de l'arme, dernier tire de l'arme}
 
         self.charges = True
 
@@ -102,7 +100,7 @@ class Joueur:
         
         self.move()
         self.effet_saut()
-        self.arme.display(self.stats["speed"])
+        self.onShoot()
 
         EZ.trace_image(self.charges, self.x, self.y)
 
@@ -182,12 +180,10 @@ class Joueur:
         else:
 
             if self.move_info["right"] == True:
-                #self.moveRight()
                 self.charges = self.chargesRight[0]
 
             
             elif self.move_info["left"] == True:
-                #self.moveLeft()
                 self.charges = self.chargesLeft[0]
 
     
@@ -213,11 +209,19 @@ class Joueur:
     def shoot(self):
         """Fait tirer le joueur"""
 
-        if EZ.clock() - self.timeShoot > 1:
-            self.timeShoot = EZ.clock()
+        if EZ.clock() - self.arme["timeShoot"] > 1:
+            self.arme["timeShoot"] = EZ.clock()
 
-            self.arme.Setup(self.x + 72, self.y + 50)
+            if self.move_info["right"]:
+                self.arme["arme"].Setup(self.x + 72, self.y + 50, "right")
+            
+            else:
+                self.arme["arme"].Setup(self.x + 72, self.y + 50, "left")
 
+    def onShoot(self):
+        """Deplace la balle pendant le tire"""
+
+        self.arme["arme"].display(self.arme["speed"], self.move_info["speed"])
 
 
     
