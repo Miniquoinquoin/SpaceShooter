@@ -74,28 +74,30 @@ class Game(Interface):
     def chargeFond(self):
         """Charge l'image du fond"""
 
-        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\FondGame.jpg")
+        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\FondGame.png")
     
     def displayFond(self, acc, vitesse):
         """Trace le fond du jeu"""
+
+        LARGEUR_FOND = 2040
 
         if self.chargesFond == None:
             self.chargeFond()
         
         self.move(acc,vitesse)
 
-        while not(0 <= self.decal <= 1200):
-            if self.decal > 1200:
-                self.decal -= 1200
+        while not(0 <= self.decal <= LARGEUR_FOND):
+            if self.decal > LARGEUR_FOND:
+                self.decal -= LARGEUR_FOND
 
             elif self.decal < 0:
-                self.decal += 1200
+                self.decal += LARGEUR_FOND
         
 
-        decal_x = [self.decal - 1200, self.decal] #Petit pertit bug sur la droite avec une certaine config 3 image = plus de lag
+        decal_x = [self.decal - LARGEUR_FOND, self.decal] #Petit pertit bug sur la droite avec une certaine config 3 image = plus de lag
 
         for fond in range(2):
-            EZ.trace_image(self.chargesFond ,decal_x[fond],-100)
+            EZ.trace_image(self.chargesFond ,decal_x[fond],0)
 
         
     

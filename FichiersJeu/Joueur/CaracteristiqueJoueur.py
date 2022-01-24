@@ -25,8 +25,8 @@ class Joueur:
         self.stats = stats
         self.equipement = equipement
         self.x = 1240//2
-        self.y = 200  #Hauteur de base du joueur
-        self.y_sol = 470
+        self.y = 150  #Hauteur d'aparition du joueur
+        self.y_sol = 460 #Hauteur de marche du joueur
         self.move_info = {"right": False, "left": False, "saut": False}
 
         self.timeSaut = EZ.clock()
