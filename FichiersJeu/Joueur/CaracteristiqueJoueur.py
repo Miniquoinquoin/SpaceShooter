@@ -10,7 +10,7 @@ import FichiersJeu.Joueur.Equipement.Armes as Armef
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "acc": 1,"speed": 8, "jumpPower": 1 }, equipement = None):
+    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "range": 300 ,"acc": 1,"speed": 8, "jumpPower": 1 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -82,7 +82,7 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = {"arme": Armef.Shuriken("Shuriken", 10, 300, 10), "speed": 12, "timeShoot": EZ.clock()}  # {Type d'arme, vitesse de l'arme, dernier tire de l'arme}
+            self.arme = {"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10, "timeShoot": [EZ.clock(), 1]}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
 
         self.charges = True
 
@@ -209,14 +209,14 @@ class Joueur:
     def shoot(self):
         """Fait tirer le joueur"""
 
-        if EZ.clock() - self.arme["timeShoot"] > 1:
-            self.arme["timeShoot"] = EZ.clock()
+        if EZ.clock() - self.arme["timeShoot"][0] > self.arme["timeShoot"][1]:
+            self.arme["timeShoot"][0] = EZ.clock()
 
             if self.move_info["right"]:
-                self.arme["arme"].Setup(self.x + 72, self.y + 50, "right")
+                self.arme["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
             
             else:
-                self.arme["arme"].Setup(self.x + 72, self.y + 50, "left")
+                self.arme["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
 
     def onShoot(self):
         """Deplace la balle pendant le tire"""

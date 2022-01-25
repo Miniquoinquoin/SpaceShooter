@@ -1,18 +1,22 @@
 """Fichier contenant les diferant proprieter des armes / attack"""
 
+from re import S
 import FichiersJeu.Interface.EZ as EZ
 class Armes:
 
     def __init__(self, name, damage, ranges, hitbox):
         self.name = name
         self.damage = damage
-        self.range = ranges
+        self.range = [ranges, 0] # [De base, pendant le tire]
         self.hitbox = hitbox
 
         self.charges = None
         self.x = 1300
         self.y = 0
+        self.xSetup = 1300
+        
         self.direction = "right"
+        self.inertie = 0
 
 
 
@@ -21,12 +25,14 @@ class Armes:
         if self.charges == None:
             self.charge()
 
-        self.move(vitesse, vitesseFond, self.direction)
+        if self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]:
+            self.move(vitesse, vitesseFond, self.direction)
+            print(self.range)
 
-        EZ.trace_image(self.charges, self.x, self.y)
+            EZ.trace_image(self.charges, self.x, self.y)
 
 
-    def Setup(self, x, y, direction):
+    def Setup(self, x, y, direction, inertie):
         """Charge les info au moment du lancement de l'attack
 
         Args:
@@ -35,16 +41,23 @@ class Armes:
         """
         self.x = x
         self.y = y
+        self.xSetup = x
+
         self.direction = direction
+        self.inertie = inertie
+        self.range[1] = self.range[0] * (1 + abs(inertie)/10)
+
 
     def move(self, vitesse, vitesseFond, direction):
         """Deplace le shuriken"""
         if direction == "right":
-            self.x += vitesse - vitesseFond
-            print(vitesse - vitesseFond)
+            self.x += vitesse - vitesseFond + self.inertie
+
         else:
-            self.x -= vitesse + vitesseFond
-            print(vitesse + vitesseFond)
+            self.x -= vitesse + vitesseFond - self.inertie
+
+        self.xSetup -= vitesseFond
+            
         
 
             
