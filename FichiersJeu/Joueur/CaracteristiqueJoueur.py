@@ -166,12 +166,10 @@ class Joueur:
         if not(self.move_info["saut"]):
 
             if self.move_info["right"] == True:
-                #self.moveRight()
                 self.charges = self.moveRight()
 
             
             elif self.move_info["left"] == True:
-                #self.moveLeft()
                 self.charges = self.moveLeft()
             
             else:

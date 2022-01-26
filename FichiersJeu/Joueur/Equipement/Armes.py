@@ -27,7 +27,6 @@ class Armes:
 
         if self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]:
             self.move(vitesse, vitesseFond, self.direction)
-            print(self.range)
 
             EZ.trace_image(self.charges, self.x, self.y)
 
@@ -45,7 +44,12 @@ class Armes:
 
         self.direction = direction
         self.inertie = inertie
-        self.range[1] = self.range[0] * (1 + abs(inertie)/10)
+
+        if direction == "right":
+            self.range[1] = self.range[0] * (1 + inertie/10)
+        
+        else:
+            self.range[1] = self.range[0] * (1 - inertie/10)
 
 
     def move(self, vitesse, vitesseFond, direction):
