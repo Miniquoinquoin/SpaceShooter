@@ -28,7 +28,8 @@ class Joueur:
         self.x = 1240//2
         self.y = 150  #Hauteur d'aparition du joueur
         self.y_sol = 460 #Hauteur de marche du joueur
-        self.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
+        self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
+        self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
 
         self.timeSaut = EZ.clock()
         self.charges = None  #Si l'image est chargé ou non
@@ -82,7 +83,10 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = {"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10, "timeShoot": [EZ.clock(), 1]}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.last_arme = -1
+            self.timeShoot = [EZ.clock(), 0.2]
+
 
         self.charges = True
 
@@ -167,22 +171,27 @@ class Joueur:
 
             if self.move_info["right"] == True:
                 self.charges = self.moveRight()
+                self.move_etat = {"right": True, "left": False}
 
             
             elif self.move_info["left"] == True:
                 self.charges = self.moveLeft()
+                self.move_etat = {"right": False, "left": True}
             
             else:
                 self.charges = self.chargesAvant
+                self.move_etat = {"right": False, "left": False}
         
         else:
 
             if self.move_info["right"] == True:
                 self.charges = self.chargesRight[0]
+                self.move_etat = {"right": True, "left": False}
 
             
             elif self.move_info["left"] == True:
                 self.charges = self.chargesLeft[0]
+                self.move_etat = {"right": False, "left": True}
 
     
     def timer_saut(self):
@@ -207,19 +216,25 @@ class Joueur:
     def shoot(self):
         """Fait tirer le joueur"""
 
-        if EZ.clock() - self.arme["timeShoot"][0] > self.arme["timeShoot"][1]:
-            self.arme["timeShoot"][0] = EZ.clock()
+        if self.last_arme >= len(self.arme) - 1:
+            self.last_arme = 0
+        
+        else:
+            self.last_arme += 1
 
-            if self.move_info["right"]:
-                self.arme["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
+        if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]:
+            self.timeShoot[0] = EZ.clock()
+
+            if self.move_etat["right"]:
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
             
             else:
-                self.arme["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
 
     def onShoot(self):
         """Deplace la balle pendant le tire"""
-
-        self.arme["arme"].display(self.arme["speed"], self.move_info["speed"])
+        for armes in range(len(self.arme)):
+            self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
 
 
     

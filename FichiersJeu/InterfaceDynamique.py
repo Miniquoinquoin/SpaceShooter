@@ -72,6 +72,9 @@ def game():
                     Joueur1.timer_saut()
                     Game.move_info["saut"] = True
                     Joueur1.move_info["saut"] = True
+
+            elif EZ.touche() == "return": #Corespond a la touche entre
+                Joueur1.shoot()
         
         elif evenement == "TOUCHE_RELACHEE":
             if EZ.touche() == "d":
