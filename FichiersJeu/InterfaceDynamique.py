@@ -48,6 +48,7 @@ def game():
     while play:
         Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
         Joueur1.display()
+        Joueur1.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond a joueur
         
         if not(Joueur1.move_info["saut"]): #temps de saut
             Game.move_info["saut"] = False
@@ -71,6 +72,9 @@ def game():
                     Joueur1.timer_saut()
                     Game.move_info["saut"] = True
                     Joueur1.move_info["saut"] = True
+
+            elif EZ.touche() == "return": #Corespond a la touche entre
+                Joueur1.shoot()
         
         elif evenement == "TOUCHE_RELACHEE":
             if EZ.touche() == "d":
@@ -81,6 +85,9 @@ def game():
             elif EZ.touche() == "a":    #Detecte en qwerty donc == d
                 Joueur1.move_info["left"] = False
                 Game.move_info["left"] = False
+
+        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            Joueur1.shoot()
                 
 
         EZ.mise_a_jour()
