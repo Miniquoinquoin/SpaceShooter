@@ -21,7 +21,12 @@ class Armes:
 
 
     def display(self, vitesse, vitesseFond):
-        """Trace l'arme"""
+        """Trace l'amre
+
+        Args:
+            vitesse (int): vitesse de l'arme definit dans caracteristiqueJoueur
+            vitesseFond (float): vittesse de deplacement du fond
+        """
         if self.charges == None:
             self.charge()
 
@@ -37,6 +42,8 @@ class Armes:
         Args:
             x (int): cordonner x du joueur
             y (int): coordonne y du joueur
+            direction (str): direction du joueur / dans le quel va aller l'arme
+            inertie (float): vitesse du jouer
         """
         self.x = x
         self.y = y
@@ -46,14 +53,20 @@ class Armes:
         self.inertie = inertie
 
         if direction == "right":
-            self.range[1] = self.range[0] * (1 + inertie/10)
+            self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court
         
         else:
-            self.range[1] = self.range[0] * (1 - inertie/10)
+            self.range[1] = self.range[0] * (1 - inertie/10) # donne une range plus grand quand le joueur cour
 
 
     def move(self, vitesse, vitesseFond, direction):
-        """Deplace le shuriken"""
+        """Deplace l'arme
+
+        Args:
+            vitesse (int): vitesse de l'arme definie dans CaracteristiqueJoueur
+            vitesseFond (float): vitesse de deplacement du fond
+            direction (str): direction de l'arme
+        """
         if direction == "right":
             self.x += vitesse - vitesseFond + self.inertie
 

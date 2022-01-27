@@ -31,7 +31,7 @@ class Joueur:
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
 
-        self.timeSaut = EZ.clock()
+        self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
         self.charges = None  #Si l'image est chargé ou non
 
         # Dernier charge effectuer
@@ -84,8 +84,8 @@ class Joueur:
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
             self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
-            self.last_arme = -1
-            self.timeShoot = [EZ.clock(), 0.2]
+            self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
+            self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
 
 
         self.charges = True
@@ -136,7 +136,7 @@ class Joueur:
             return self.chargesRight[self.lastchargesRight[0]]
 
     def moveLeft(self):
-        """Cree l'effet marcher vers la droite"""
+        """Cree l'effet marcher vers la Gauche"""
 
         if self.lastchargesLeft[2] >= 100//self.stats["speed"]:  # Time de marche pour eviter la marche trop rapide
             self.lastchargesLeft[2] = 0
@@ -216,13 +216,13 @@ class Joueur:
     def shoot(self):
         """Fait tirer le joueur"""
 
-        if self.last_arme >= len(self.arme) - 1:
+        if self.last_arme >= len(self.arme) - 1: # Permet de lancer une arme apres l'autre
             self.last_arme = 0
         
         else:
             self.last_arme += 1
 
-        if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]:
+        if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]: # cooldown de l'arme
             self.timeShoot[0] = EZ.clock()
 
             if self.move_etat["right"]:

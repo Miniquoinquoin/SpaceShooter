@@ -3,7 +3,6 @@
 import FichiersJeu.Interface.EZ as EZ
 # import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 # import FichiersJeu.Interface.Entites.Menu as Menuf
-
 import FichiersJeu.InterfaceDynamique as ID
 
 HAUTEUR = 720
