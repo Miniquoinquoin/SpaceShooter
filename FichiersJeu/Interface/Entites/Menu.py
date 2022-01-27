@@ -128,16 +128,19 @@ class Game(Interface):
                 # Gauche
                 if self.decalage < -1:
                     self.decalage += 1
-                
+
                 elif self.decalage < 0:
                     self.decalage -= self.decalage
-                
+
                 # Droite
                 elif self.decalage > 1:
                     self.decalage -= 1 
-                    
+
                 elif self.decalage > 0:
                     self.decalage -= self.decalage
+                    
+
+
 
 
         else:

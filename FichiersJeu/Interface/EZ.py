@@ -94,7 +94,7 @@ def colorie_pixel_image(image,x,y,rouge,vert,bleu,transparence=255):
 
 def destruction_fenetre():
     """Fonction qui détruit la fenetre"""
-    pygame.quit();
+    pygame.quit()
 
 def __choix(canevas):
     """Fonction interne"""
