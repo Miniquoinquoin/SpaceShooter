@@ -4,11 +4,11 @@ from re import S
 import FichiersJeu.Interface.EZ as EZ
 class Armes:
 
-    def __init__(self, name, damage, ranges, hitbox):
+    def __init__(self, name, damage, ranges):
         self.name = name
         self.damage = damage
         self.range = [ranges, 0] # [De base, pendant le tire]
-        self.hitbox = hitbox
+        self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
 
         self.charges = None
         self.x = 1300
@@ -82,13 +82,14 @@ class Armes:
 
 class Shuriken(Armes):
 
-    def __init__(self, name, damage, ranges, hitbox):
-        super().__init__(name, damage, ranges, hitbox)
+    def __init__(self, name, damage, ranges):
+        super().__init__(name, damage, ranges)
 
     
     def charge(self):
         """Charge l'image du shuriken"""
         self.charges = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2.png"),0,2)
         self.speed = 10
+        self.hitbox = [48, 48]
     
     

@@ -1,11 +1,9 @@
 """Fichier Contenant la Base des fonctionaliter du Joueur"""
 
 
-from cmath import pi
-from turtle import right
-from pygame import time
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
+import FichiersJeu.InterfaceDynamique as ID
 
 class Joueur:
     """Class joueur"""
@@ -25,18 +23,19 @@ class Joueur:
         self.personnage = personnage
         self.stats = stats
         self.equipement = equipement
-        self.x = 1240//2
+        self.x = ID.LONGEUR//2
         self.y = 150  #Hauteur d'aparition du joueur
-        self.y_sol = 460 #Hauteur de marche du joueur
+        self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
         self.charges = None  #Si l'image est chargé ou non
+        self.hitbox = [120, 144] # 120 car les personage on an moyenne 4 pixel de libre de chaque coter 
 
         # Dernier charge effectuer
-        self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton(0, 5)]
-        self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition(0,5)]
+        self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
+        self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -83,7 +82,7 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"]), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
             self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
             self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
 

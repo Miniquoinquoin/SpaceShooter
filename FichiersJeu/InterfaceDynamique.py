@@ -3,15 +3,18 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Menu as Menuf
+import FichiersJeu.Joueur.Monstres as Monstref
 
 
 HAUTEUR = 720
 LONGEUR = 1240
+HAUTEUR_SOL = 604
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 Joueur1 = CJ.Joueur("Bob", 0)
 Menu1 = Menuf.Menu(LONGEUR, HAUTEUR)
 Joueur1.charge()
+MonstreTest = Monstref.Monstre("Amalgam_Sprite", 5, Joueur1.x)
 
 
 def menu():
@@ -49,6 +52,8 @@ def game():
         Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
         Joueur1.display()
         Joueur1.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond a joueur
+
+        MonstreTest.display(Game.decalage)
         
         if not(Joueur1.move_info["saut"]): #temps de saut
             Game.move_info["saut"] = False
