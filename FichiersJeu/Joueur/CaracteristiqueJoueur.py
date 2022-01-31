@@ -4,11 +4,13 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
 import FichiersJeu.InterfaceDynamique as ID
+import FichiersJeu.Interface.Decor as Decor
+
 
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "range": 300 ,"acc": 1,"speed": 8, "jumpPower": 1 }, equipement = None):
+    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "range": 300 , "durability": 5,"acc": 1,"speed": 8, "jumpPower": 1,  "maxvie": 100 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -82,10 +84,9 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"]), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], self.stats["durability"]), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
             self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
             self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
-
 
         self.charges = True
 
@@ -101,11 +102,13 @@ class Joueur:
         if self.charges == None:
             self.charge()
         
+        self.zoneHitBox()
         self.move()
         self.effet_saut()
         self.onShoot()
 
         EZ.trace_image(self.charges, self.x, self.y)
+        Decor.info_vie(20, 20, 100, self.stats["vie"], self.stats["maxvie"])
 
     def moveRight(self):
         """Cree l'effet marcher vers la droite"""
@@ -191,6 +194,7 @@ class Joueur:
             elif self.move_info["left"] == True:
                 self.charges = self.chargesLeft[0]
                 self.move_etat = {"right": False, "left": True}
+    
 
     
     def timer_saut(self):
@@ -235,10 +239,30 @@ class Joueur:
         for armes in range(len(self.arme)):
             self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
 
+    def domage(self, domage):
+        """S'inflige des degat
 
+        Args:
+            domage (int): degat qu'il s'inflige
+        """
+
+        self.stats["vie"] -= domage
     
         
-        
+    def zoneHitBox(self):
+        """Definit la zone ou le joueur prend des degats en donnant les 4 point du carre de la hitbox"""
+
+        self.zoneHitBoxlist = [[self.x, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x, self.y + self.hitbox[1] ]]
+
+
+    def death(self):
+        """Suprime le joueur si il est mort
+
+        Returns:
+            bool: True if player haven't life, and False if player have life
+        """
+
+        return self.stats["vie"] <= 0
 
     
 

@@ -2,15 +2,16 @@
 
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.InterfaceDynamique as ID
+import FichiersJeu.Interface.Decor as Decor
 
 class Monstre:
 
-    def __init__(self, name, level, xPlayer):
+    def __init__(self, name, level, xPlayer, Xspawn = 0):
 
         self.name = name
         self.level = level
 
-        self.stats = {"vie": 100*(level//10)**2, "damage": 10*(level//10)**2, "range": 300 ,"speed": 3, "jumpPower": 1 }
+        self.stats = {"vie": 100*(level/10)**2, "damage": 10*(level//10)**2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100*(level/10)**2}
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
         self.charges = None
@@ -18,9 +19,11 @@ class Monstre:
         self.lastchargesLeft = [0, 0, 10] # [Etape du gif originale, repetiton, nombre de repetition avant changement]
 
         self.move_info = {"right": True, "left": False}
-        self.x = 0
+        self.x = Xspawn
         self.y = ID.HAUTEUR_SOL - self.hitbox[1]
-        self.xPlayer = xPlayer
+        self.xPlayer = xPlayer + 30 # Point que va suivre le monstre
+
+        self.cooldwon = [EZ.clock(), 1]
 
 
     def charge(self):
@@ -40,6 +43,8 @@ class Monstre:
 
         self.move(vitesseFond)
         EZ.trace_image(self.charges, self.x, self.y)
+        Decor.barre_vie_montre(self.x, self.y - 20, self.stats["vie"], self.stats["maxvie"],self.hitbox[0])
+        
 
     
     def moveEffectRight(self):
@@ -111,8 +116,45 @@ class Monstre:
 
         self.moveX(vitesseFond)
         self.moveEffect()
+        self.zoneHitBox()
+
+    
+    def domage(self, domage):
+        """S'inflige des degat
+
+        Args:
+            domage (int): degat qu'il s'inflige
+        """
+
+        self.stats["vie"] -= domage
+
+    def zoneHitBox(self):
+        """Definit la zone ou le monstre prend des degats en donnant les 4 point du carre de la hitbox"""
+
+        self.zoneHitBoxlist = [[self.x, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x, self.y + self.hitbox[1] ]]
 
 
+    def death(self):
+        """Suprime le monstre si il est mort
+
+        Returns:
+            bool: True if monstre haven't life, and False if monstre have life
+        """
+
+        return self.stats["vie"] <= 0
+
+    def attaque(self):
+        """Donne l'autorisation au monstre d'attaquer
+
+        Returns:
+            bool: True si cooldown respecter
+        """
+        if EZ.clock() - self.cooldwon[0] >= self.cooldwon[1]:
+            self.cooldwon[0] = EZ.clock()
+            return True
+        
+        return False
+ 
 
 
         

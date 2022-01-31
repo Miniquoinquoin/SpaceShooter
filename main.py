@@ -6,7 +6,7 @@ import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.InterfaceDynamique as ID
 
 HAUTEUR = 720
-LONGEUR = 1240
+LONGEUR = 1280
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
@@ -14,6 +14,6 @@ ID.menu()
 
 ID.game()
 
-
+EZ.attendre_action()
 EZ.destruction_fenetre()
 
