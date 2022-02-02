@@ -15,7 +15,8 @@ HAUTEUR_SOL = 604
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 Joueur1 = CJ.Joueur("Bob", 0)
-Menu1 = Menuf.Menu(LONGEUR, HAUTEUR)
+MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
+MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
 Joueur1.charge()
 
 
@@ -26,12 +27,12 @@ def menu():
     EZ.reglage_fps(60)
 
     while play:
-        Menu1.displayMenu(Joueur1.chargesAvant)
+        MenuP.displayMenu(Joueur1.chargesAvant)
 
         evenement = EZ.recupere_evenement()
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
-                play = False
+                return "Game"
 
         if evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "p":
@@ -44,6 +45,34 @@ def menu():
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
+
+def menuGame():
+
+    play = True
+    EZ.reglage_fps(60)
+
+    while play:
+        MenuG.displayFond()
+
+        evenement = EZ.recupere_evenement()
+        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:
+                return "Game"
+
+            elif 480 < EZ.souris_x() < 800 and 400 < EZ.souris_y() < 460:
+                return "Menu"
+
+            elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:
+                EZ.destruction_fenetre()
+
+        if evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return "Menu"
+                
+        
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
 
 def Startwave(number):
     """Genere les monstre en début de vague"""
@@ -82,20 +111,21 @@ def VerifDegat(monstres, armes, Joueur):
     return monstres, True
 
 
-
 def game():
     EZ.reglage_fps()
-    Game = Menuf.Game(LONGEUR, HAUTEUR)
-    play = True
-    MonstreList = Startwave(1)
-    
-    while play:
 
+    Game = Menuf.Game(LONGEUR, HAUTEUR)
+    Joueur1.stats["vie"] = Joueur1.stats["maxvie"]
+
+    vague = 1
+    MonstreList = Startwave(vague)
+    
+    play = True
+    while play:
         #Zone de dispaly
         Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
         Decor.nombre_kills(LONGEUR - 124, 20, len(MonstreList))
         Joueur1.display()
-
 
         Joueur1.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond a joueur
 
@@ -103,6 +133,10 @@ def game():
             Monstre.display(Game.decalage)
 
         MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1)
+
+        if len(MonstreList) == 0:
+            vague += 1
+            MonstreList = Startwave(vague)
         
         
         if not(Joueur1.move_info["saut"]): #temps de saut
@@ -143,11 +177,7 @@ def game():
 
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             Joueur1.shoot()
-
-        
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
-    
-    EZ.trace_image(EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort2.png"),0, 0)
-    EZ.mise_a_jour()
+

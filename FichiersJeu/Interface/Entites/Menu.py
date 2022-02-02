@@ -22,16 +22,9 @@ class Menu(Interface):
         super().__init__(longeur, hauteur)
 
         self.chargesFond = None
-        self.decal = 0
         self.longeur = longeur
         self.hauteur = hauteur
 
-
-    
-    def chargeFond(self):
-        """Charge l'image du fond"""
-
-        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
 
     def displayFond(self):
         """Trace le fond du menu"""
@@ -41,10 +34,25 @@ class Menu(Interface):
 
         EZ.trace_image(self.chargesFond ,0,0)
     
+
+
+
+class MenuPricipale(Menu):
+
+    def __init__(self, longeur, hauteur):
+        super().__init__(longeur, hauteur)
+
+        
+    def chargeFond(self):
+        """Charge l'image du fond"""
+
+        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
+
     def displayPlayer(self,image):
         """Trace le personnage"""
 
-        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, je sais pas pourquoi
+        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, 48*6 / 2
+
     
     def displayBoutonPlay(self):
 
@@ -58,6 +66,15 @@ class Menu(Interface):
         self.displayPlayer(personnage)
         self.displayBoutonPlay()
 
+class MenuGame(Menu):
+
+    def __init__(self, longeur, hauteur):
+        super().__init__(longeur, hauteur)
+
+    def chargeFond(self):
+        """Charge l'image du fond"""
+
+        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort2.png")
 
 class Game(Interface):
 
@@ -74,7 +91,7 @@ class Game(Interface):
     def chargeFond(self):
         """Charge l'image du fond"""
 
-        self.chargesFond = EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\FondGame.png")
+        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondGame.png")
     
     def displayFond(self, acc, vitesse):
         """Trace le fond du jeu"""

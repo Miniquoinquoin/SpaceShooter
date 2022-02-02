@@ -10,9 +10,25 @@ LONGEUR = 1280
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
-ID.menu()
+def Shooter():
 
-ID.game()
+    demande = ID.menu()
+    play = True
+    while play:
+
+        if demande == None:
+            demande = ID.menuGame()
+        
+        if demande == "Menu":
+            demande = ID.menu()
+            
+        if demande == "Game":
+            ID.game()
+        
+        
+        demande = None
+
+Shooter()
 
 EZ.attendre_action()
 EZ.destruction_fenetre()

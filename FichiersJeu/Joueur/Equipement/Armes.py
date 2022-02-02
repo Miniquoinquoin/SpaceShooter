@@ -66,6 +66,8 @@ class Armes:
         self.direction = direction
         self.inertie = inertie
 
+        self.damage *= (1+abs(inertie)/5)
+
         if direction == "right":
             self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court
         

@@ -33,7 +33,7 @@ class Joueur:
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
         self.charges = None  #Si l'image est chargé ou non
-        self.hitbox = [120, 144] # 120 car les personage on an moyenne 4 pixel de libre de chaque coter 
+        self.hitbox = [130, 144] # 120 car les personage on an moyenne 4 pixel de libre de chaque coter 
 
         # Dernier charge effectuer
         self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
@@ -102,9 +102,9 @@ class Joueur:
         if self.charges == None:
             self.charge()
         
-        self.zoneHitBox()
         self.move()
         self.effet_saut()
+        self.zoneHitBox()
         self.onShoot()
 
         EZ.trace_image(self.charges, self.x, self.y)
@@ -251,9 +251,25 @@ class Joueur:
         
     def zoneHitBox(self):
         """Definit la zone ou le joueur prend des degats en donnant les 4 point du carre de la hitbox"""
+        if self.move_etat["right"]:
+            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]
 
-        self.zoneHitBoxlist = [[self.x, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x, self.y + self.hitbox[1] ]]
+        elif self.move_etat["left"]:
+            self.zoneHitBoxlist = [[self.x + 25, self.y], [self.x + self.hitbox[0] + 5, self.y], [self.x + self.hitbox[0] + 5, self.y + self.hitbox[1]], [self.x + 25, self.y + self.hitbox[1] ]]
 
+        else:
+            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0] - 5, self.y], [self.x + self.hitbox[0] - 5, self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]
+
+        # self.traceHitbox()
+        
+
+    def traceHitbox(self):
+        """Trace l'hitbox du joueur"""
+
+        EZ.trace_segment(int(self.zoneHitBoxlist[0][0]),int(self.zoneHitBoxlist[0][1]), int(self.zoneHitBoxlist[1][0]), int(self.zoneHitBoxlist[1][1]))
+        EZ.trace_segment(int(self.zoneHitBoxlist[1][0]),int(self.zoneHitBoxlist[1][1]), int(self.zoneHitBoxlist[2][0]), int(self.zoneHitBoxlist[2][1]))
+        EZ.trace_segment(int(self.zoneHitBoxlist[2][0]),int(self.zoneHitBoxlist[2][1]), int(self.zoneHitBoxlist[3][0]), int(self.zoneHitBoxlist[3][1]))
+        EZ.trace_segment(int(self.zoneHitBoxlist[3][0]),int(self.zoneHitBoxlist[3][1]), int(self.zoneHitBoxlist[0][0]), int(self.zoneHitBoxlist[0][1]))
 
     def death(self):
         """Suprime le joueur si il est mort
@@ -265,21 +281,5 @@ class Joueur:
         return self.stats["vie"] <= 0
 
     
-
-
-        
-
-
-
-    
-
-
-
-
-
-
-
-    
-
 
 
