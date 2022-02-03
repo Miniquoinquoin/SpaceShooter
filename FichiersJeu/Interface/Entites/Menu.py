@@ -66,7 +66,7 @@ class MenuPricipale(Menu):
         self.displayPlayer(personnage)
         self.displayBoutonPlay()
 
-class MenuGame(Menu):
+class MenuDeath(Menu):
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
@@ -75,6 +75,18 @@ class MenuGame(Menu):
         """Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort2.png")
+
+
+class MenuGame(Menu):
+
+    def __init__(self, longeur, hauteur):
+        super().__init__(longeur, hauteur)
+
+    def chargeFond(self):
+        """Charge l'image du fond"""
+
+        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\MenuGame.png")
+
 
 class Game(Interface):
 
@@ -111,7 +123,7 @@ class Game(Interface):
                 self.decal += LARGEUR_FOND
         
 
-        decal_x = [self.decal - LARGEUR_FOND, self.decal] #Petit pertit bug sur la droite avec une certaine config 3 image = plus de lag
+        decal_x = [self.decal - LARGEUR_FOND, self.decal]
 
         for fond in range(2):
             EZ.trace_image(self.chargesFond ,decal_x[fond],0)

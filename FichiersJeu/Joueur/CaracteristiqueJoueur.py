@@ -30,6 +30,7 @@ class Joueur:
         self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
+        self.autoShoot = "right"
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
         self.charges = None  #Si l'image est chargé ou non
@@ -84,7 +85,7 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], self.stats["durability"]), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], self.stats["durability"]), "speed": 10} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
             self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
             self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
 
@@ -108,7 +109,12 @@ class Joueur:
         self.onShoot()
 
         EZ.trace_image(self.charges, self.x, self.y)
-        Decor.info_vie(20, 20, 100, self.stats["vie"], self.stats["maxvie"])
+        if self.stats["vie"] >= 0:
+            Decor.info_vie(20, 20, 100, self.stats["vie"], self.stats["maxvie"])
+
+        else:
+            Decor.info_vie(20, 20, 100, 0, self.stats["maxvie"])
+
 
     def moveRight(self):
         """Cree l'effet marcher vers la droite"""
@@ -231,8 +237,14 @@ class Joueur:
             if self.move_etat["right"]:
                 self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
             
-            else:
+            elif self.move_etat["left"]:
                 self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
+
+            else:
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, self.autoShoot , self.move_info["speed"])
+                
+
+
 
     def onShoot(self):
         """Deplace la balle pendant le tire"""

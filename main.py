@@ -12,21 +12,16 @@ EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 def Shooter():
 
+
     demande = ID.menu()
     play = True
     while play:
 
-        if demande == None:
-            demande = ID.menuGame()
-        
         if demande == "Menu":
             demande = ID.menu()
             
         if demande == "Game":
-            ID.game()
-        
-        
-        demande = None
+            demande = ID.game()
 
 Shooter()
 

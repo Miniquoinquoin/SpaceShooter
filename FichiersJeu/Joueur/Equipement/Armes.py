@@ -6,7 +6,7 @@ class Armes:
 
     def __init__(self, name, damage, ranges):
         self.name = name
-        self.damage = damage
+        self.damage = { "damage": damage, "basicDamage": damage}
         self.range = [ranges, 0] # [De base, pendant le tire]
         self.durability = [3, 0]
         self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
@@ -34,7 +34,7 @@ class Armes:
             self.charge()
 
         self.verifDurability()
-        if self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1] and not(self.Break):
+        if not(self.Break):
             self.move(vitesse, vitesseFond, self.direction)
             self.zoneHitBox()
 
@@ -66,7 +66,7 @@ class Armes:
         self.direction = direction
         self.inertie = inertie
 
-        self.damage *= (1+abs(inertie)/5)
+        self.damage["damage"] *= (1+abs(inertie)/5)
 
         if direction == "right":
             self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court
@@ -111,8 +111,9 @@ class Armes:
         Returns:
             bool: True si arme encore utilisable False si arme casser
         """
-        if self.durability[1] <= 0:
+        if self.durability[1] <= 0 or not(self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]):
             self.Break = True
+            self.damage["damage"] = self.damage["basicDamage"] 
 
         else:
             self.Break = False

@@ -50,13 +50,13 @@ def info_vie(x,y,taille=50,vie=20,vie_max=20,barre=True):
     #trace le nombre de points de vie
         #2 chiffres
     if 10<=vie<100:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.5),None),255,255,255),x+taille/4,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.5),None),255,255,255),x+taille/4,y+taille/4)
         #1 chiffres
     elif vie<10:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.5),None),255,255,255),x+3*taille/8,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.5),None),255,255,255),x+3*taille/8,y+taille/4)
         #3 chiffres
     else:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.75),None),255,255,255),x+17*taille/100,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.75),None),255,255,255),x+17*taille/100,y+taille/4)
            
 def nombre_kills(x,y,nb_kills,LONGUEUR = 0,LARGEUR = 0):
     
