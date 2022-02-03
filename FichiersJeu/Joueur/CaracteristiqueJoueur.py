@@ -10,7 +10,7 @@ import FichiersJeu.Interface.Decor as Decor
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "range": 300 , "durability": 5,"acc": 1,"speed": 8, "jumpPower": 1,  "maxvie": 100 }, equipement = None):
+    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "regen": {"timer": EZ.clock(), "cooldown": 5, "eficiency":0.1 },"damage": 10, "range": 300 , "durability": 5,"acc": 1,"speed": 8, "jumpPower": 1,  "maxvie": 100 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -105,6 +105,7 @@ class Joueur:
         
         self.move()
         self.effet_saut()
+        self.effetRegen()
         self.zoneHitBox()
         self.onShoot()
 
@@ -259,6 +260,7 @@ class Joueur:
         """
 
         self.stats["vie"] -= domage
+        self.stats["regen"]["timer"] = EZ.clock()
     
         
     def zoneHitBox(self):
@@ -291,6 +293,16 @@ class Joueur:
         """
 
         return self.stats["vie"] <= 0
+
+    def effetRegen(self):
+        """Regenère les pv du joueur si possible"""
+
+        if EZ.clock() - self.stats["regen"]["timer"] >= self.stats["regen"]["cooldown"]: # verifie le cooldown
+            if self.stats["vie"] + self.stats["regen"]["eficiency"] < self.stats["maxvie"]: # verifie si le joueur peut etre regen sans depanser maxvie
+                self.stats["vie"] += self.stats["regen"]["eficiency"]
+            
+            elif self.stats["vie"] < self.stats["maxvie"]: # verifie si le joueur et proche de la vie max
+                self.stats["vie"] = self.stats["maxvie"]
 
     
 

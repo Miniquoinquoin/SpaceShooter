@@ -94,8 +94,9 @@ class Game(Interface):
         super().__init__(longeur, hauteur)
 
         self.chargesFond = None
-        self.decal = 1200
+        self.decal = 0 # decalage de l'image 2
         self.decalage = 0     # decalage effectué
+        self.CoordonnerFictive = 0 # Calcule le decalage total depuis le debut de la Game pour crée une impression de coordoner dans une map
 
         self.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
 
@@ -185,3 +186,5 @@ class Game(Interface):
             
 
         self.decal -= self.decalage # Le fond bouge dans le sens inverse
+        self.CoordonnerFictive += self.decalage
+        print(self.CoordonnerFictive)

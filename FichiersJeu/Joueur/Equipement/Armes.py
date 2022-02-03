@@ -1,6 +1,5 @@
 """Fichier contenant les diferant proprieter des armes / attack"""
 
-from re import S
 import FichiersJeu.Interface.EZ as EZ
 class Armes:
 
@@ -66,7 +65,7 @@ class Armes:
         self.direction = direction
         self.inertie = inertie
 
-        self.damage["damage"] *= (1+abs(inertie)/5)
+        self.damage["damage"] = self.damage["basicDamage"] * (1+abs(inertie)/5)
 
         if direction == "right":
             self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court
@@ -113,7 +112,6 @@ class Armes:
         """
         if self.durability[1] <= 0 or not(self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]):
             self.Break = True
-            self.damage["damage"] = self.damage["basicDamage"] 
 
         else:
             self.Break = False

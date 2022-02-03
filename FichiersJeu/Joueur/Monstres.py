@@ -11,7 +11,7 @@ class Monstre:
         self.name = name
         self.level = level
 
-        self.stats = {"vie": 100*level, "damage": 10*(level/10)**2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100*level}
+        self.stats = {"vie": 20*level, "damage": 10*(level/10)**2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 20*level}
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
         self.charges = None

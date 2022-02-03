@@ -5,6 +5,7 @@ import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Menu as Menuf
 import FichiersJeu.Joueur.Monstres as Monstref
 import FichiersJeu.Interface.Decor as Decor
+import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
 
 import random
 
@@ -19,6 +20,7 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
+Border = [OI.Border("border1", -3000, HAUTEUR), OI.Border("border2", LONGEUR + 3000, HAUTEUR)]
 Joueur1.charge()
 
 
@@ -98,7 +100,7 @@ def menuGame():
 
         if evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
-                return "Menu"
+                return "Run"
             
     
         EZ.mise_a_jour()
@@ -110,6 +112,18 @@ def Startwave(number):
 
     return [Monstref.Monstre("Amalgam_Sprite", number, Joueur1.x, random.choice([random.randint(-1000, Joueur1.x - 250), random.randint(Joueur1.x + 250, LONGEUR + 1000)])) for monstre in range(5*number)]
 
+def Verifzone(zone1, zone2):
+    """Verifie si deux zone se touche
+
+    Args:
+        zone1 (objet): premier objet
+        zone2 (objet): deuxieme objet
+
+    Returns:
+        bool: True si il se touche, sinon False
+    """
+    return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
+    
 
 def VerifDegat(monstres, armes, Joueur):
     """ Fonction qui compare la position des different ellement et mets des degat si nessesaire
@@ -123,7 +137,7 @@ def VerifDegat(monstres, armes, Joueur):
     # Arme sur monstre
     for i,monstre in enumerate(monstres):
         for arme in armes:
-            if ((monstre.zoneHitBoxlist[0][0] <= arme["arme"].zoneHitBoxlist[0][0] <= monstre.zoneHitBoxlist[1][0]) or (monstre.zoneHitBoxlist[0][0] <= arme["arme"].zoneHitBoxlist[1][0] <= monstre.zoneHitBoxlist[1][0])) and ((monstre.zoneHitBoxlist[0][1] <= arme["arme"].zoneHitBoxlist[0][1] <= monstre.zoneHitBoxlist[3][1]) or (monstre.zoneHitBoxlist[0][1] <= arme["arme"].zoneHitBoxlist[3][1] <= monstre.zoneHitBoxlist[3][1]) ): # verifie si des zonehitbox se touche
+            if Verifzone(monstre, arme["arme"]):
                 monstre.domage(arme["arme"].damage["damage"])
                 arme["arme"].use()
 
@@ -131,8 +145,7 @@ def VerifDegat(monstres, armes, Joueur):
             monstres.pop(i)
 
     # Monstres sur Joueur
-    for monstre in monstres:
-        if ((Joueur.zoneHitBoxlist[0][0] <= monstre.zoneHitBoxlist[0][0] <= Joueur.zoneHitBoxlist[1][0]) or (Joueur.zoneHitBoxlist[0][0] <= monstre.zoneHitBoxlist[1][0] <= Joueur.zoneHitBoxlist[1][0])) and ((Joueur.zoneHitBoxlist[0][1] <= monstre.zoneHitBoxlist[0][1] <= Joueur.zoneHitBoxlist[3][1]) or (Joueur.zoneHitBoxlist[0][1] <= monstre.zoneHitBoxlist[3][1] <= Joueur.zoneHitBoxlist[3][1]) ): # verifie si des zonehitbox se touche
+        if Verifzone(Joueur, monstre):
             if monstre.attaque():
                 Joueur.domage(monstre.stats["damage"])
     
@@ -140,6 +153,13 @@ def VerifDegat(monstres, armes, Joueur):
         return monstres, False
 
     return monstres, True
+
+def VerifContactX(objets, Fondjoueur):
+    """Verifie si un objet et un contacte avec le joueur"""
+
+    for objet in objets:
+        if (objet.zoneHitBoxlist[0][0] > Fondjoueur.CoordonnerFictive and objet.zoneHitBoxlist[1][0] < Fondjoueur.CoordonnerFictive):
+            Fondjoueur.decal += Fondjoueur.decalage
 
 
 def autoShoot(monstres, joueur):
@@ -191,8 +211,14 @@ def game():
             for Monstre in MonstreList:
                 Monstre.display(Game.decalage)
 
+            #Affiche les Bordur
+            for border in Border:
+                border.display(Game.CoordonnerFictive + Joueur1.x)
+
+
             #verifie les degat entre tout les élement du plateau.
             MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1)
+            VerifContactX(Border, Game)
 
             # Lance la prochaine vague
             if len(MonstreList) == 0:
