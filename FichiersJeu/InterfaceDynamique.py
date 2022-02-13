@@ -20,7 +20,7 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
-Border = [OI.Border("border1", -3000, HAUTEUR), OI.Border("border2", LONGEUR + 3000, HAUTEUR)]
+Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Joueur1.charge()
 
 
@@ -154,12 +154,19 @@ def VerifDegat(monstres, armes, Joueur):
 
     return monstres, True
 
-def VerifContactX(objets, Fondjoueur):
+def VerifContactX(objets, Fondjoueur,joueur):
     """Verifie si un objet et un contacte avec le joueur"""
-
+    contact = False
     for objet in objets:
-        if (objet.zoneHitBoxlist[0][0] > Fondjoueur.CoordonnerFictive and objet.zoneHitBoxlist[1][0] < Fondjoueur.CoordonnerFictive):
-            Fondjoueur.decal += Fondjoueur.decalage
+        if Verifzone(objet, joueur):
+            Fondjoueur.contact = True
+            contact = True
+            
+    if not(contact):
+        Fondjoueur.contact = False
+    
+        
+            
 
 
 def autoShoot(monstres, joueur):
@@ -218,7 +225,7 @@ def game():
 
             #verifie les degat entre tout les élement du plateau.
             MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1)
-            VerifContactX(Border, Game)
+            VerifContactX(Border, Game, Joueur1)
 
             # Lance la prochaine vague
             if len(MonstreList) == 0:

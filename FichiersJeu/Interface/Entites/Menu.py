@@ -99,6 +99,7 @@ class Game(Interface):
         self.CoordonnerFictive = 0 # Calcule le decalage total depuis le debut de la Game pour crée une impression de coordoner dans une map
 
         self.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
+        self.contact = False
 
 
     def chargeFond(self):
@@ -134,57 +135,57 @@ class Game(Interface):
 
     def move(self, acc, vitesse):
 
-        if not(self.move_info["saut"]):
+        if not(self.contact):
+            if not(self.move_info["saut"]):
 
-            if self.move_info["right"] == True:
-                if (self.decalage + acc) <= vitesse:
-                    self.decalage += acc
-                
-                elif self.decalage > vitesse:
-                     self.decalage -= 1
-                
-
-            
-            elif self.move_info["left"] == True:
-                if (self.decalage - acc) >= -vitesse:
-                    self.decalage -= acc
-
-                elif self.decalage < -vitesse:
-                     self.decalage += 1
-
-            else:
-                # vitesse de d'arret
-
-                # Gauche
-                if self.decalage < -1:
-                    self.decalage += 1
-
-                elif self.decalage < 0:
-                    self.decalage -= self.decalage
-
-                # Droite
-                elif self.decalage > 1:
-                    self.decalage -= 1 
-
-                elif self.decalage > 0:
-                    self.decalage -= self.decalage
+                if self.move_info["right"] == True:
+                    if (self.decalage + acc) <= vitesse:
+                        self.decalage += acc
+                    
+                    elif self.decalage > vitesse:
+                        self.decalage -= 1
                     
 
-
-
-
-        else:
-            if self.move_info["right"] == True:
-                if (self.decalage + acc * 0.5) <= vitesse * 1.1:
-                    self.decalage += acc * 0.5
                 
+                elif self.move_info["left"] == True:
+                    if (self.decalage - acc) >= -vitesse:
+                        self.decalage -= acc
 
-            
-            elif self.move_info["left"] == True:
-                if (self.decalage - acc * 0.5) >= -vitesse * 1.1:
-                    self.decalage -= acc * 0.5
-            
+                    elif self.decalage < -vitesse:
+                        self.decalage += 1
 
-        self.decal -= self.decalage # Le fond bouge dans le sens inverse
-        self.CoordonnerFictive += self.decalage
-        print(self.CoordonnerFictive)
+                else:
+                    # vitesse de d'arret
+
+                    # Gauche
+                    if self.decalage < -1:
+                        self.decalage += 1
+
+                    elif self.decalage < 0:
+                        self.decalage -= self.decalage
+
+                    # Droite
+                    elif self.decalage > 1:
+                        self.decalage -= 1 
+
+                    elif self.decalage > 0:
+                        self.decalage -= self.decalage
+                        
+
+
+
+
+            else:
+                if self.move_info["right"] == True:
+                    if (self.decalage + acc * 0.5) <= vitesse * 1.1:
+                        self.decalage += acc * 0.5
+                    
+
+                
+                elif self.move_info["left"] == True:
+                    if (self.decalage - acc * 0.5) >= -vitesse * 1.1:
+                        self.decalage -= acc * 0.5
+                
+            
+            self.decal -= self.decalage # Le fond bouge dans le sens inverse
+            self.CoordonnerFictive += self.decalage
