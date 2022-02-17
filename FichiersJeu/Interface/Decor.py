@@ -1,5 +1,7 @@
-import EZ
+import FichiersJeu.Interface.EZ as EZ
 
+
+image_monstre = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\monstre.png"),0,0.5) # permet de charger l'image une seul fois
 
 def display_coeur(x,y,taille,vie,vie_max):
     
@@ -48,45 +50,33 @@ def info_vie(x,y,taille=50,vie=20,vie_max=20,barre=True):
     #trace le nombre de points de vie
         #2 chiffres
     if 10<=vie<100:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.5),None),255,255,255),x+taille/4,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.5),None),255,255,255),x+taille/4,y+taille/4)
         #1 chiffres
     elif vie<10:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.5),None),255,255,255),x+3*taille/8,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.5),None),255,255,255),x+3*taille/8,y+taille/4)
         #3 chiffres
     else:
-        EZ.trace_image(EZ.image_texte(str(vie),EZ.charge_police(int(taille/1.75),None),255,255,255),x+17*taille/100,y+taille/4)
+        EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.75),None),255,255,255),x+17*taille/100,y+taille/4)
            
-    EZ.mise_a_jour()
-
-
-
-EZ.creation_fenetre(1240,720)
-info_vie(0,0,100,200,200)
-
-
 def nombre_kills(x,y,nb_kills,LONGUEUR = 0,LARGEUR = 0):
-    
-    #Charge la police par défaut de taille 15
-    police = EZ.charge_police(30)
-    image_monstre = EZ.transforme_image(EZ.charge_image("monstre.png"),0,0.5)
     
     #trace le rectangle Gris clair
     EZ.trace_rectangle_droit(x-2,y-2,LONGUEUR+104,LARGEUR+54)
     EZ.trace_rectangle_droit(x,y,LONGUEUR+100,LARGEUR+50,191,201,202)
 
-    #trace le texte "nombre de kills" + texte du résultat
-    
-    Nombre_kills = EZ.image_texte(str(nb_kills),police)
-
     #trace la position du texte
     EZ.trace_image(image_monstre,x+40,y)
-    EZ.trace_image(Nombre_kills,x+16,y+17)
+    EZ.trace_image(EZ.image_texte(str(nb_kills),EZ.charge_police(30)),x+16,y+17)
 
-    EZ.mise_a_jour()
+def barre_vie_montre(x,y,vie,maxvie,zoom):
+    """Fonction qui trace la barre de vie du monstre 
 
-EZ.creation_fenetre(1240,720)
-nombre_kills(100,100,80)
-
-EZ.mise_a_jour()
-EZ.attendre_action()
-EZ.destruction_fenetre()
+    Args:
+        x (int): absice du debut de la barre
+        y (y): orrdoner du haut de la barre
+        vie (int): vie du monstre
+        maxvie (int): vie du monstre quand il spawn
+        zoom (float): largeur du monstre
+    """
+    EZ.trace_rectangle_droit(x, y, int(1 * zoom), int(0.1 * zoom), 200, 200, 200) # Fond gris
+    EZ.trace_rectangle_droit(x, y, int(vie/maxvie * zoom), int(0.1 * zoom),int(-255/maxvie*vie+255),int(255/maxvie*vie),0)

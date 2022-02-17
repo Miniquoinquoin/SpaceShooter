@@ -1,16 +1,16 @@
 """Fichier Contenant la Base des fonctionaliter du Joueur"""
 
 
-from cmath import pi
-from turtle import right
-from pygame import time
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
+import FichiersJeu.InterfaceDynamique as ID
+import FichiersJeu.Interface.Decor as Decor
+
 
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "damage": 10, "range": 300 ,"acc": 1,"speed": 8, "jumpPower": 1 }, equipement = None):
+    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "regen": {"timer": EZ.clock(), "cooldown": 5, "eficiency":0.1 },"damage": 10, "range": 300 , "durability": 5,"acc": 1,"speed": 8, "jumpPower": 1,  "maxvie": 100 }, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -25,18 +25,21 @@ class Joueur:
         self.personnage = personnage
         self.stats = stats
         self.equipement = equipement
-        self.x = 1240//2
+        self.x = ID.LONGEUR//2
         self.y = 150  #Hauteur d'aparition du joueur
-        self.y_sol = 460 #Hauteur de marche du joueur
+        self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
+        self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
+        self.autoShoot = "right"
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
         self.charges = None  #Si l'image est chargé ou non
+        self.hitbox = [130, 144] # 120 car les personage on an moyenne 4 pixel de libre de chaque coter 
 
         # Dernier charge effectuer
-        self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton(0, 5)]
-        self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition(0,5)]
+        self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
+        self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -83,10 +86,9 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], 10), "speed": 10} for nombre_arme in range(3)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], self.stats["durability"]), "speed": 10} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
             self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
             self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
-
 
         self.charges = True
 
@@ -104,9 +106,17 @@ class Joueur:
         
         self.move()
         self.effet_saut()
+        self.effetRegen()
+        self.zoneHitBox()
         self.onShoot()
 
         EZ.trace_image(self.charges, self.x, self.y)
+        if self.stats["vie"] >= 0:
+            Decor.info_vie(20, 20, 100, self.stats["vie"], self.stats["maxvie"])
+
+        else:
+            Decor.info_vie(20, 20, 100, 0, self.stats["maxvie"])
+
 
     def moveRight(self):
         """Cree l'effet marcher vers la droite"""
@@ -169,12 +179,12 @@ class Joueur:
 
         if not(self.move_info["saut"]):
 
-            if self.move_info["right"] == True:
+            if self.move_info["right"] == True and self.move_possible["right"]:
                 self.charges = self.moveRight()
                 self.move_etat = {"right": True, "left": False}
 
             
-            elif self.move_info["left"] == True:
+            elif self.move_info["left"] == True and self.move_possible["left"]:
                 self.charges = self.moveLeft()
                 self.move_etat = {"right": False, "left": True}
             
@@ -192,6 +202,7 @@ class Joueur:
             elif self.move_info["left"] == True:
                 self.charges = self.chargesLeft[0]
                 self.move_etat = {"right": False, "left": True}
+    
 
     
     def timer_saut(self):
@@ -228,35 +239,72 @@ class Joueur:
             if self.move_etat["right"]:
                 self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
             
-            else:
+            elif self.move_etat["left"]:
                 self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
+
+            else:
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, self.autoShoot , self.move_info["speed"])
+                
+
+
 
     def onShoot(self):
         """Deplace la balle pendant le tire"""
         for armes in range(len(self.arme)):
             self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
 
+    def domage(self, domage):
+        """S'inflige des degat
 
+        Args:
+            domage (int): degat qu'il s'inflige
+        """
+
+        self.stats["vie"] -= domage
+        self.stats["regen"]["timer"] = EZ.clock()
     
         
+    def zoneHitBox(self):
+        """Definit la zone ou le joueur prend des degats en donnant les 4 point du carre de la hitbox"""
+        if self.move_etat["right"]:
+            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]       # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
+
+        elif self.move_etat["left"]:
+            self.zoneHitBoxlist = [[self.x + 25, self.y], [self.x + self.hitbox[0] + 5, self.y], [self.x + self.hitbox[0] + 5, self.y + self.hitbox[1]], [self.x + 25, self.y + self.hitbox[1] ]]
+
+        else:
+            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0] - 5, self.y], [self.x + self.hitbox[0] - 5, self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]
+
+        # self.traceHitbox()
         
 
+    def traceHitbox(self):
+        """Trace l'hitbox du joueur"""
+
+        EZ.trace_segment(int(self.zoneHitBoxlist[0][0]),int(self.zoneHitBoxlist[0][1]), int(self.zoneHitBoxlist[1][0]), int(self.zoneHitBoxlist[1][1]))     #Haut    
+        EZ.trace_segment(int(self.zoneHitBoxlist[1][0]),int(self.zoneHitBoxlist[1][1]), int(self.zoneHitBoxlist[2][0]), int(self.zoneHitBoxlist[2][1]))     #Droit
+        EZ.trace_segment(int(self.zoneHitBoxlist[2][0]),int(self.zoneHitBoxlist[2][1]), int(self.zoneHitBoxlist[3][0]), int(self.zoneHitBoxlist[3][1]))     #Bas
+        EZ.trace_segment(int(self.zoneHitBoxlist[3][0]),int(self.zoneHitBoxlist[3][1]), int(self.zoneHitBoxlist[0][0]), int(self.zoneHitBoxlist[0][1]))     #Gauche
+
+    def death(self):
+        """Suprime le joueur si il est mort
+
+        Returns:
+            bool: True if player haven't life, and False if player have life
+        """
+
+        return self.stats["vie"] <= 0
+
+    def effetRegen(self):
+        """Regenère les pv du joueur si possible"""
+
+        if EZ.clock() - self.stats["regen"]["timer"] >= self.stats["regen"]["cooldown"]: # verifie le cooldown
+            if self.stats["vie"] + self.stats["regen"]["eficiency"] < self.stats["maxvie"]: # verifie si le joueur peut etre regen sans depanser maxvie
+                self.stats["vie"] += self.stats["regen"]["eficiency"]
+            
+            elif self.stats["vie"] < self.stats["maxvie"]: # verifie si le joueur et proche de la vie max
+                self.stats["vie"] = self.stats["maxvie"]
+
     
-
-
-        
-
-
-
-    
-
-
-
-
-
-
-
-    
-
 
 
