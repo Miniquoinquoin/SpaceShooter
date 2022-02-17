@@ -30,6 +30,7 @@ class Joueur:
         self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
+        self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
         self.autoShoot = "right"
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
@@ -178,12 +179,12 @@ class Joueur:
 
         if not(self.move_info["saut"]):
 
-            if self.move_info["right"] == True:
+            if self.move_info["right"] == True and self.move_possible["right"]:
                 self.charges = self.moveRight()
                 self.move_etat = {"right": True, "left": False}
 
             
-            elif self.move_info["left"] == True:
+            elif self.move_info["left"] == True and self.move_possible["left"]:
                 self.charges = self.moveLeft()
                 self.move_etat = {"right": False, "left": True}
             
@@ -266,7 +267,7 @@ class Joueur:
     def zoneHitBox(self):
         """Definit la zone ou le joueur prend des degats en donnant les 4 point du carre de la hitbox"""
         if self.move_etat["right"]:
-            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]
+            self.zoneHitBoxlist = [[self.x + 20, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x + 20, self.y + self.hitbox[1] ]]       # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
 
         elif self.move_etat["left"]:
             self.zoneHitBoxlist = [[self.x + 25, self.y], [self.x + self.hitbox[0] + 5, self.y], [self.x + self.hitbox[0] + 5, self.y + self.hitbox[1]], [self.x + 25, self.y + self.hitbox[1] ]]
@@ -280,10 +281,10 @@ class Joueur:
     def traceHitbox(self):
         """Trace l'hitbox du joueur"""
 
-        EZ.trace_segment(int(self.zoneHitBoxlist[0][0]),int(self.zoneHitBoxlist[0][1]), int(self.zoneHitBoxlist[1][0]), int(self.zoneHitBoxlist[1][1]))
-        EZ.trace_segment(int(self.zoneHitBoxlist[1][0]),int(self.zoneHitBoxlist[1][1]), int(self.zoneHitBoxlist[2][0]), int(self.zoneHitBoxlist[2][1]))
-        EZ.trace_segment(int(self.zoneHitBoxlist[2][0]),int(self.zoneHitBoxlist[2][1]), int(self.zoneHitBoxlist[3][0]), int(self.zoneHitBoxlist[3][1]))
-        EZ.trace_segment(int(self.zoneHitBoxlist[3][0]),int(self.zoneHitBoxlist[3][1]), int(self.zoneHitBoxlist[0][0]), int(self.zoneHitBoxlist[0][1]))
+        EZ.trace_segment(int(self.zoneHitBoxlist[0][0]),int(self.zoneHitBoxlist[0][1]), int(self.zoneHitBoxlist[1][0]), int(self.zoneHitBoxlist[1][1]))     #Haut    
+        EZ.trace_segment(int(self.zoneHitBoxlist[1][0]),int(self.zoneHitBoxlist[1][1]), int(self.zoneHitBoxlist[2][0]), int(self.zoneHitBoxlist[2][1]))     #Droit
+        EZ.trace_segment(int(self.zoneHitBoxlist[2][0]),int(self.zoneHitBoxlist[2][1]), int(self.zoneHitBoxlist[3][0]), int(self.zoneHitBoxlist[3][1]))     #Bas
+        EZ.trace_segment(int(self.zoneHitBoxlist[3][0]),int(self.zoneHitBoxlist[3][1]), int(self.zoneHitBoxlist[0][0]), int(self.zoneHitBoxlist[0][1]))     #Gauche
 
     def death(self):
         """Suprime le joueur si il est mort

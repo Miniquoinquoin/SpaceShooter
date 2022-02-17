@@ -89,13 +89,13 @@ def menuGame():
 
         evenement = EZ.recupere_evenement()
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:
+            if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:   #Bouton rejouer
                 return "Run"
 
-            elif 480 < EZ.souris_x() < 800 and 400 < EZ.souris_y() < 460:
+            elif 480 < EZ.souris_x() < 800 and 400 < EZ.souris_y() < 460:    #Bonton recommencer
                 return "Game"
 
-            elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:
+            elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:    #Bouton Menu principale
                 return "Menu"
 
         if evenement == "TOUCHE_ENFONCEE":
@@ -123,7 +123,23 @@ def Verifzone(zone1, zone2):
         bool: True si il se touche, sinon False
     """
     return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
+
+def getNearSide(zone1, zone2):
+    """Donne le coter le plus proche ou zone1 touche zone2
+
+    Args:
+        zone1 (objet): objet dont le coter proche sera donner
+        zone2 (objet): autre objet
     
+    Returns:
+        str: Coté le plus proche
+    """
+
+    if (zone1.zoneHitBoxlist[1][0] - zone2.zoneHitBoxlist[0][0]) <= zone2.hitbox[0]:
+        return "Right"
+    
+    return "Left"
+
 
 def VerifDegat(monstres, armes, Joueur):
     """ Fonction qui compare la position des different ellement et mets des degat si nessesaire
@@ -154,17 +170,40 @@ def VerifDegat(monstres, armes, Joueur):
 
     return monstres, True
 
+
 def VerifContactX(objets, Fondjoueur,joueur):
     """Verifie si un objet et un contacte avec le joueur"""
     contact = False
     for objet in objets:
         if Verifzone(objet, joueur):
+            coter = getNearSide(joueur, objet)
+
+            #Empeche le joueur d'aller vers l'objet
+            if coter == "Right":
+                joueur.move_possible["right"] = False
+                joueur.move_possible["left"] = True
+
+                Fondjoueur.move_possible["right"] = False
+                Fondjoueur.move_possible["left"] = True
+
+            else:
+                joueur.move_possible["right"] = True
+                joueur.move_possible["left"] = False
+
+                Fondjoueur.move_possible["right"] = True
+                Fondjoueur.move_possible["left"] = False
+                
             Fondjoueur.contact = True
             contact = True
-            
+        
     if not(contact):
+        joueur.move_possible["right"] = True
+        joueur.move_possible["left"] = True
+        
+        Fondjoueur.move_possible["right"] = True
+        Fondjoueur.move_possible["left"] = True
         Fondjoueur.contact = False
-    
+
         
             
 
@@ -205,7 +244,15 @@ def game():
             """Boucle pendant que le joueur joue"""
             #Zone de dispaly
             Game.displayFond(Joueur1.stats["acc"],Joueur1.stats["speed"])
+
+            #Affiche les Bordur
+            for border in Border:
+                border.display(Game.CoordonnerFictive + Joueur1.x)
+            
+            #Affiche le nombre de monstre restant
             Decor.nombre_kills(LONGEUR - 124, 20, len(MonstreList))
+
+            #Affiche le joueur et sa vie
             Joueur1.display()
 
             #Active l'autoshoot si le joueur ne bouge pas
@@ -218,9 +265,6 @@ def game():
             for Monstre in MonstreList:
                 Monstre.display(Game.decalage)
 
-            #Affiche les Bordur
-            for border in Border:
-                border.display(Game.CoordonnerFictive + Joueur1.x)
 
 
             #verifie les degat entre tout les élement du plateau.
@@ -284,6 +328,7 @@ def game():
 
         Joueur1.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
         Game.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
+
         if not(Joueur1.death()):
             demande = menuGame()
             if demande == "Game":

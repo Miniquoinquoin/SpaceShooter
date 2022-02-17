@@ -99,6 +99,7 @@ class Game(Interface):
         self.CoordonnerFictive = 0 # Calcule le decalage total depuis le debut de la Game pour crée une impression de coordoner dans une map
 
         self.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
+        self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
         self.contact = False
 
 
@@ -187,5 +188,28 @@ class Game(Interface):
                         self.decalage -= acc * 0.5
                 
             
-            self.decal -= self.decalage # Le fond bouge dans le sens inverse
-            self.CoordonnerFictive += self.decalage
+
+        else: # Si le joueur est en contacte d'un objet
+
+            if self.move_info["right"] and self.move_possible["right"] and self.decalage >= 0:
+                if (self.decalage + acc) <= vitesse:
+                    self.decalage += acc
+                
+                elif self.decalage > vitesse:
+                    self.decalage -= 1
+                
+
+            
+            elif self.move_info["left"] and self.move_possible["left"] and self.decalage <= 0:
+                if (self.decalage - acc) >= -vitesse:
+                    self.decalage -= acc
+
+                elif self.decalage < -vitesse:
+                    self.decalage += 1
+
+            else:
+                self.decalage = 0
+
+
+        self.decal -= self.decalage # Le fond bouge dans le sens inverse
+        self.CoordonnerFictive += self.decalage
