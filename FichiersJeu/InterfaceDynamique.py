@@ -106,11 +106,33 @@ def menuGame():
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
+def genratesMob(name):
+    """Genere un mob
+
+    Args:
+        name (str): Nom du monstre
+
+    Returns:
+        object: le monstre
+    """
+
+    if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+        return Monstref.Monstre(name, Joueur1.x, random.randint(Joueur1.x + 250, Border[1].xFictif))
+    
+    elif Joueur1.x + 250 >= Border[1].xFictif:
+        return Monstref.Monstre(name, Joueur1.x, random.randint(Border[0].xFictif, Joueur1.x - 250))
+
+    return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(Border[0].xFictif, Joueur1.x - 250), random.randint(Joueur1.x + 250, Border[1].xFictif)]))
+
+
 
 def Startwave(number):
-    """Genere les monstre en début de vague"""
+    """Genere les monstres en début de vague"""
+    listMob = [genratesMob("Amalgam_Sprite")for monstre in range(number * 5)]
 
-    return [Monstref.Monstre("Amalgam_Sprite", number, Joueur1.x, random.choice([random.randint(-1000, Joueur1.x - 250), random.randint(Joueur1.x + 250, LONGEUR + 1000)])) for monstre in range(5*number)]
+    listMob.append(genratesMob("Adept_Sprite"))
+    
+    return listMob
 
 def Verifzone(zone1, zone2):
     """Verifie si deux zone se touche
@@ -169,6 +191,11 @@ def VerifDegat(monstres, armes, Joueur):
         return monstres, False
 
     return monstres, True
+
+def VerifBuff(wizzard, monstres):
+    pass
+
+    
 
 
 def VerifContactX(objets, Fondjoueur,joueur):

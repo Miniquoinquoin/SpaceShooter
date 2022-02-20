@@ -6,12 +6,11 @@ import FichiersJeu.Interface.Decor as Decor
 
 class Monstre:
 
-    def __init__(self, name, level, xPlayer, Xspawn = 0):
+    def __init__(self, name, xPlayer, Xspawn = 0):
 
         self.name = name
-        self.level = level
 
-        self.stats = {"vie": 20*level, "damage": 10*(level/10)**2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 20*level}
+        self.stats = {"vie": 100, "damage": 2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
         self.charges = None
@@ -20,7 +19,7 @@ class Monstre:
 
         self.move_info = {"right": True, "left": False}
         self.x = Xspawn
-        self.y = ID.HAUTEUR_SOL - self.hitbox[1]
+        
         self.xPlayer = xPlayer + 30 # Point que va suivre le monstre
 
         self.cooldwon = [EZ.clock(), 1]
@@ -33,7 +32,18 @@ class Monstre:
             self.chargesRight = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-4.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-5.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-6.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-7.png")]
             self.chargesLeft = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-4.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-5.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-6.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-7.png")]
             self.hitbox = [93, 90]
-            self.charges = self.chargesRight[self.lastchargesRight[0]]
+            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+
+        elif self.name == "Adept_Sprite":
+            self.chargesRight = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-4.png")]
+            self.chargesLeft = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-4.png")]
+            self.hitbox = [81, 58]
+            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+
+
+        self.charges = self.chargesRight[self.lastchargesRight[0]]
+        self.y = ID.HAUTEUR_SOL - self.hitbox[1]
+
 
     def display(self, vitesseFond):
         """Affiche le monstre"""
@@ -128,11 +138,23 @@ class Monstre:
 
         self.stats["vie"] -= domage
 
+    def heal(self, heal):
+        """Ce soigne de heal
+
+        Args:
+            heal (int): pv qu'il se soigne
+        """
+
+        self.stats["vie"] += heal
+
+
+
+
     def zoneHitBox(self):
         """Definit la zone ou le monstre prend des degats en donnant les 4 point du carre de la hitbox"""
 
         self.zoneHitBoxlist = [[self.x, self.y], [self.x + self.hitbox[0], self.y], [self.x + self.hitbox[0], self.y + self.hitbox[1]], [self.x, self.y + self.hitbox[1] ]]     # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
-        self.traceHitbox()
+        # self.traceHitbox()
 
     def traceHitbox(self):
         """Trace l'hitbox du joueur"""
@@ -167,15 +189,31 @@ class Monstre:
 
         
         
+class Wizard(Monstre):
+    """Monstre avec des effet/ buff autour d'eux"""
 
+    def __init__(self, name, xPlayer, Xspawn, type, range = 250, power = 2):
+        super().__init__(name, xPlayer, Xspawn)
 
-
-# class Monstre_sol(Monstre):
-
-#     def __init__(self, name, level):
-#         super().__init__(name, level)
-
+        """ type: "HEAL" / "STRENGTH" range = rayon """
+        self.power = {"type": type, "range": range, "power": power} 
     
-    
-            
+
+    def zonePower(self):
+        """Definit la zone ou le monstre donnera l'effet"""
+
+        self.zonePowerlist = [[self.x - self.power["range"] , self.y - self.power["range"] ], 
+        [self.x + self.hitbox[0] + self.power["range"], self.y - self.power["range"]],
+        [self.x + self.hitbox[0] + self.power["range"], self.y + self.hitbox[1]] + self.power["range"], 
+        [self.x - self.power["range"], self.y + self.hitbox[1] + self.power["range"] ]]     # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
+
+
+    def traceZonePower(self):
+        """Trace l'hitbox du joueur"""
+
+        EZ.trace_segment(int(self.zonePowerlist[0][0]),int(self.zonePowerlist[0][1]), int(self.zonePowerlist[1][0]), int(self.zonePowerlist[1][1]))     #Haut
+        EZ.trace_segment(int(self.zonePowerlist[1][0]),int(self.zonePowerlist[1][1]), int(self.zonePowerlist[2][0]), int(self.zonePowerlist[2][1]))     #Droit
+        EZ.trace_segment(int(self.zonePowerlist[2][0]),int(self.zonePowerlist[2][1]), int(self.zonePowerlist[3][0]), int(self.zonePowerlist[3][1]))     #Bas
+        EZ.trace_segment(int(self.zonePowerlist[3][0]),int(self.zonePowerlist[3][1]), int(self.zonePowerlist[0][0]), int(self.zonePowerlist[0][1]))     #Gauche
+      
 
