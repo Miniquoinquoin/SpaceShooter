@@ -192,20 +192,29 @@ class Monstre:
 class Wizard(Monstre):
     """Monstre avec des effet/ buff autour d'eux"""
 
-    def __init__(self, name, xPlayer, Xspawn, type, range = 250, power = 2):
+    def __init__(self, name, xPlayer, Xspawn, type, range = 250, power = 20):
         super().__init__(name, xPlayer, Xspawn)
 
         """ type: "HEAL" / "STRENGTH" range = rayon """
-        self.power = {"type": type, "range": range, "power": power} 
+        self.power = {"type": type, "range": range, "power": power}
+        self.zonePowerlist = [[0, 0], [0,0], [0,0], [0,0]]
     
+    
+    def move(self, vitesseFond):
+
+        super().move(vitesseFond)
+        self.zonePower()
+        print(self.zonePowerlist)
+    
+
 
     def zonePower(self):
         """Definit la zone ou le monstre donnera l'effet"""
 
-        self.zonePowerlist = [[self.x - self.power["range"] , self.y - self.power["range"] ], 
+        self.zonePowerlist = [[self.x - self.power["range"] , self.y - self.power["range"]], 
         [self.x + self.hitbox[0] + self.power["range"], self.y - self.power["range"]],
-        [self.x + self.hitbox[0] + self.power["range"], self.y + self.hitbox[1]] + self.power["range"], 
-        [self.x - self.power["range"], self.y + self.hitbox[1] + self.power["range"] ]]     # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
+        [self.x + self.hitbox[0] + self.power["range"], self.y + self.hitbox[1] + self.power["range"]], 
+        [self.x - self.power["range"], self.y + self.hitbox[1] + self.power["range"]]]     # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
 
 
     def traceZonePower(self):

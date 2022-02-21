@@ -115,24 +115,46 @@ def genratesMob(name):
     Returns:
         object: le monstre
     """
-
-    if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-        return Monstref.Monstre(name, Joueur1.x, random.randint(Joueur1.x + 250, Border[1].xFictif))
     
-    elif Joueur1.x + 250 >= Border[1].xFictif:
-        return Monstref.Monstre(name, Joueur1.x, random.randint(Border[0].xFictif, Joueur1.x - 250))
+    BaseMonstre = ["Amalgam_Sprite"]
+    WizzardMonstre = ["Adept_Sprite"]
 
-    return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(Border[0].xFictif, Joueur1.x - 250), random.randint(Joueur1.x + 250, Border[1].xFictif)]))
+    if name in BaseMonstre:
+        if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+            return Monstref.Monstre(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+        
+        elif Joueur1.x + 250 >= Border[1].xFictif:
+            return Monstref.Monstre(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+
+        return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
+
+    if name in WizzardMonstre:
+        if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), "Heal")
+        
+        elif Joueur1.x + 250 >= Border[1].xFictif:
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), "Heal")
+
+        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), "Heal")
 
 
 
 def Startwave(number):
-    """Genere les monstres en début de vague"""
+    """Genere les monstres en début de vague
+
+    Args:
+        number (int): numero de la vague
+
+    Returns:
+        list: listMob: tout les mob de la vague , listWizzard: list de tout les sorcier (mob avec effet)
+    """
     listMob = [genratesMob("Amalgam_Sprite")for monstre in range(number * 5)]
+    listWizzard = []
 
     listMob.append(genratesMob("Adept_Sprite"))
+    listWizzard.append(genratesMob("Adept_Sprite"))
     
-    return listMob
+    return listMob, listWizzard
 
 def Verifzone(zone1, zone2):
     """Verifie si deux zone se touche
@@ -146,6 +168,18 @@ def Verifzone(zone1, zone2):
     """
     return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
 
+def VerifzonePower(zone1, zonePower):
+    """Verifie si deux zone se touche
+
+    Args:
+        zone1 (objet): Monstre qui reçoit l'effet
+        zonePower (objet): Sorcier qui done l'effet
+
+    Returns:
+        bool: True si il se touche, sinon False
+    """
+    return ((zone1.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonePower touche un mob
+
 def getNearSide(zone1, zone2):
     """Donne le coter le plus proche ou zone1 touche zone2
 
@@ -157,7 +191,7 @@ def getNearSide(zone1, zone2):
         str: Coté le plus proche
     """
 
-    if (zone1.zoneHitBoxlist[1][0] - zone2.zoneHitBoxlist[0][0]) <= zone2.hitbox[0]:
+    if (zone1.zoneHitBoxlist[1][0] - zone2.hitbox[0][0]) <= zone2.hitbox[0]:
         return "Right"
     
     return "Left"
@@ -192,8 +226,13 @@ def VerifDegat(monstres, armes, Joueur):
 
     return monstres, True
 
-def VerifBuff(wizzard, monstres):
-    pass
+def VerifBuff(wizzards, monstres):
+    
+
+    for wizzard in wizzards:
+        for monstre in monstres:
+            if VerifzonePower(monstre, wizzard):
+                monstre.heal(wizzard.power["power"])
 
     
 
@@ -261,6 +300,7 @@ def game():
 
     vague = 0
     MonstreList = [] # List contenant l'ensemble des monstre en vie de la vague
+    WizzardList = [] # List contenant l'ensemble des montre a effet
     timeLastWave = [EZ.clock(), True] # [temps a la fin de la vague(0 mob), etats du timer( True = En game, False = Timer en cours)]
     
     inGame = True
@@ -297,6 +337,7 @@ def game():
             #verifie les degat entre tout les élement du plateau.
             MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1)
             VerifContactX(Border, Game, Joueur1)
+            VerifBuff(WizzardList, MonstreList)
 
             # Lance la prochaine vague
             if len(MonstreList) == 0:
@@ -306,7 +347,7 @@ def game():
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
                     vague += 1
-                    MonstreList = Startwave(vague)  # Gener la nouvelle vague
+                    MonstreList, WizzardList = Startwave(vague)  # Gener la nouvelle vague
                     timeLastWave[1] = True
             
             #Informe le fond sur l'etat du saut chez le joueur
