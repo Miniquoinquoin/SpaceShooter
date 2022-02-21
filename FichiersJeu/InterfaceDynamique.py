@@ -151,8 +151,8 @@ def Startwave(number):
     listMob = [genratesMob("Amalgam_Sprite")for monstre in range(number * 5)]
     listWizzard = []
 
-    listMob.append(genratesMob("Adept_Sprite"))
     listWizzard.append(genratesMob("Adept_Sprite"))
+    listMob.append(listWizzard[0])
     
     return listMob, listWizzard
 
@@ -168,17 +168,17 @@ def Verifzone(zone1, zone2):
     """
     return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
 
-def VerifzonePower(zone1, zonePower):
+def VerifzonePower(zonePower, zoneMonstre):
     """Verifie si deux zone se touche
 
     Args:
-        zone1 (objet): Monstre qui reçoit l'effet
+        zoneMonstre (objet): Monstre qui reçoit l'effet
         zonePower (objet): Sorcier qui done l'effet
 
     Returns:
         bool: True si il se touche, sinon False
     """
-    return ((zone1.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonePower touche un mob
+    return ((zonePower.zonePowerlist[0][0] <= zoneMonstre.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[1][0]) or (zonePower.zonePowerlist[0][0] <= zoneMonstre.zoneHitBoxlist[1][0] <= zonePower.zonePowerlist[1][0])) and ((zonePower.zonePowerlist[0][1] <= zoneMonstre.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[3][1]) or (zonePower.zonePowerlist[0][1] <= zoneMonstre.zoneHitBoxlist[3][1] <= zonePower.zonePowerlist[3][1]) ) # verifie si des zonePower touche un mob
 
 def getNearSide(zone1, zone2):
     """Donne le coter le plus proche ou zone1 touche zone2
@@ -191,7 +191,7 @@ def getNearSide(zone1, zone2):
         str: Coté le plus proche
     """
 
-    if (zone1.zoneHitBoxlist[1][0] - zone2.hitbox[0][0]) <= zone2.hitbox[0]:
+    if (zone1.zoneHitBoxlist[1][0] - zone2.zoneHitBoxlist[0][0]) <= zone2.hitbox[0]:
         return "Right"
     
     return "Left"
@@ -228,12 +228,13 @@ def VerifDegat(monstres, armes, Joueur):
 
 def VerifBuff(wizzards, monstres):
     
-
     for wizzard in wizzards:
-        for monstre in monstres:
-            if VerifzonePower(monstre, wizzard):
-                monstre.heal(wizzard.power["power"])
-
+        if EZ.clock() >= wizzard.power["cooldown"][0] + wizzard.power["cooldown"][1]:
+            for monstre in monstres:
+                if VerifzonePower(wizzard, monstre):
+                    monstre.heal(wizzard.power["power"])
+    
+            wizzard.power["cooldown"][0] = EZ.clock() # Mets a jour le temps du dernier buff
     
 
 

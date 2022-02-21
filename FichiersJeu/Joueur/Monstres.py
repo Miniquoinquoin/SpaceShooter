@@ -144,9 +144,11 @@ class Monstre:
         Args:
             heal (int): pv qu'il se soigne
         """
+        if self.stats["vie"] + heal <= self.stats["maxvie"]:
+            self.stats["vie"] += heal
 
-        self.stats["vie"] += heal
-
+        else:
+            self.stats["vie"] = self.stats["maxvie"]
 
 
 
@@ -195,22 +197,26 @@ class Wizard(Monstre):
     def __init__(self, name, xPlayer, Xspawn, type, range = 250, power = 20):
         super().__init__(name, xPlayer, Xspawn)
 
-        """ type: "HEAL" / "STRENGTH" range = rayon """
-        self.power = {"type": type, "range": range, "power": power}
+        """ type: "HEAL" / "STRENGTH" range = rayon cooldown: [derniere utilisation, cooldown]"""
+        self.power = {"type": type, "range": range, "power": power, "cooldown": [EZ.clock(),10]}  
         self.zonePowerlist = [[0, 0], [0,0], [0,0], [0,0]]
+
+    def display(self, vitesseFond):
+        super().display(vitesseFond)
+
+        self.HealEffect()
     
     
     def move(self, vitesseFond):
 
         super().move(vitesseFond)
         self.zonePower()
-        print(self.zonePowerlist)
     
 
 
     def zonePower(self):
         """Definit la zone ou le monstre donnera l'effet"""
-
+    
         self.zonePowerlist = [[self.x - self.power["range"] , self.y - self.power["range"]], 
         [self.x + self.hitbox[0] + self.power["range"], self.y - self.power["range"]],
         [self.x + self.hitbox[0] + self.power["range"], self.y + self.hitbox[1] + self.power["range"]], 
@@ -224,5 +230,17 @@ class Wizard(Monstre):
         EZ.trace_segment(int(self.zonePowerlist[1][0]),int(self.zonePowerlist[1][1]), int(self.zonePowerlist[2][0]), int(self.zonePowerlist[2][1]))     #Droit
         EZ.trace_segment(int(self.zonePowerlist[2][0]),int(self.zonePowerlist[2][1]), int(self.zonePowerlist[3][0]), int(self.zonePowerlist[3][1]))     #Bas
         EZ.trace_segment(int(self.zonePowerlist[3][0]),int(self.zonePowerlist[3][1]), int(self.zonePowerlist[0][0]), int(self.zonePowerlist[0][1]))     #Gauche
-      
 
+    def HealEffect(self):
+        """Trace l'effet de la zone de heal"""
+        DURER_DEFFET = 1.5 # Durer de l'effet
+        NOMBRE_DISQUE = 2 # Varie les nuance
+
+        TimeSpent = EZ.clock() - self.power["cooldown"][0]
+        if TimeSpent <= DURER_DEFFET:
+            SetRadius = TimeSpent * self.power["range"]/DURER_DEFFET
+            Radius = SetRadius
+            for disque in range(1, NOMBRE_DISQUE + 1):
+                Radius = (NOMBRE_DISQUE + 2 - disque) * SetRadius/(NOMBRE_DISQUE + 1)
+                print(Radius)
+                EZ.trace_disque(int(self.x + self.hitbox[0]//2), int(self.y + self.hitbox[1]//2), int(Radius), 0, int(100 + disque * (100/(NOMBRE_DISQUE + 1))), 0, int(100 - disque * (100/(NOMBRE_DISQUE + 1))))
