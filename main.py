@@ -1,6 +1,5 @@
 """Fichier principale du projet"""
 
-from ctypes import sizeof
 import FichiersJeu.Interface.EZ as EZ
 # import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 # import FichiersJeu.Interface.Entites.Menu as Menuf
