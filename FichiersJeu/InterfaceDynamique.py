@@ -130,12 +130,12 @@ def genratesMob(name):
 
     if name in WizzardMonstre:
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), "Heal")
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), "STRENGTH")
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), "Heal")
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), "STRENGTH")
 
-        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), "Heal")
+        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), "STRENGTH")
 
 
 
@@ -219,7 +219,7 @@ def VerifDegat(monstres, armes, Joueur):
     # Monstres sur Joueur
         if Verifzone(Joueur, monstre):
             if monstre.attaque():
-                Joueur.domage(monstre.stats["damage"])
+                Joueur.domage(monstre.stats["damage"]) # Inflige les degat au joueur
     
     if Joueur.death():
         return monstres, False
@@ -232,7 +232,10 @@ def VerifBuff(wizzards, monstres):
         if EZ.clock() >= wizzard.power["cooldown"][0] + wizzard.power["cooldown"][1]:
             for monstre in monstres:
                 if VerifzonePower(wizzard, monstre):
-                    monstre.heal(wizzard.power["power"])
+                    if wizzard.power["type"] == "HEAL":
+                        monstre.heal(wizzard.power["power"])
+                    else:
+                        monstre.effect["cooldownBoostDamage"][0] = EZ.clock()
     
             wizzard.power["cooldown"][0] = EZ.clock() # Mets a jour le temps du dernier buff
     

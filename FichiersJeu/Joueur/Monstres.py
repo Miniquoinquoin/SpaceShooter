@@ -11,6 +11,7 @@ class Monstre:
         self.name = name
 
         self.stats = {"vie": 100, "damage": 2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+        self.baseDamage = self.stats["damage"]
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
         self.charges = None
@@ -22,7 +23,8 @@ class Monstre:
         
         self.xPlayer = xPlayer + 30 # Point que va suivre le monstre
 
-        self.cooldwon = [EZ.clock(), 1]
+        self.cooldwon = [EZ.clock(), 1] # cooldown entre les attaque du monstre
+        self.effect = {"boostDamage": False, "cooldownBoostDamage": [0, 5]} # cooldown [temps du dernier buff, durer du buff]
 
 
     def charge(self):
@@ -183,9 +185,24 @@ class Monstre:
         """
         if EZ.clock() - self.cooldwon[0] >= self.cooldwon[1]:
             self.cooldwon[0] = EZ.clock()
+            self.boostAttack()
             return True
         
         return False
+
+    def boostAttack(self):
+        """Booste l'attaque du monstre si effet = True
+
+        Args:
+            effet (bool): True attaque du monstre booste / False attaque de base
+
+        """
+
+        self.stats["damage"] = self.baseDamage
+
+        if self.effect["cooldownBoostDamage"][0] + self.effect["cooldownBoostDamage"][1] >= EZ.clock():
+            self.stats["damage"] *= 1.25
+
  
 
 
@@ -204,7 +221,11 @@ class Wizard(Monstre):
     def display(self, vitesseFond):
         super().display(vitesseFond)
 
-        self.HealEffect()
+        if self.power["type"] == "HEAL":
+            self.HealEffect()
+        
+        elif self.power["type"] == "STRENGTH":
+            self.StrenghEffect()
     
     
     def move(self, vitesseFond):
@@ -233,7 +254,7 @@ class Wizard(Monstre):
 
     def HealEffect(self):
         """Trace l'effet de la zone de heal"""
-        DURER_DEFFET = 1.5 # Durer de l'effet
+        DURER_DEFFET = 1 # Durer de l'effet
         NOMBRE_DISQUE = 2 # Varie les nuance
 
         TimeSpent = EZ.clock() - self.power["cooldown"][0]
@@ -242,5 +263,17 @@ class Wizard(Monstre):
             Radius = SetRadius
             for disque in range(1, NOMBRE_DISQUE + 1):
                 Radius = (NOMBRE_DISQUE + 2 - disque) * SetRadius/(NOMBRE_DISQUE + 1)
-                print(Radius)
                 EZ.trace_disque(int(self.x + self.hitbox[0]//2), int(self.y + self.hitbox[1]//2), int(Radius), 0, int(100 + disque * (100/(NOMBRE_DISQUE + 1))), 0, int(100 - disque * (100/(NOMBRE_DISQUE + 1))))
+
+    def StrenghEffect(self):
+        """Trace l'effet de la zone de force"""
+        DURER_DEFFET = 1 # Durer de l'effet
+        NOMBRE_DISQUE = 2 # Varie les nuance
+
+        TimeSpent = EZ.clock() - self.power["cooldown"][0]
+        if TimeSpent <= DURER_DEFFET:
+            SetRadius = TimeSpent * self.power["range"]/DURER_DEFFET
+            Radius = SetRadius
+            for disque in range(1, NOMBRE_DISQUE + 1):
+                Radius = (NOMBRE_DISQUE + 2 - disque) * SetRadius/(NOMBRE_DISQUE + 1)
+                EZ.trace_disque(int(self.x + self.hitbox[0]//2), int(self.y + self.hitbox[1]//2), int(Radius), int(100 + disque * (100/(NOMBRE_DISQUE + 1))), 0, 0, int(100 - disque * (100/(NOMBRE_DISQUE + 1))))
