@@ -27,19 +27,29 @@ class Monstre:
         self.effect = {"boostDamage": False, "cooldownBoostDamage": [0, 5]} # cooldown [temps du dernier buff, durer du buff]
 
 
+    def __charge(self,nb_image):
+        """Charges les image du monstre"""  
+
+        self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(nb_image)]
+        self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(nb_image)]
+
+
     def charge(self):
-        """Charge le monstre en fonction de son nom"""
+        """Charge le monstre avec ces stats en fonction de son nom"""
 
         if self.name == "Amalgam_Sprite":
-            self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(8)]
-            self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(8)]
+            self.__charge(8)
             self.hitbox = [93, 90]
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
         elif self.name == "Adept_Sprite":
-            self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(5)]
-            self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(5)]
+            self.__charge(5)
             self.hitbox = [81, 58]
+            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+        
+        elif self.name == "ArchMage_Sprite":
+            self.__charge(5)
+            self.hitbox = [81, 57]
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
 

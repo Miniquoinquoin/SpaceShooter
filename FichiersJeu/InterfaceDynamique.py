@@ -7,6 +7,7 @@ import FichiersJeu.Joueur.Monstres as Monstref
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
 
+import csv
 import random
 
 
@@ -119,7 +120,7 @@ def menuGame():
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
-def genratesMob(name):
+def genratesMob(name, type = "COMMON"):
     """Genere un mob
 
     Args:
@@ -132,7 +133,7 @@ def genratesMob(name):
     BaseMonstre = ["Amalgam_Sprite"]
     WizzardMonstre = ["Adept_Sprite"]
 
-    if name in BaseMonstre:
+    if type == "COMMON":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
             return Monstref.Monstre(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
         
@@ -141,14 +142,17 @@ def genratesMob(name):
 
         return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
-    if name in WizzardMonstre:
+    else:
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), "STRENGTH")
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), type)
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), "STRENGTH")
+            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), type)
 
-        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), "STRENGTH")
+        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), type)
+
+
+
 
 
 
@@ -161,11 +165,24 @@ def Startwave(number):
     Returns:
         list: listMob: tout les mob de la vague , listWizzard: list de tout les sorcier (mob avec effet)
     """
-    listMob = [genratesMob("Amalgam_Sprite")for monstre in range(number * 5)]
+
+    listMob = []
     listWizzard = []
 
-    listWizzard.append(genratesMob("Adept_Sprite"))
-    listMob.append(listWizzard[0])
+    with open('FichiersJeu/InfoWave/names.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=';')
+        for row in reader:
+            if row[f'type_wave_{number}'] == "COMMON":
+                listMob += [genratesMob(row[f'name_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+
+            elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
+                listWizzard += [genratesMob(row[f'name_wave_{number}'], row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+
+
+            # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
+    
+
+    listMob += listWizzard
     
     return listMob, listWizzard
 
@@ -363,9 +380,9 @@ def game():
                     timeLastWave[1] = False
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
-                    vague += 1
                     MonstreList, WizzardList = Startwave(vague)  # Gener la nouvelle vague
                     timeLastWave[1] = True
+                    vague += 1
             
             #Informe le fond sur l'etat du saut chez le joueur
             if not(Joueur1.move_info["saut"]):
