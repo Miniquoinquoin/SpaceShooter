@@ -31,14 +31,14 @@ class Monstre:
         """Charge le monstre en fonction de son nom"""
 
         if self.name == "Amalgam_Sprite":
-            self.chargesRight = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-4.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-5.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-6.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite1\Amalgam_Sprite1-7.png")]
-            self.chargesLeft = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-4.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-5.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-6.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Amalgam_Sprite\Amalgam_Sprite2\Amalgam_Sprite2-7.png")]
+            self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(8)]
+            self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(8)]
             self.hitbox = [93, 90]
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
         elif self.name == "Adept_Sprite":
-            self.chargesRight = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite1\Adept_Sprite1-4.png")]
-            self.chargesLeft = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-0.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-1.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-2.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-3.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\Monstres\Adept_Sprite\Adept_Sprite2\Adept_Sprite2-4.png")]
+            self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(5)]
+            self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(5)]
             self.hitbox = [81, 58]
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
@@ -226,6 +226,7 @@ class Wizard(Monstre):
         
         elif self.power["type"] == "STRENGTH":
             self.StrenghEffect()
+    
     
     
     def move(self, vitesseFond):

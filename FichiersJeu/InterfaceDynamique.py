@@ -34,11 +34,15 @@ def menu():
         MenuP.displayMenu(Joueur1.chargesAvant)
 
         evenement = EZ.recupere_evenement()
-        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return 0
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
                 return "Game"
 
-        if evenement == "TOUCHE_ENFONCEE":
+        elif evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "p":
                 if Joueur1.personnage < 8:
                     Joueur1.personnage += 1
@@ -59,7 +63,11 @@ def menuDeath():
     while play:
 
         evenement = EZ.recupere_evenement()
-        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return 0
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:
                 return "Game"
 
@@ -68,6 +76,7 @@ def menuDeath():
 
             elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:
                 EZ.destruction_fenetre()
+                return 0
 
         if evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
@@ -88,7 +97,11 @@ def menuGame():
     while play:
 
         evenement = EZ.recupere_evenement()
-        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return 0
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:   #Bouton rejouer
                 return "Run"
 
@@ -98,7 +111,7 @@ def menuGame():
             elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:    #Bouton Menu principale
                 return "Menu"
 
-        if evenement == "TOUCHE_ENFONCEE":
+        elif evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
                 return "Run"
             
@@ -392,8 +405,12 @@ def game():
                     Joueur1.move_info["left"] = False
                     Game.move_info["left"] = False
 
-            if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
                 Joueur1.shoot()
+
+            elif evenement == "EXIT":
+                EZ.destruction_fenetre()
+                return 0
             
             EZ.mise_a_jour()
             EZ.frame_suivante()
@@ -408,6 +425,9 @@ def game():
             
             elif demande == "Menu":
                 return "Menu"
+            
+            elif not(demande):
+                return 0
 
             else:
                 play = True

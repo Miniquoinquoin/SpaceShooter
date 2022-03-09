@@ -22,8 +22,8 @@ def Shooter():
             
         if demande == "Game":
             demande = ID.game()
+        
+        if not(demande):
+            break
 
 Shooter()
-
-EZ.attendre_action()
-EZ.destruction_fenetre()
