@@ -11,7 +11,7 @@ class Monstre:
 
         self.name = name
 
-        self.stats = {"vie": 100, "damage": 2, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+        self.stats = {"vie": 100, "damage": 2, "speed": 3, "jumpPower": 1 , "maxvie": 100}
         self.baseDamage = self.stats["damage"]
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
@@ -41,23 +41,23 @@ class Monstre:
 
         if self.name == "Amalgam_Sprite":
             self.__charge(8)
-            self.setSpeedEffect(10)
-            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+            self.setSpeedEffect(2)
+            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
         elif self.name == "Adept_Sprite":
             self.__charge(5)
-            self.setSpeedEffect(50)
-            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
-        
+            self.setSpeedEffect(3)
+            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+
         elif self.name == "ArchMage_Sprite":
             self.__charge(5)
-            self.setSpeedEffect(50)
-            self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+            self.setSpeedEffect(3)
+            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
         
         elif self.name == "Ammonite_Sprite":
             self.__charge(6)
-            self.setSpeedEffect(70)
-            self.stats = {"vie": 50, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 50}
+            self.setSpeedEffect(5)
+            self.stats = {"vie": 50, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 50}
         
 
 
@@ -90,6 +90,7 @@ class Monstre:
         """Cree l'effet de vie du monstre vers la droite"""
 
         if self.lastchargesRight[1] >= self.lastchargesRight[2]:
+            self.lastchargesRight[1] = 0
             if self.lastchargesRight[0] >= len(self.chargesRight):
                 self.lastchargesRight[0] = 0
 
@@ -104,6 +105,7 @@ class Monstre:
         """Cree l'effet de vie du monstre vers la droite"""
         
         if self.lastchargesLeft[1] >= self.lastchargesLeft[2]:
+            self.lastchargesLeft[1] = 0
             if self.lastchargesLeft[0] >= len(self.chargesRight):
                 self.lastchargesLeft[0] = 0
 
@@ -145,12 +147,12 @@ class Monstre:
         """
         
 
-        if self.x < self.xPlayer:
+        if self.x < self.xPlayer - 20: # -20 : evite que le montres reste sur le joueur est fait plein de droit gauche
             self.move_info["right"] = True
             self.move_info["left"] = False
         
-        elif self.x > self.xPlayer:
-            self.move_info["left"] = True
+        elif self.x > self.xPlayer + 20: # +20: Meme raison
+            self.move_info["left"] = True 
             self.move_info["right"] = False
 
         self.moveX(vitesseFond)
@@ -323,10 +325,10 @@ class MonstreShooter(Monstre):
         """Fait tirer le Montre"""
 
         if self.move_info["right"]:
-            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "right", self.vitesseFond)
+            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "right")
         
         elif self.move_info["left"]:
-            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "left", self.vitesseFond)
+            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "left")
             
     def display(self, vitesseFond):
         super().display(vitesseFond)

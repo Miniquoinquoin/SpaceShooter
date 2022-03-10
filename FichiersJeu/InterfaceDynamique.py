@@ -187,10 +187,12 @@ def Startwave(number):
             elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
                 listWizzard += [genratesMob(row[f'name_wave_{number}'], row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
+            elif row[f'type_wave_{number}'] == "SHOOTER":
+                listShooter += [genratesMob(row[f'name_wave_{number}'], row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+
 
             # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
-
-    listShooter.append(genratesMob("Ammonite_Sprite", "SHOOTER"))    
+  
 
     listMob += listWizzard
     listMob += listShooter
@@ -275,7 +277,12 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
 
 def VerifBuff(wizzards, monstres):
     
-    for wizzard in wizzards:
+    for indiceWizzard, wizzard in enumerate(wizzards):
+        
+        if wizzard.death():
+            wizzards.pop(indiceWizzard)
+            continue
+
         if EZ.clock() >= wizzard.power["cooldown"][0] + wizzard.power["cooldown"][1]:
             for monstre in monstres:
                 if VerifzonePower(wizzard, monstre):
@@ -286,6 +293,7 @@ def VerifBuff(wizzards, monstres):
     
             wizzard.power["cooldown"][0] = EZ.clock() # Mets a jour le temps du dernier buff
     
+    return wizzards
 
 
 def VerifContactX(objets, Fondjoueur,joueur):
@@ -388,12 +396,10 @@ def game():
             for Monstre in MonstreList:
                 Monstre.display(Game.decalage)
 
-
-
             #verifie les degat entre tout les élement du plateau.
             MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1, ShooterList)
             VerifContactX(Border, Game, Joueur1)
-            VerifBuff(WizzardList, MonstreList)
+            WizzardList = VerifBuff(WizzardList, MonstreList)
 
             # Lance la prochaine vague
             if len(MonstreList) == 0:

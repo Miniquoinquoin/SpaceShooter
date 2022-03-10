@@ -48,7 +48,7 @@ class Armes:
         EZ.trace_image(self.charges, self.x, self.y)
 
 
-    def Setup(self, x, y, direction, inertie):
+    def Setup(self, x, y, direction, inertie = 0):
         """Charge les info au moment du lancement de l'attack
 
         Args:
