@@ -142,7 +142,7 @@ def genratesMob(name, type = "COMMON"):
 
         return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
-    else:
+    elif type == "STRENGTH" or type == "HEAL":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
             return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), type)
         
@@ -151,6 +151,14 @@ def genratesMob(name, type = "COMMON"):
 
         return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), type)
 
+    elif type == "SHOOTER":
+        if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+            return Monstref.MonstreShooter(name, Joueur1.x, 250,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+        
+        elif Joueur1.x + 250 >= Border[1].xFictif:
+            return Monstref.MonstreShooter(name, Joueur1.x, 250,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+
+        return Monstref.MonstreShooter(name, Joueur1.x, 250,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
 
 
@@ -168,6 +176,7 @@ def Startwave(number):
 
     listMob = []
     listWizzard = []
+    listShooter = []
 
     with open('FichiersJeu/InfoWave/names.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=';')
@@ -180,11 +189,13 @@ def Startwave(number):
 
 
             # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
-    
+
+    listShooter.append(genratesMob("Ammonite_Sprite", "SHOOTER"))    
 
     listMob += listWizzard
+    listMob += listShooter
     
-    return listMob, listWizzard
+    return listMob, listWizzard, listShooter
 
 def Verifzone(zone1, zone2):
     """Verifie si deux zone se touche
@@ -227,7 +238,7 @@ def getNearSide(zone1, zone2):
     return "Left"
 
 
-def VerifDegat(monstres, armes, Joueur):
+def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
     """ Fonction qui compare la position des different ellement et mets des degat si nessesaire
     
     Args:
@@ -238,7 +249,7 @@ def VerifDegat(monstres, armes, Joueur):
 
     # Arme sur monstre
     for i,monstre in enumerate(monstres):
-        for arme in armes:
+        for arme in armesJoueur:
             if Verifzone(monstre, arme["arme"]):
                 monstre.domage(arme["arme"].damage["damage"])
                 arme["arme"].use()
@@ -250,6 +261,12 @@ def VerifDegat(monstres, armes, Joueur):
         if Verifzone(Joueur, monstre):
             if monstre.attaque():
                 Joueur.domage(monstre.stats["damage"]) # Inflige les degat au joueur
+
+    for shooter in Shooters:
+        if Verifzone(Joueur, shooter.arme["arme"]):
+            Joueur.domage(shooter.arme["arme"].damage["damage"])
+            shooter.arme["arme"].use()
+
     
     if Joueur.death():
         return monstres, False
@@ -335,6 +352,7 @@ def game():
     vague = 0
     MonstreList = [] # List contenant l'ensemble des monstre en vie de la vague
     WizzardList = [] # List contenant l'ensemble des montre a effet
+    ShooterList = [] # List contenant l'ensemble des montre qui tire
     timeLastWave = [EZ.clock(), True] # [temps a la fin de la vague(0 mob), etats du timer( True = En game, False = Timer en cours)]
     
     inGame = True
@@ -361,6 +379,10 @@ def game():
                 Joueur1.autoShoot = autoShoot(MonstreList, Joueur1)
 
             Joueur1.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond a joueur
+
+            for shooter in ShooterList:
+                shooter.move_info["speed"] = Game.decalage # Donne la vitesse du joueur generer par le fond au montre
+
             
             #Affiche tout les monstre de la partie
             for Monstre in MonstreList:
@@ -369,7 +391,7 @@ def game():
 
 
             #verifie les degat entre tout les élement du plateau.
-            MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1)
+            MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1, ShooterList)
             VerifContactX(Border, Game, Joueur1)
             VerifBuff(WizzardList, MonstreList)
 
@@ -380,7 +402,7 @@ def game():
                     timeLastWave[1] = False
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
-                    MonstreList, WizzardList = Startwave(vague)  # Gener la nouvelle vague
+                    MonstreList, WizzardList , ShooterList = Startwave(vague)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
             

@@ -3,6 +3,7 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
+import FichiersJeu.Joueur.Equipement.Armes as Armef
 
 class Monstre:
 
@@ -19,6 +20,7 @@ class Monstre:
         self.lastchargesLeft = [0, 0, 10] # [Etape du gif originale, repetiton, nombre de repetition avant changement]
 
         self.move_info = {"right": True, "left": False}
+        self.vitesseFond = 0 # Vitesse de déplacement du fond
         self.x = Xspawn
         
         self.xPlayer = xPlayer + 30 # Point que va suivre le monstre
@@ -28,29 +30,36 @@ class Monstre:
 
 
     def __charge(self,nb_image):
-        """Charges les image du monstre"""  
+        """Charges les image du monstre et definit sa taille"""  
 
         self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(nb_image)]
         self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(nb_image)]
-
+        self.hitbox = [EZ.dimension(self.chargesRight[0])[0], EZ.dimension(self.chargesRight[0])[1]]
 
     def charge(self):
         """Charge le monstre avec ces stats en fonction de son nom"""
 
         if self.name == "Amalgam_Sprite":
             self.__charge(8)
-            self.hitbox = [93, 90]
+            self.setSpeedEffect(10)
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
 
         elif self.name == "Adept_Sprite":
             self.__charge(5)
-            self.hitbox = [81, 58]
+            self.setSpeedEffect(50)
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
         
         elif self.name == "ArchMage_Sprite":
             self.__charge(5)
-            self.hitbox = [81, 57]
+            self.setSpeedEffect(50)
             self.stats = {"vie": 100, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+        
+        elif self.name == "Ammonite_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(70)
+            self.stats = {"vie": 50, "damage": 1, "range": 300 ,"speed": 3, "jumpPower": 1 , "maxvie": 50}
+        
+
 
 
         self.charges = self.chargesRight[self.lastchargesRight[0]]
@@ -66,6 +75,14 @@ class Monstre:
         self.move(vitesseFond)
         EZ.trace_image(self.charges, self.x, self.y)
         Decor.barre_vie_montre(self.x, self.y - 20, self.stats["vie"], self.stats["maxvie"],self.hitbox[0])
+
+    
+    def setSpeedEffect(self, value):
+        """Change la vitesse de transition des image du gif"""
+
+        self.lastchargesRight[2] = value
+        self.lastchargesLeft[2] = value
+
         
 
     
@@ -138,7 +155,9 @@ class Monstre:
 
         self.moveX(vitesseFond)
         self.moveEffect()
+
         self.zoneHitBox()
+        self.vitesseFond = vitesseFond
 
     
     def domage(self, domage):
@@ -288,3 +307,37 @@ class Wizard(Monstre):
             for disque in range(1, NOMBRE_DISQUE + 1):
                 Radius = (NOMBRE_DISQUE + 2 - disque) * SetRadius/(NOMBRE_DISQUE + 1)
                 EZ.trace_disque(int(self.x + self.hitbox[0]//2), int(self.y + self.hitbox[1]//2), int(Radius), int(100 + disque * (100/(NOMBRE_DISQUE + 1))), 0, 0, int(100 - disque * (100/(NOMBRE_DISQUE + 1))))
+
+
+
+class MonstreShooter(Monstre):
+
+    def __init__(self, name, xPlayer, range, Xspawn=0):
+        super().__init__(name, xPlayer, Xspawn)
+
+        self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["damage"], range), "speed": 15}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+        self.timeShoot = [EZ.clock(), 4] # [temps du dernier tire, cooldown]
+    
+
+    def shoot(self):
+        """Fait tirer le Montre"""
+
+        if self.move_info["right"]:
+            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "right", self.vitesseFond)
+        
+        elif self.move_info["left"]:
+            self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "left", self.vitesseFond)
+            
+    def display(self, vitesseFond):
+        super().display(vitesseFond)
+        self.onShoot()
+
+
+    def onShoot(self):
+        """Deplace la balle pendant le tire"""
+        self.arme["arme"].display(self.arme["speed"], self.vitesseFond)
+
+        if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]: # cooldown de l'arme
+            self.timeShoot[0] = EZ.clock()
+            self.shoot()
+
