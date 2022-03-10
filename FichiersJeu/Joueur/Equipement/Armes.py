@@ -7,7 +7,7 @@ class Armes:
         self.name = name
         self.damage = { "damage": damage, "basicDamage": damage}
         self.range = [ranges, 0] # [De base, pendant le tire]
-        self.durability = [3, 0]
+        self.durability = [1, 0] # [Durabiliter totale, duribiliter restante]
         self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
 
         self.charges = None
@@ -37,16 +37,18 @@ class Armes:
             self.move(vitesse, vitesseFond, self.direction)
             self.zoneHitBox()
 
-            EZ.trace_image(self.charges, self.x, self.y)
+            self.trace_arme()
         
         else:
             self.y = 9999 # evite que l'arme cose des degat alors quel et pas afficher
             self.zoneHitBox()
 
-        
+    def trace_arme(self):
+        """Trace l'arme"""
+        EZ.trace_image(self.charges, self.x, self.y)
 
 
-    def Setup(self, x, y, direction, inertie):
+    def Setup(self, x, y, direction, inertie = 0):
         """Charge les info au moment du lancement de l'attack
 
         Args:
@@ -130,6 +132,31 @@ class Shuriken(Armes):
         self.charges = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2.png"),0,2)
         self.hitbox = [48, 48]
 
+
+class ArmesAvecForme(Armes):
+
+    def __init__(self, name, damage, ranges):
+        super().__init__(name, damage, ranges)
+        self.color = [0,0,0] #Couleur de l'arme
+        self.forme = "DISQUE" #Forme de l'arme "DISQUE" / "CARRE"
+        self.size = 10 # Rayon du disque pour un disque / Taille d'un coter pour un carré
+
+    def charge(self):
+
+        if self.name == "Ammonite_Sprite":
+            self.color = [0, 200, 0]
+            self.forme = "DISQUE"
+            self.size = 7
+
+    def trace_arme(self):
+        """Trace l'arme"""
+
+        if self.forme == "DISQUE":
+            EZ.trace_disque(int(self.x), int(self.y), self.size, *self.color)
+        
+        elif self.forme == "CARRE":
+            EZ.trace_rectangle_droit(int(self.x - self.size/2), int(self.y - self.size/2), self.size, self.size, *self.color)
+            
 
 
 
