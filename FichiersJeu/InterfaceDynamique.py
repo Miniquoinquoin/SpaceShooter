@@ -362,6 +362,8 @@ def game():
     WizzardList = [] # List contenant l'ensemble des montre a effet
     ShooterList = [] # List contenant l'ensemble des montre qui tire
     timeLastWave = [EZ.clock(), True] # [temps a la fin de la vague(0 mob), etats du timer( True = En game, False = Timer en cours)]
+
+    # test1 = EZ.clock() set du premier temps de boucle 
     
     inGame = True
     play = True
@@ -381,6 +383,7 @@ def game():
 
             #Affiche le joueur et sa vie
             Joueur1.display()
+
 
             #Active l'autoshoot si le joueur ne bouge pas
             if not(Joueur1.move_etat["right"]) and not(Joueur1.move_etat["left"]):
@@ -456,7 +459,11 @@ def game():
             elif evenement == "EXIT":
                 EZ.destruction_fenetre()
                 return 0
-            
+
+            # Temps de la boucle
+            # print(round(EZ.clock() - test1, 2)) 
+            # test1 = EZ.clock()
+
             EZ.mise_a_jour()
             EZ.frame_suivante()
 

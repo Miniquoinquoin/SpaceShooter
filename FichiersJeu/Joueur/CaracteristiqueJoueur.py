@@ -5,6 +5,7 @@ import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
 import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
+import FichiersJeu.Interface.Animation as Anim
 
 
 class Joueur:
@@ -40,6 +41,7 @@ class Joueur:
         # Dernier charge effectuer
         self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
+        self.lastchargesEffetDomage = [0]  # [intensiter ]
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -107,6 +109,7 @@ class Joueur:
         self.move()
         self.effet_saut()
         self.effetRegen()
+        self.effetDomage(3)
         self.zoneHitBox()
         self.onShoot()
 
@@ -253,6 +256,19 @@ class Joueur:
         for armes in range(len(self.arme)):
             self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
 
+    def effetDomage(self, speed):
+        """Cree l'effet de degat du joueur"""
+
+        if self.lastchargesEffetDomage[0] + speed < 2 * Anim.MAX_INTENSITE:
+
+            self.lastchargesEffetDomage[0] += speed
+
+            if self.lastchargesEffetDomage[0] <= Anim.MAX_INTENSITE:
+                Anim.traceEffetDegatJoueur(self.lastchargesEffetDomage[0], ID.LONGEUR, ID.HAUTEUR)
+            
+            else:
+                Anim.traceEffetDegatJoueur( Anim.MAX_INTENSITE + (Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0]), ID.LONGEUR, ID.HAUTEUR)
+
     def domage(self, domage):
         """S'inflige des degat
 
@@ -262,6 +278,7 @@ class Joueur:
 
         self.stats["vie"] -= domage
         self.stats["regen"]["timer"] = EZ.clock()
+        self.lastchargesEffetDomage[0] = 0 if self.lastchargesEffetDomage[0] >= 2 * Anim.MAX_INTENSITE else  2 * Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0] if self.lastchargesEffetDomage[0] > Anim.MAX_INTENSITE else self.lastchargesEffetDomage[0]
     
         
     def zoneHitBox(self):
