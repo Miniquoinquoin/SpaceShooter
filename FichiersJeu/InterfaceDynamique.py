@@ -355,7 +355,7 @@ def game():
     EZ.reglage_fps()
 
     Game = Menuf.Game(LONGEUR, HAUTEUR)
-    Joueur1.stats["vie"] = Joueur1.stats["maxvie"]
+    Joueur1.resetStats()
 
     vague = 0
     MonstreList = [] # List contenant l'ensemble des monstre en vie de la vague
@@ -485,7 +485,6 @@ def game():
                 play = True
 
         else:
-            Joueur1.display()
             return menuDeath()
             
         
