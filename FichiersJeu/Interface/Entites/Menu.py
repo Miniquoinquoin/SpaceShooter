@@ -35,6 +35,10 @@ class Menu(Interface):
         EZ.trace_image(self.chargesFond ,0,0)
     
 
+    def displayPlayer(self,image):
+        """Trace le personnage"""
+
+        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, 48*6 / 2
 
 
 class MenuPricipale(Menu):
@@ -47,12 +51,6 @@ class MenuPricipale(Menu):
         """Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
-
-    def displayPlayer(self,image):
-        """Trace le personnage"""
-
-        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, 48*6 / 2
-
     
     def displayBoutonPlay(self):
 
