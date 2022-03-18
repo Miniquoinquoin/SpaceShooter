@@ -3,8 +3,8 @@
 from pickletools import long1
 import pygame
 import pygame.gfxdraw
-import FichiersJeu.Interface.EZ as EZ
-# import EZ as EZ
+# import FichiersJeu.Interface.EZ as EZ
+import EZ as EZ
 import math
 
 
@@ -255,6 +255,16 @@ def tracePlayerAnimationMort(longeur, hauteur, longeurWidget, hauteurWidget):
     EZ.trace_image(EZ.transforme_image( EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"),0,5), x0 + DECAL_X , y0 + DECAL_Y)
 
 def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
+    """Drawn the form of the fond, of stats
+    Trace le fond des stats
+
+    Args:
+        longeur (int): lenght of screen / longeur de la fenetre
+        hauteur (int): height of screen / hauteur de la fenetre
+        speed (int): speed of animation
+        longeurWidget (int): lenght of widget
+        hauteurWidget (int): height of widget
+    """
 
     COULEUR_MARQUER = (140, 140, 140)
     COULEUR_LEGERE = (180, 180, 180)
@@ -336,6 +346,49 @@ def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
         EZ.frame_suivante()
 
 
+def traceInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget, gold, kill, wave):
+    """Drawn the form of the fond, of stats
+    Trace le fond des stats
+
+    Args:
+        longeur (int): lenght of screen / longeur de la fenetre
+        hauteur (int): height of screen / hauteur de la fenetre
+        speed (int): speed of animation
+        longeurWidget (int): lenght of widget
+        hauteurWidget (int): height of widget
+        gold (int): gold win in game
+        kill (int): monstre kill in the game
+        wave (int): Player's Death Wave
+    """
+    
+    TransparenceImage = 0
+    x0 = longeur//2 - longeurWidget//2
+    y0 = hauteur//2 - hauteurWidget//2
+    y1 = y0 + hauteurWidget//6
+    x= []
+    y = []
+
+    DebutPlageScore = x0 + longeurWidget//3
+    PlageScore = longeurWidget - longeurWidget//3
+    HauteurFond = 2 * hauteurWidget/3
+    HauteurFondClair = 3 * HauteurFond//4
+    HauteurFondSombre = HauteurFond//4
+
+    Picture = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\gold.png"),0, 0.35), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\monstre.png"), 0, 1.8), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Vague.png")]
+
+
+
+    for picture in range(len(Picture)):
+        x.append(DebutPlageScore + picture * PlageScore//3 + PlageScore//6 - EZ.dimension(Picture[picture])[0]//2) #debut partie score + decage de la partie + 1/2 d'une partie - 1/2 Taile X image 
+        y.append(y1 + HauteurFondClair//2 - EZ.dimension(Picture[picture])[1]//2 ) 
+        EZ.trace_image(Picture[picture],x[picture], y[picture])
+
+    maxValeur = max(gold, kill, wave)
+
+        
+
+
+
 def traceAnimationMenuMort(longeur, hauteur, speed):
 
     LONGEUR_WIDGET = longeur - 200
@@ -346,13 +399,14 @@ def traceAnimationMenuMort(longeur, hauteur, speed):
     traceAnimationMortTexteEtWidget(longeur, hauteur, speed * 15, LONGEUR_WIDGET, HAUtEUR_WIDGET)
     tracePlayerAnimationMort(longeur, hauteur, LONGEUR_WIDGET, HAUtEUR_WIDGET)
     traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUtEUR_WIDGET)
+    traceInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUtEUR_WIDGET)
 
-# EZ.creation_fenetre(1280, 720)
+EZ.creation_fenetre(1280, 720)
 
-# EZ.reglage_fps(60)
+EZ.reglage_fps(60)
 
-# traceAnimationMenuMort(1280, 720, 3)
+traceAnimationMenuMort(1280, 720, 3)
 
-# EZ.mise_a_jour()
-# EZ.attendre_action()
-# EZ.destruction_fenetre()
+EZ.mise_a_jour()
+EZ.attendre_action()
+EZ.destruction_fenetre()
