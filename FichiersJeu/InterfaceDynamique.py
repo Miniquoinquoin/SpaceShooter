@@ -55,11 +55,11 @@ def menu():
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
-def menuDeath():
+def menuDeath(gold, kill, wave):
 
     play = True
     EZ.reglage_fps(60)
-    MenuD.displayFond()
+    MenuD.displayFond(LONGEUR, HAUTEUR, gold, kill, wave, Joueur1.chargesAvant)
 
     while play:
 
@@ -69,13 +69,13 @@ def menuDeath():
             return 0
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 480 < EZ.souris_x() < 800 and 260 < EZ.souris_y() < 320:
+            if 910 < EZ.souris_x() < 1220 and 615 < EZ.souris_y() < 705:
                 return "Game"
 
-            elif 480 < EZ.souris_x() < 800 and 400 < EZ.souris_y() < 460:
+            elif 490 < EZ.souris_x() < 790 and 615 < EZ.souris_y() < 705:
                 return "Menu"
 
-            elif 480 < EZ.souris_x() < 800 and 540 < EZ.souris_y() < 600:
+            elif  60 < EZ.souris_x() < 370 and 615 < EZ.souris_y() < 705:
                 EZ.destruction_fenetre()
                 return 0
 
@@ -248,7 +248,7 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
         armes(list): Arme du joueur
     
     """
-
+    mobKill = 0 # monstre kill in function / monstre tué dans la fonction
     # Arme sur monstre
     for i,monstre in enumerate(monstres):
         for arme in armesJoueur:
@@ -258,6 +258,7 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
 
         if monstre.death():
             monstres.pop(i)
+            mobKill += 1
 
     # Monstres sur Joueur
         if Verifzone(Joueur, monstre):
@@ -271,9 +272,9 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
 
     
     if Joueur.death():
-        return monstres, False
+        return monstres, False, mobKill
 
-    return monstres, True
+    return monstres, True, mobKill
 
 def VerifBuff(wizzards, monstres):
     
@@ -363,6 +364,8 @@ def game():
     ShooterList = [] # List contenant l'ensemble des montre qui tire
     timeLastWave = [EZ.clock(), True] # [temps a la fin de la vague(0 mob), etats du timer( True = En game, False = Timer en cours)]
 
+    mobKill = 0 #Computer of mob killed / Compteur de mob tué
+
     # test1 = EZ.clock() set du premier temps de boucle 
     
     inGame = True
@@ -400,7 +403,8 @@ def game():
                 Monstre.display(Game.decalage)
 
             #verifie les degat entre tout les élement du plateau.
-            MonstreList, play = VerifDegat(MonstreList, Joueur1.arme, Joueur1, ShooterList)
+            MonstreList, play, tmp_mobKill = VerifDegat(MonstreList, Joueur1.arme, Joueur1, ShooterList)
+            mobKill += tmp_mobKill
             VerifContactX(Border, Game, Joueur1)
             WizzardList = VerifBuff(WizzardList, MonstreList)
 
@@ -485,7 +489,7 @@ def game():
                 play = True
 
         else:
-            return menuDeath()
+            return menuDeath(mobKill + (vague - 1) * 10, mobKill, vague)
             
         
         
