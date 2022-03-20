@@ -1,7 +1,5 @@
 """Fichier qui gère les animation"""
 
-from cmath import sqrt
-from pickletools import long1
 import pygame
 import pygame.gfxdraw
 import FichiersJeu.Interface.EZ as EZ

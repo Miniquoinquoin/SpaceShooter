@@ -2,9 +2,8 @@
 
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
-import FichiersJeu.Interface.Entites.Bouton as Bouton
 import FichiersJeu.Interface.Animation as Anim
-
+import FichiersJeu.Interface.Decor as Decor
 
 
 
@@ -63,12 +62,13 @@ class MenuPricipale(Menu):
         else:
             self.etapeAnimationFond = 0
     
-    def displayMenu(self, personnage):
+    def displayMenu(self, personnage, gold):
         """Trace le Menu"""
 
         self.displayAnimationFond()
         self.displayFond() # Les boutton de l'interface
         self.displayPlayer(personnage)
+        Decor.nombreDeGold(900, 10, gold)
 
 class MenuDeath(Menu):
 

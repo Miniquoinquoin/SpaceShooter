@@ -25,14 +25,14 @@ Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Joueur1.charge()
 
 
-def menu():
+def menu(gold):
 
 
     play = True
     EZ.reglage_fps(60)
 
     while play:
-        MenuP.displayMenu(Joueur1.chargesAvant)
+        MenuP.displayMenu(Joueur1.chargesAvant, gold)
 
         evenement = EZ.recupere_evenement()
         if evenement == "EXIT":
@@ -476,7 +476,7 @@ def game():
 
             elif evenement == "EXIT":
                 EZ.destruction_fenetre()
-                return 0
+                return 0, 0
 
             # Temps de la boucle
             # print(round(EZ.clock() - test1, 2)) 
@@ -488,22 +488,25 @@ def game():
         Joueur1.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
         Game.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
 
+        #Gold generate / Gold generer 
+        gold = mobKill + (vague - 1) * 10
+
         if not(Joueur1.death()):
             demande = menuGame()
             if demande == "Game":
-                return "Game"
+                return "Game", 0
             
             elif demande == "Menu":
-                return "Menu"
+                return "Menu", 0
             
             elif not(demande):
-                return 0
+                return 0, 0
 
             else:
                 play = True
 
         else:
-            return menuDeath(mobKill + (vague - 1) * 10, mobKill, vague)
+            return menuDeath(gold, mobKill, vague), gold
             
         
         

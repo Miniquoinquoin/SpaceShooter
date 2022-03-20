@@ -1,4 +1,5 @@
 import FichiersJeu.Interface.EZ as EZ
+import FichiersJeu.Interface.Entites.Bouton as Btn
 
 
 image_monstre = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\monstre.png"),0,0.5) # permet de charger l'image une seul fois
@@ -80,3 +81,18 @@ def barre_vie_montre(x,y,vie,maxvie,zoom):
     """
     EZ.trace_rectangle_droit(x, y, int(1 * zoom), int(0.1 * zoom), 200, 200, 200) # Fond gris
     EZ.trace_rectangle_droit(x, y, int(vie/maxvie * zoom), int(0.1 * zoom),int(-255/maxvie*vie+255),int(255/maxvie*vie),0)
+
+
+def nombreDeGold(x, y, gold):
+
+    COULEUR_FOND = (100, 100, 100)
+    COULEUR_POLICE = (255, 255, 255)
+
+    HAUTEUR = 77 # 80 - Taille ombre
+
+    Btn.Bouton(x, y, 200, HAUTEUR, "", COULEUR_POLICE, COULEUR_FOND)
+    image = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\gold.png"),0, 0.07)
+    EZ.trace_image(image ,x + 10, y + HAUTEUR//2 - EZ.dimension(image)[1]//2)
+
+    texte = EZ.image_texte(f"{gold}",EZ.charge_police(int(70 * 1/(len(str(gold))/3)) if len(str(gold)) > 2 else 70, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf", True), *COULEUR_POLICE)
+    EZ.trace_image(texte, x + 20 + EZ.dimension(image)[0], y + HAUTEUR//2 - EZ.dimension(texte)[1]//2)
