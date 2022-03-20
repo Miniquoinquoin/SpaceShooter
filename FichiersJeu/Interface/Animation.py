@@ -107,6 +107,11 @@ def traceEffetDegatJoueur(intensite, longeur, hauteur ,canvas = None):
 
 """Effet Mort Joueur / Player death effect"""
 
+#Fond
+COULEUR = (0, 88, 207)
+COULEUR_FORME = (0, 70, 170)
+
+#Interface
 COULEUR_BORDER = (100, 100, 110)
 TAILLE_BORDER = 2
 TAILLE_OMBRE = 3 # Ombre de la police
@@ -153,8 +158,7 @@ def traceAnimationArriverMenu(longeur, hauteur, speed):
         speed (int): speed of animation / vitesse de l'animation
     """
 
-    COULEUR = (0, 88, 207)
-    COULEUR_FORME = (0, 70, 170)
+
     TEMPS_FORME = 500 # Temps qu'on les forme de deco pour se tracer / Time for drawn shapes
     tpsForme = 0 #temps utiliser pour le traçage des forme / Time use by shapes to drawn
     DecalageFond = 0
@@ -486,3 +490,26 @@ def traceAnimationMenuMort(longeur, hauteur, speed, gold, kill, wave, player):
     traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUtEUR_WIDGET)
     traceInfoScore(longeur, hauteur, speed, LONGEUR_WIDGET, HAUtEUR_WIDGET, gold, kill, wave)
     traceAnimationBouton(longeur, hauteur, speed * 3)
+
+
+
+"""Animation fond Menu Principale / Backgroud animation of the Main Menu """
+
+def traceAnimationFondMenuP(longeur, hauteur, etape):
+    """Backgroud animation of the Main Menu
+    Animation du menu principale
+
+    Args:
+        longeur (int): lenght of the screen / longueur de l'ecran
+        hauteur (int): height of the screen / hauteur de l'ecran
+        etape (int): step of the animation / etape de l'animation
+    """
+
+    EZ.trace_rectangle_droit(0, 0, longeur, hauteur, *COULEUR)
+
+    #Disque:
+    EZ.trace_disque(longeur//2, hauteur//2, etape, *COULEUR_FORME) # Disque foncé
+    
+    if etape >= hauteur: 
+        EZ.trace_disque(longeur//2, hauteur//2, etape - hauteur, *COULEUR) # Disque Claire
+

@@ -40,17 +40,31 @@ def menu():
             return 0
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
+            if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton Play / Play button
                 return "Game"
+            
+            elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
+                print("Le shop n'est pas encore disponible")
+            
+            elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
+                print("En phase devloppement")
 
-        elif evenement == "TOUCHE_ENFONCEE":
-            if EZ.touche() == "p":
+            elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
                 if Joueur1.personnage < 8:
                     Joueur1.personnage += 1
                 else:
                     Joueur1.personnage = 1
                 Joueur1.charge()
                 
+            elif 1060 < EZ.souris_x() < 1260 and 380 < EZ.souris_y() < 460: # Bouton Equipement / equipments button
+                print("En phase devloppement")
+
+            elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
+                print("En phase devloppement")
+
+            elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
+                EZ.destruction_fenetre()
+                return 0
         
         EZ.mise_a_jour()
         EZ.frame_suivante()

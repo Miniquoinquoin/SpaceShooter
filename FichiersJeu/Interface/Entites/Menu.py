@@ -47,24 +47,28 @@ class MenuPricipale(Menu):
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
-
+        self.etapeAnimationFond = 0 # etape de l'animation du fond
         
     def chargeFond(self):
         """Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
-    
-    def displayBoutonPlay(self):
 
-        Bouton.BoutonPlayMenu(465, 550)
-
+    def displayAnimationFond(self):
+        """Trace l'animation de fond du menu"""
+        Anim.traceAnimationFondMenuP(self.longeur, self.hauteur, self.etapeAnimationFond)
+        if self.etapeAnimationFond < self.hauteur * 2:
+            self.etapeAnimationFond += 1
+        
+        else:
+            self.etapeAnimationFond = 0
     
     def displayMenu(self, personnage):
         """Trace le Menu"""
 
-        self.displayFond()
+        self.displayAnimationFond()
+        self.displayFond() # Les boutton de l'interface
         self.displayPlayer(personnage)
-        self.displayBoutonPlay()
 
 class MenuDeath(Menu):
 
