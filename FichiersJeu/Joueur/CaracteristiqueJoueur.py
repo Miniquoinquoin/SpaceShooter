@@ -5,6 +5,7 @@ import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
 import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
+import FichiersJeu.Interface.Animation as Anim
 
 
 class Joueur:
@@ -40,6 +41,7 @@ class Joueur:
         # Dernier charge effectuer
         self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
+        self.lastchargesEffetDomage = [2 * Anim.MAX_INTENSITE]  # [intensiter ]
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -107,6 +109,7 @@ class Joueur:
         self.move()
         self.effet_saut()
         self.effetRegen()
+        self.effetDomage(5)
         self.zoneHitBox()
         self.onShoot()
 
@@ -253,6 +256,19 @@ class Joueur:
         for armes in range(len(self.arme)):
             self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
 
+    def effetDomage(self, speed):
+        """Cree l'effet de degat du joueur"""
+
+        if self.lastchargesEffetDomage[0] + speed < 2 * Anim.MAX_INTENSITE: # *2 : Arriver de l'effet / Aténuation de l'effet
+
+            self.lastchargesEffetDomage[0] += speed
+
+            if self.lastchargesEffetDomage[0] <= Anim.MAX_INTENSITE:
+                Anim.traceEffetDegatJoueur(self.lastchargesEffetDomage[0], ID.LONGEUR, ID.HAUTEUR)
+            
+            else:
+                Anim.traceEffetDegatJoueur( Anim.MAX_INTENSITE + (Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0]), ID.LONGEUR, ID.HAUTEUR)
+
     def domage(self, domage):
         """S'inflige des degat
 
@@ -262,6 +278,7 @@ class Joueur:
 
         self.stats["vie"] -= domage
         self.stats["regen"]["timer"] = EZ.clock()
+        self.lastchargesEffetDomage[0] = 0 if self.lastchargesEffetDomage[0] >= 2 * Anim.MAX_INTENSITE else  2 * Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0] if self.lastchargesEffetDomage[0] > Anim.MAX_INTENSITE else self.lastchargesEffetDomage[0]
     
         
     def zoneHitBox(self):
@@ -287,16 +304,32 @@ class Joueur:
         EZ.trace_segment(int(self.zoneHitBoxlist[3][0]),int(self.zoneHitBoxlist[3][1]), int(self.zoneHitBoxlist[0][0]), int(self.zoneHitBoxlist[0][1]))     #Gauche
 
     def death(self):
-        """Suprime le joueur si il est mort
+        """Informe si le joueur est mort
+            Communicate if the Player are dead
+            
 
         Returns:
             bool: True if player haven't life, and False if player have life
         """
 
         return self.stats["vie"] <= 0
+    
+    def resetStats(self):
+        """Put back the stats of the player, to the started stats
+            Remets les stats du joueur à celle du debut
+        
+        """
+
+        self.stats["vie"] = self.stats["maxvie"]
+
+        #Effect / Effet
+        self.lastchargesEffetDomage[0] = 2 * Anim.MAX_INTENSITE
+        
 
     def effetRegen(self):
-        """Regenère les pv du joueur si possible"""
+        """
+        Heal the player if possible (timer)
+        Regenère les pv du joueur si possible"""
 
         if EZ.clock() - self.stats["regen"]["timer"] >= self.stats["regen"]["cooldown"]: # verifie le cooldown
             if self.stats["vie"] + self.stats["regen"]["eficiency"] < self.stats["maxvie"]: # verifie si le joueur peut etre regen sans depanser maxvie

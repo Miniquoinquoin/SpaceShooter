@@ -3,6 +3,8 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Entites.Bouton as Bouton
+import FichiersJeu.Interface.Animation as Anim
+
 
 
 
@@ -35,6 +37,10 @@ class Menu(Interface):
         EZ.trace_image(self.chargesFond ,0,0)
     
 
+    def displayPlayer(self,image):
+        """Trace le personnage"""
+
+        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, 48*6 / 2
 
 
 class MenuPricipale(Menu):
@@ -47,12 +53,6 @@ class MenuPricipale(Menu):
         """Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
-
-    def displayPlayer(self,image):
-        """Trace le personnage"""
-
-        EZ.trace_image(EZ.transforme_image(image,0,2), self.longeur//2-144, self.hauteur//2-144) # -144 pour le centrer, 48*6 / 2
-
     
     def displayBoutonPlay(self):
 
@@ -74,7 +74,13 @@ class MenuDeath(Menu):
     def chargeFond(self):
         """Charge l'image du fond"""
 
-        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort2.png")
+        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort.png")
+
+    def displayFond(self, longeur, hauteur, gold, kill, wave, player):
+        """Drawn the animation of Death Menu
+        Trace l'animation du menu de la mort du joueur
+        """
+        Anim.traceAnimationMenuMort(longeur, hauteur, 3, gold, kill, wave, player)
 
 
 class MenuGame(Menu):
