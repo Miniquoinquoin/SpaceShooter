@@ -479,14 +479,14 @@ def traceAnimationMenuMort(longeur, hauteur, speed, gold, kill, wave, player):
     """
 
     LONGEUR_WIDGET = longeur - 200
-    HAUtEUR_WIDGET = 2 * hauteur//3
+    HAUTEUR_WIDGET = 2 * hauteur//3
 
     traceAnimationMort(longeur, hauteur, speed)
     traceAnimationArriverMenu(longeur, hauteur, speed * 15)
-    traceAnimationMortTexteEtWidget(longeur, hauteur, speed * 15, LONGEUR_WIDGET, HAUtEUR_WIDGET)
-    tracePlayerAnimationMort(longeur, hauteur, LONGEUR_WIDGET, HAUtEUR_WIDGET, player)
-    traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUtEUR_WIDGET)
-    traceInfoScore(longeur, hauteur, speed, LONGEUR_WIDGET, HAUtEUR_WIDGET, gold, kill, wave)
+    traceAnimationMortTexteEtWidget(longeur, hauteur, speed * 15, LONGEUR_WIDGET, HAUTEUR_WIDGET)
+    tracePlayerAnimationMort(longeur, hauteur, LONGEUR_WIDGET, HAUTEUR_WIDGET, player)
+    traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUTEUR_WIDGET)
+    traceInfoScore(longeur, hauteur, speed, LONGEUR_WIDGET, HAUTEUR_WIDGET, gold, kill, wave)
     traceAnimationBouton(longeur, hauteur, speed * 3)
 
 

@@ -21,11 +21,12 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
+MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR)
 Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Joueur1.charge()
 
 
-def menu(gold):
+def menu(gold, inventaire):
 
 
     play = True
@@ -44,7 +45,12 @@ def menu(gold):
                 return "Game"
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
-                print("Le shop n'est pas encore disponible")
+                MenuPerso.TrieInventaire(inventaire)
+                leave = menuPerso(gold)
+
+                if leave:
+                    return 0
+
             
             elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
                 print("En phase devloppement")
@@ -133,6 +139,57 @@ def menuGame():
     
         EZ.mise_a_jour()
         EZ.frame_suivante()
+
+def menuPerso(gold):
+
+    x = 0
+    xLast = 0
+    click = False
+
+    perso = True
+    while perso:
+        MenuPerso.traceMenuPersonnages(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            x -= xLast - EZ.souris_x()
+            xLast = EZ.souris_x()
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def genratesMob(name, type = "COMMON"):
     """Genere un mob

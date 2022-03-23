@@ -84,6 +84,9 @@ def barre_vie_montre(x,y,vie,maxvie,zoom):
 
 
 def nombreDeGold(x, y, gold):
+    """Draw the number of gold in the Main Menu
+    Trace le nombre d'or dans le menu principale
+    """
 
     COULEUR_FOND = (100, 100, 100)
     COULEUR_POLICE = (255, 255, 255)
@@ -96,3 +99,40 @@ def nombreDeGold(x, y, gold):
 
     texte = EZ.image_texte(f"{gold}",EZ.charge_police(int(70 * 1/(len(str(gold))/3)) if len(str(gold)) > 2 else 70, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf", True), *COULEUR_POLICE)
     EZ.trace_image(texte, x + 20 + EZ.dimension(image)[0], y + HAUTEUR//2 - EZ.dimension(texte)[1]//2)
+
+
+def traceCadre(x, y, longueur, hauteur, tailleBordure, tailleOmbreBordure, couleurFond, couleurBordure):
+    """Draw a framework
+    Trace un cadre
+
+    Args:
+        x (int): x start of the framework / x de depart du cadre
+        y (int): y start of the framework / y de depart du cadre
+        longueur (int): lenght of the framework / longueur du cadre
+        hauteur (int): height of the framework / hauteur du cadre
+        tailleBordure (int): border size / taille de la bordure
+        tailleOmbreBordure (int): Shadow size of the border / taille de l'ombre de la bordure
+        couleurFond (tuple): background color of the framework / couleur de fond du cadre
+        couleurBordure (tuple): Border color of the framework / couleur des bordure du cadre
+    """
+
+
+    EZ.trace_rectangle_droit(x, y, longueur, hauteur, *couleurFond)
+    
+    #Bordure
+    EZ.trace_rectangle_droit(x,y, longueur + tailleOmbreBordure, tailleBordure, *couleurBordure) #Haut
+    EZ.trace_rectangle_droit(x,y + hauteur, longueur + tailleOmbreBordure, tailleBordure + tailleOmbreBordure, *couleurBordure) #Bas
+    EZ.trace_rectangle_droit(x,y, tailleBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Gauche
+    EZ.trace_rectangle_droit(x + longueur,y, tailleBordure + tailleOmbreBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Droite
+
+def traceFlecheRetour(x, y, zoom):
+    """Draw the back arrow
+    Trace la flèche retour
+    """
+
+    EZ.trace_rectangle_droit(x, y + int(35 * zoom), int(70 * zoom), int(10 * zoom), 255, 255, 255) # Rectangle
+
+    EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y, x - int(10 * zoom), y + int(40 * zoom), 255, 255, 255) #Haut
+    EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y + int(70 * zoom), x + int(30 * zoom), y + int(80 * zoom), 255, 255, 255) # Bas
+    EZ.trace_triangle(x, y + int(40 * zoom), x - int(10 * zoom), y + int(40 * zoom), x + int(30 * zoom), y + int(80 * zoom), 255, 255, 255) # Bas
+    EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y, x + int(30 * zoom), y + int(10 * zoom), 255, 255, 255) #Haut

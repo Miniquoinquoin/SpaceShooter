@@ -1,0 +1,17 @@
+Personages;vie;regenEficiency;regenCooldown;damage;range;durability;speed;acceleration;jumpPower
+Stats_Personnage_1;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_1;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_2;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_2;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_3;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_3;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_4;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_4;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_5;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_5;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_6;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_6;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_7;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_7;10;0.01;0;2;10;0;0.5;0;0
+Stats_Personnage_8;100;0.1;5;10;300;5;8;1;1
+Up_Personnage_8;10;0.01;0;2;10;0;0.5;0;0

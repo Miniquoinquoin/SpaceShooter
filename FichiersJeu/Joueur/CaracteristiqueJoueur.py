@@ -43,6 +43,7 @@ class Joueur:
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
         self.lastchargesEffetDomage = [2 * Anim.MAX_INTENSITE]  # [intensiter ]
 
+
     def charge(self):
         """Foncton qui charge l'image du personage"""
 
