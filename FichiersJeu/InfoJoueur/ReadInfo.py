@@ -12,13 +12,16 @@ def ReadGold():
 
 
 def ReadStatsPlayers():
+    """Read the stats of Caracterse
+    li les stats des personnages
+    """
 
     StatsPlayers = []
     with open("FichiersJeu\InfoJoueur\StatsPersonnages.csv", 'r', newline='') as csvStat:
         reader = csv.DictReader(csvStat, delimiter=';')
-        for iRow,row in enumerate(reader):
+        for row in reader:
             if "Stats" in row['Personages']:
-                StatsPersonnage = {"vie": row['vie'], "regen": {"timer": 0, "cooldown": row['regenCooldown'], "eficiency":row['regenEficiency'] },"damage": row['damage'], "range": row['range'] , "durability": row['durability'],"acc": row['acceleration'],"speed": row['speed'], "jumpPower": row['jumpPower'],  "maxvie": row['vie'] }
+                StatsPersonnage = { "name": row['name'], "price": row['price'] ,"vie": row['vie'], "regen": {"cooldown": row['regenCooldown'], "eficiency":row['regenEficiency'] },"damage": row['damage'], "range": row['range'] , "durability": row['durability'],"acc": row['acceleration'],"speed": row['speed'], "jumpPower": row['jumpPower'],  "maxvie": row['vie'] }
                 StatsPlayers.append(StatsPersonnage)
             
     return StatsPlayers

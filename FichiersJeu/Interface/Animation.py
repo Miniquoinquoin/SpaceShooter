@@ -163,7 +163,7 @@ def traceAnimationArriverMenu(longeur, hauteur, speed):
 
     while DecalageFond - speed < hauteur:
         
-        EZ.trace_rectangle_droit(0,0,longeur, DecalageFond, *COULEUR)
+        EZ.trace_rectangle_droit_v2(0,0,longeur, DecalageFond, *COULEUR)
         DecalageFond += speed
 
         EZ.mise_a_jour()
@@ -214,8 +214,8 @@ def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, haut
 
         raport = hauteurWidget / longeurWidget
         EZ.trace_triangle(x0, y0,x0 + DecalageWidget, y0, x0 , y0 + int(DecalageWidget * raport), *COULEURFOND)
-        EZ.trace_rectangle_droit(x0, y0, DecalageWidget, TAILLE_BORDER, *COULEUR_BORDER)
-        EZ.trace_rectangle_droit(x0, y0, TAILLE_BORDER, int(DecalageWidget * raport), *COULEUR_BORDER)
+        EZ.trace_rectangle_droit_v2(x0, y0, DecalageWidget, TAILLE_BORDER, *COULEUR_BORDER)
+        EZ.trace_rectangle_droit_v2(x0, y0, TAILLE_BORDER, int(DecalageWidget * raport), *COULEUR_BORDER)
 
         if DrawnFont == 0 and DecalageWidget >= longeurWidget/2:
             EZ.trace_image(EZ.image_texte(TEXTE[0], Fonts, 0, 0, 0), CoordonneesFonts[0] + TAILLE_OMBRE, CoordonneesFonts[1] + TAILLE_OMBRE)
@@ -257,8 +257,8 @@ def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, haut
         EZ.mise_a_jour()
         EZ.frame_suivante()
         
-    EZ.trace_rectangle_droit(x0 + longeurWidget, y0, TAILLE_BORDER * 3, hauteurWidget, *COULEUR_BORDER)
-    EZ.trace_rectangle_droit(x0, y0 + hauteurWidget, longeurWidget + TAILLE_BORDER * 3, TAILLE_BORDER * 3, *COULEUR_BORDER)
+    EZ.trace_rectangle_droit_v2(x0 + longeurWidget, y0, TAILLE_BORDER * 3, hauteurWidget, *COULEUR_BORDER)
+    EZ.trace_rectangle_droit_v2(x0, y0 + hauteurWidget, longeurWidget + TAILLE_BORDER * 3, TAILLE_BORDER * 3, *COULEUR_BORDER)
 
 def tracePlayerAnimationMort(longeur, hauteur, longeurWidget, hauteurWidget, player):
 
@@ -310,10 +310,10 @@ def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
     while DecalageFond - speed <= HauteurFondClair:
 
         for rectangle in range(3):
-            EZ.trace_rectangle_droit(x[rectangle],y1, PlageScore//3 - 20, DecalageFond, *COULEUR_LEGERE) #Fond clair
-            EZ.trace_rectangle_droit(x[rectangle],y1, PlageScore//3 - 20, TAILLE_BORDER, *COULEUR_MARQUER) # Haut
-            EZ.trace_rectangle_droit(x[rectangle],y1, TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER) # Gauche
-            EZ.trace_rectangle_droit(x[rectangle] + PlageScore//3 - 20,y1, TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER) # Droite
+            EZ.trace_rectangle_droit_v2(x[rectangle],y1, PlageScore//3 - 20, DecalageFond, *COULEUR_LEGERE) #Fond clair
+            EZ.trace_rectangle_droit_v2(x[rectangle],y1, PlageScore//3 - 20, TAILLE_BORDER, *COULEUR_MARQUER) # Haut
+            EZ.trace_rectangle_droit_v2(x[rectangle],y1, TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER) # Gauche
+            EZ.trace_rectangle_droit_v2(x[rectangle] + PlageScore//3 - 20,y1, TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER) # Droite
             
 
 
@@ -349,7 +349,7 @@ def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
     while DecalageFond - speed <= HauteurFondSombre:
 
         for rectangle in range(3):
-            EZ.trace_rectangle_droit(x[rectangle],y1 + HauteurFondClair, PlageScore//3 - 20 + TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER)
+            EZ.trace_rectangle_droit_v2(x[rectangle],y1 + HauteurFondClair, PlageScore//3 - 20 + TAILLE_BORDER, DecalageFond, *COULEUR_MARQUER)
             
         DecalageFond += speed
 
@@ -404,7 +404,7 @@ def traceInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget, gold, 
     zomm = 0
     while zomm <= 50:
         for picture in range(len(Picture)):
-            EZ.trace_rectangle_droit(xFondValeur[picture],y1, PlageScore//3 - 20, HauteurFondClair, *COULEUR_LEGERE) # Fond Clair
+            EZ.trace_rectangle_droit_v2(xFondValeur[picture],y1, PlageScore//3 - 20, HauteurFondClair, *COULEUR_LEGERE) # Fond Clair
             xPicture.append(DebutPlageScore + picture * PlageScore//3 + PlageScore//6 - EZ.dimension(Picture[picture])[0]//2) #debut partie score + decage de la partie + 1/2 d'une partie - 1/2 Taile X image 
             yPicture.append(y1 + HauteurFondClair//2 - EZ.dimension(Picture[picture])[1]//2 ) 
             EZ.trace_image(EZ.transforme_image(Picture[picture],0,zomm/50),xPicture[picture], yPicture[picture])
@@ -426,7 +426,7 @@ def traceInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget, gold, 
 
             NombreAfficher[value] += speed/10 * (1 - NombreAfficher[value]/(Value[value]*1.01) if Value[value] > 0 else 1) * math.sqrt(Value[value]) # Donne l'effet de ralentissement plus on s'aproche du resultat / give a slow effet more the value are near of the resulta 
 
-            EZ.trace_rectangle_droit(xFondValeur[value],y1 + HauteurFondClair, PlageScore//3 - 20 + TAILLE_BORDER, HauteurFondSombre, *COULEUR_MARQUER)
+            EZ.trace_rectangle_droit_v2(xFondValeur[value],y1 + HauteurFondClair, PlageScore//3 - 20 + TAILLE_BORDER, HauteurFondSombre, *COULEUR_MARQUER)
             EZ.trace_image(EZ.image_texte(str(int(NombreAfficher[value])) if NombreAfficher[value] < Value[value] else str(Value[value]),Fonts,*COULEUR_POLICE_SCORE),xValue[value], yValue[value])
 
 
@@ -503,7 +503,7 @@ def traceAnimationFondMenuP(longeur, hauteur, etape):
         etape (int): step of the animation / etape de l'animation
     """
 
-    EZ.trace_rectangle_droit(0, 0, longeur, hauteur, *COULEUR)
+    EZ.trace_rectangle_droit_v2(0, 0, longeur, hauteur, *COULEUR)
 
     #Disque:
     EZ.trace_disque(longeur//2, hauteur//2, etape, *COULEUR_FORME) # Disque foncé

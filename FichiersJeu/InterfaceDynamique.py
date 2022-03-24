@@ -6,6 +6,8 @@ import FichiersJeu.Interface.Entites.Menu as Menuf
 import FichiersJeu.Joueur.Monstres as Monstref
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
+import FichiersJeu.InfoJoueur.ReadInfo as Reader
+
 
 import csv
 import random
@@ -21,7 +23,7 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
-MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR)
+MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
 Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Joueur1.charge()
 
@@ -30,6 +32,7 @@ def menu(gold, inventaire):
 
 
     play = True
+    leave = False
     EZ.reglage_fps(60)
 
     while play:
@@ -48,8 +51,7 @@ def menu(gold, inventaire):
                 MenuPerso.TrieInventaire(inventaire)
                 leave = menuPerso(gold)
 
-                if leave:
-                    return 0
+
 
             
             elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
@@ -71,6 +73,9 @@ def menu(gold, inventaire):
             elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
                 EZ.destruction_fenetre()
                 return 0
+
+        if leave:
+            return 0
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
@@ -142,11 +147,12 @@ def menuGame():
 
 def menuPerso(gold):
 
-    x = 0
+    x = 100
     xLast = 0
     click = False
 
     perso = True
+    leave = False
     while perso:
         MenuPerso.traceMenuPersonnages(x)
 
@@ -159,20 +165,66 @@ def menuPerso(gold):
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             click = True
             xLast = EZ.souris_x()
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuPerso.yDebutCadre < EZ.souris_y() < MenuPerso.yDebutCadre + MenuPerso.hauteurCardreJoueur: # look if the click is in the Players frame area / regarde si le click se trouve dans la zone des cadres Joueurs
+                xSouris = EZ.souris_x()
+
+                for cadre in range(len(MenuPerso.chargesPersonnage)):
+                    if cadre * MenuPerso.largeurCadrePlusEspace + x < xSouris < cadre * MenuPerso.largeurCadrePlusEspace + x + MenuPerso.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        if MenuPerso.infoPersonnages[f"Personnage{cadre + 1}"][0] == True:
+                            Joueur1.personnage = cadre + 1
+                            Joueur1.charge()
+                            return False
+                        
+                        else:
+                            leave = menuBuyPerso(gold, cadre)
+
+
+                
+
         
         elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
             click = False
         
         if click and evenement == "SOURIS_MOUVEMENT":
-            x -= xLast - EZ.souris_x()
-            xLast = EZ.souris_x()
+            decalage = xLast - EZ.souris_x()
+            if -MenuPerso.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+
+        if leave:
+            return True
 
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
 
+def menuBuyPerso(gold, numPerso):
 
 
+    statsPerso = Reader.ReadStatsPlayers()[numPerso]
+    MenuBuyPerso = Menuf.StatsPersonnage(LONGEUR, HAUTEUR, statsPerso['name'], statsPerso)
+
+    play = True
+    while play:
+        MenuBuyPerso.DisplayMenu()
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 

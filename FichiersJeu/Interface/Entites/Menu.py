@@ -3,7 +3,12 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Animation as Anim
+
 import FichiersJeu.Interface.Decor as Decor
+import FichiersJeu.Interface.Entites.Bouton as Btn
+
+import Outiles.PerfCompteur as Perfcompteur
+Perfcompt = Perfcompteur.TimeDistribution()
 
 
 
@@ -100,7 +105,7 @@ class MenuGame(Menu):
 
 class SousMenu(Menu):
 
-    def __init__(self, longeur, hauteur):
+    def __init__(self, longeur, hauteur, texte):
         super().__init__(longeur, hauteur)
         self.tailleOmbrePolice = 3 # Size of the Shadow of the fonts / Taille de l'ombre de la police
         self.yDebutWidget = self.hauteur//6 # y Start of the widget / y de début du Widget
@@ -109,7 +114,9 @@ class SousMenu(Menu):
         self.couleurFond = (210, 210, 230) # color of the background / couleur du fond
 
         #Police
+        self.texte = texte
         self.police = EZ.charge_police(50, "FichiersJeu\Interface\Entites\Police\CourageRoad.ttf", True)
+        self.coordonneesFonts = [self.longeur//2 - EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[0], self.yDebutWidget- EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[1]] # [x, y]
 
     def chargeFond(self):
         """charge l'image du fond"""
@@ -117,7 +124,7 @@ class SousMenu(Menu):
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondSousMenu.png")
 
 
-    def traceTitre(self, texte):
+    def traceTitre(self):
         """Draw the title of the subMenu
         trace le titre du sous-Menu
 
@@ -125,10 +132,9 @@ class SousMenu(Menu):
             texte (str): Texte to drawn / texte a afficher
         """
 
-        CoordonneesFonts = [self.longeur//2 - EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[0], self.yDebutWidget- EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[1]] # [x, y]
 
-        EZ.trace_image(EZ.image_texte(texte, self.police, 0, 0, 0), CoordonneesFonts[0] + self.tailleOmbrePolice , CoordonneesFonts[1] + self.tailleOmbrePolice)
-        EZ.trace_image(EZ.image_texte(texte, self.police, 255, 255, 255), CoordonneesFonts[0], CoordonneesFonts[1])
+        EZ.trace_image(EZ.image_texte(self.texte, self.police, 0, 0, 0), self.coordonneesFonts[0] + self.tailleOmbrePolice , self.coordonneesFonts[1] + self.tailleOmbrePolice)
+        EZ.trace_image(EZ.image_texte(self.texte, self.police, 255, 255, 255), self.coordonneesFonts[0], self.coordonneesFonts[1])
 
     def traceFlecheRetour(self):
         """Draw the back arrow
@@ -144,20 +150,22 @@ class SousMenu(Menu):
 
         longueur (int): lenght of the widget / longueur du widget
         """
-        if longueur < self.longeur:
-            Decor.traceCadre(self.longeur//2 - longueur//2, self.yDebutWidget, longueur, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        Decor.traceCadre(self.longeur//2 - longueur//2, self.yDebutWidget, longueur, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        self.traceTitre()
+        self.traceFlecheRetour()
 
-        else:
-            Decor.traceCadre(50, self.yDebutWidget, longueur, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
     
 
 class Personnages(SousMenu):
     """Player Menu class / Class du Menu des personnages"""
 
-    def __init__(self, longeur, hauteur, Inventaire = {}):
-        super().__init__(longeur, hauteur)
+    def __init__(self, longeur, hauteur, texte, Inventaire = {}):
+        super().__init__(longeur, hauteur, texte)
         self.hauteurCardreJoueur = int(3 * self.hauteurWidget/4)
         self.largeurCadre = 300
+        self.largeurCadrePlusEspace = self.largeurCadre//0.9 # largeur du cadare plus l'espace qu'il laisse après lui pour ne pas être coller au prochain
         self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreJoueur)//2 + self.yDebutWidget
 
         self.couleurFondCadreAchete = (200, 50, 50) 
@@ -167,6 +175,8 @@ class Personnages(SousMenu):
         self.couleurBordureCadreEquipe = (0, 150, 0)
 
         self.chargesPersonnage = None
+
+        self.policeCadre = EZ.charge_police(60, "FichiersJeu\Interface\Entites\Police\PermanentMarker-Regular.ttf", True)
 
     
     def TrieInventaire(self, Inventaire):
@@ -189,14 +199,38 @@ class Personnages(SousMenu):
         Charges les personnages
         """
 
-        self.chargesPersonnage = {"Personnage1": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3),
-    "Personnage2": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 3), 
-    "Personnage3": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A2.png"), 0, 3), 
-    "Personnage4": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A2.png"), 0, 3), 
-    "Personnage5": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A2.png"), 0, 3),
-    "Personnage6": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A2.png"), 0, 3),
-    "Personnage7": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A2.png"), 0, 3), 
-    "Personnage8": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A2.png"), 0, 3) }
+        self.chargesPersonnage = {"Personnage1": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 5),
+        "Personnage2": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 5), 
+        "Personnage3": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A2.png"), 0, 5), 
+        "Personnage4": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A2.png"), 0, 5), 
+        "Personnage5": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A2.png"), 0, 5),
+        "Personnage6": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A2.png"), 0, 5),
+        "Personnage7": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A2.png"), 0, 5), 
+        "Personnage8": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A2.png"), 0, 5) }
+
+        self.largeurAllCadre = self.largeurCadrePlusEspace * len(self.chargesPersonnage)
+
+
+    def TraceWidget(self, x):
+        """Drawn the widget of the Caracters Menu
+        trace le widget du Menu Personnages
+
+        x (int): offset of the Caracters frame / decalage des Cadre des personnages
+        """
+
+        if x + 150 >= 100:
+            Decor.traceCadre(x - 50, self.yDebutWidget, self.longeur + 150, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        elif x < -(len(self.chargesPersonnage) * self.largeurCadrePlusEspace - self.longeur):
+            Decor.traceCadre(-10, self.yDebutWidget, 20 + (x + len(self.chargesPersonnage) * self.largeurCadrePlusEspace), self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        else:
+            Decor.traceCadre(-10, self.yDebutWidget, self.longeur + 20, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        self.traceTitre()
+        self.traceFlecheRetour()
+
+
 
 
 
@@ -216,9 +250,20 @@ class Personnages(SousMenu):
             Decor.traceCadre(x, self.yDebutCadre, self.largeurCadre, 3 *self.hauteurCardreJoueur//4, 3, 2, self.couleurFondCadreEquipe, self.couleurBordureCadreEquipe) # Haut du cadre
             Decor.traceCadre(x, self.yDebutCadre + 3 *self.hauteurCardreJoueur//4, 300, self.hauteurCardreJoueur//4, 3, 2, self.couleurBordureCadreEquipe, self.couleurBordureCadreEquipe) # Haut du cadre
 
+            coordonneesFonts = [x + self.largeurCadre//2 - EZ.dimension(EZ.image_texte("Select", self.policeCadre, 0, 0, 0))[0]//2, self.yDebutCadre + 7 *self.hauteurCardreJoueur//8 - EZ.dimension(EZ.image_texte("Select", self.policeCadre, 0, 0, 0))[1]//2] # [x, y]
+            EZ.trace_image(EZ.image_texte("Select", self.policeCadre, 0, 0, 0), coordonneesFonts[0] + self.tailleOmbrePolice , coordonneesFonts[1] + self.tailleOmbrePolice)
+            EZ.trace_image(EZ.image_texte("Select", self.policeCadre, 255, 255, 255), coordonneesFonts[0], coordonneesFonts[1])
+
+
         else:
             Decor.traceCadre(x, self.yDebutCadre, self.largeurCadre, 3* self.hauteurCardreJoueur//4, 3, 2, self.couleurFondCadreAchete, self.couleurBordureCadreAchete)
             Decor.traceCadre(x, self.yDebutCadre + 3 *self.hauteurCardreJoueur//4, 300, self.hauteurCardreJoueur//4, 3, 2, self.couleurBordureCadreAchete, self.couleurBordureCadreAchete) # Haut du cadre
+            
+            coordonneesFonts = [x + self.largeurCadre//2 - EZ.dimension(EZ.image_texte("Buy", self.policeCadre, 0, 0, 0))[0]//2,  self.yDebutCadre + 7 *self.hauteurCardreJoueur//8 - EZ.dimension(EZ.image_texte("Select", self.policeCadre, 0, 0, 0))[1]//2] # [x, y]
+            EZ.trace_image(EZ.image_texte("Buy", self.policeCadre, 0, 0, 0), coordonneesFonts[0] + self.tailleOmbrePolice , coordonneesFonts[1] + self.tailleOmbrePolice)
+            EZ.trace_image(EZ.image_texte("Buy", self.policeCadre, 255, 255, 255), coordonneesFonts[0], coordonneesFonts[1])
+
+
 
     def traceAllPersonnages(self, x):
         """Drawn all the Caracters and their frames
@@ -235,7 +280,7 @@ class Personnages(SousMenu):
         for infoPersonnage, ImagePeronnage in zip(self.infoPersonnages,self.chargesPersonnage):
             self.traceCadreJoueur(xStart, self.infoPersonnages[infoPersonnage][0])
             EZ.trace_image(self.chargesPersonnage[ImagePeronnage], xStart + self.largeurCadre//2 - EZ.dimension(self.chargesPersonnage[ImagePeronnage])[0]//2, self.yDebutCadre + 20)
-            xStart += self.largeurCadre//0.7
+            xStart += self.largeurCadrePlusEspace
         
     
     def traceMenuPersonnages(self, x):
@@ -246,12 +291,87 @@ class Personnages(SousMenu):
             x (int): x gap of widget / x du debut des Cadres
         """
 
+        # Perfcompt.newElement("Fond")
         self.displayFond()
-        self.traceFlecheRetour()
-        self.TraceWidget(1200)
-        self.traceTitre("PERSONNAGES")
-        self.traceAllPersonnages(x + 100 )
+        # Perfcompt.EndElement()
 
+        # Perfcompt.newElement("Widget")
+        self.TraceWidget(x)
+        # Perfcompt.EndElement()
+
+
+        # Perfcompt.newElement("Personnages")
+        self.traceAllPersonnages(x)
+        # Perfcompt.EndElement()
+
+        # Perfcompt.calculate()
+        # Perfcompt.clear()
+
+
+class StatsPersonnage(SousMenu):
+
+    def __init__(self, longeur, hauteur, texte, stats):
+        super().__init__(longeur, hauteur, texte)
+        self.stats = stats
+
+        self.largeurWidget = self.longeur - 100
+
+        self.hauteurCardreInfo = int(3 * self.hauteurWidget/5)
+        self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreInfo)//4 + self.yDebutWidget
+        self.largeurCadre = 350
+
+        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
+        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
+
+        self.policeCadre = EZ.charge_police(40, "FichiersJeu\Interface\Entites\Police\JosefinSans-BoldItalic.ttf", True)
+
+    def traceCadreInfo(self):
+        """Drawn the frames for Caracters info
+        Trace les Cadre pour les info du personnages
+        """
+        
+        for Cadre in range(1, 3):
+            xCadre = Cadre * self.largeurWidget//3 + 50
+            Decor.traceCadre(xCadre, self.yDebutCadre, self.largeurCadre, self.hauteurCardreInfo, 2, 3, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+
+            if Cadre == 1:
+                pass
+
+            elif Cadre == 2:
+                #Stats
+                EZ.trace_image(EZ.image_texte(f"Heal: {self.stats['vie']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
+                EZ.trace_image(EZ.image_texte(f"Regen: {self.stats['regen']['cooldown']} / {float(self.stats['regen']['eficiency']) * 10} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 50)
+                EZ.trace_image(EZ.image_texte(f"Speed: {self.stats['speed']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 90)
+                EZ.trace_image(EZ.image_texte(f"Acc: {self.stats['acc']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 140)
+                EZ.trace_image(EZ.image_texte(f"Jump Power: {self.stats['jumpPower']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 190)
+
+    
+
+    def tracePrix(self):
+        """Draw the price of the Caracters
+        Trace le prix du Personnage
+        """
+        Decor.nombreDeGold(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, self.stats['price'])
+    
+    def traceBouttonBuy(self):
+        """Draw the buy button
+        Trace le bouton play
+        """
+
+        Btn.Bouton(self.largeurWidget - 200, self.yDebutWidget + self.hauteurWidget - 100, 200, 80, "Buy", (255, 255, 255), (0, 128, 64), 1, 3)
+
+
+
+    def DisplayMenu(self):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceCadreInfo()
+        self.tracePrix()
+        self.traceBouttonBuy()
 
 
 

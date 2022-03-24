@@ -39,11 +39,11 @@ def info_vie(x,y,taille=50,vie=20,vie_max=20,barre=True):
     #Afficher la barre ou non
     if barre:
         #contour barre de vie
-        EZ.trace_rectangle_droit(x+19*taille/20,y+7*taille/20,taille*1.9,3*taille/10,50,50,50)
+        EZ.trace_rectangle_droit_v2(x+19*taille/20,y+7*taille/20,taille*1.9,3*taille/10,50,50,50)
         
         #barre de vie à couleur changeante
-        EZ.trace_rectangle_droit(x+4*taille/5,y+4*taille/10,taille*2,2*taille/10,30,30,30)
-        EZ.trace_rectangle_droit(x+4*taille/5,y+4*taille/10,taille*2*vie/vie_max,2*taille/10,int(-255/vie_max*vie+255),int(255/vie_max*vie),0)
+        EZ.trace_rectangle_droit_v2(x+4*taille/5,y+4*taille/10,taille*2,2*taille/10,30,30,30)
+        EZ.trace_rectangle_droit_v2(x+4*taille/5,y+4*taille/10,taille*2*vie/vie_max,2*taille/10,int(-255/vie_max*vie+255),int(255/vie_max*vie),0)
 
     #affiche le coeur
     display_coeur(x,y,taille,vie,vie_max)
@@ -62,8 +62,8 @@ def info_vie(x,y,taille=50,vie=20,vie_max=20,barre=True):
 def nombre_kills(x,y,nb_kills,LONGUEUR = 0,LARGEUR = 0):
     
     #trace le rectangle Gris clair
-    EZ.trace_rectangle_droit(x-2,y-2,LONGUEUR+104,LARGEUR+54)
-    EZ.trace_rectangle_droit(x,y,LONGUEUR+100,LARGEUR+50,191,201,202)
+    EZ.trace_rectangle_droit_v2(x-2,y-2,LONGUEUR+104,LARGEUR+54)
+    EZ.trace_rectangle_droit_v2(x,y,LONGUEUR+100,LARGEUR+50,191,201,202)
 
     #trace la position du texte
     EZ.trace_image(image_monstre,x+40,y)
@@ -79,8 +79,8 @@ def barre_vie_montre(x,y,vie,maxvie,zoom):
         maxvie (int): vie du monstre quand il spawn
         zoom (float): largeur du monstre
     """
-    EZ.trace_rectangle_droit(x, y, int(1 * zoom), int(0.1 * zoom), 200, 200, 200) # Fond gris
-    EZ.trace_rectangle_droit(x, y, int(vie/maxvie * zoom), int(0.1 * zoom),int(-255/maxvie*vie+255),int(255/maxvie*vie),0)
+    EZ.trace_rectangle_droit_v2(x, y, int(1 * zoom), int(0.1 * zoom), 200, 200, 200) # Fond gris
+    EZ.trace_rectangle_droit_v2(x, y, int(vie/maxvie * zoom), int(0.1 * zoom),int(-255/maxvie*vie+255),int(255/maxvie*vie),0)
 
 
 def nombreDeGold(x, y, gold):
@@ -91,9 +91,9 @@ def nombreDeGold(x, y, gold):
     COULEUR_FOND = (100, 100, 100)
     COULEUR_POLICE = (255, 255, 255)
 
-    HAUTEUR = 77 # 80 - Taille ombre
+    HAUTEUR = 80
 
-    Btn.Bouton(x, y, 200, HAUTEUR, "", COULEUR_POLICE, COULEUR_FOND)
+    Btn.Bouton(x, y, 200, HAUTEUR, "", COULEUR_POLICE, COULEUR_FOND, 1, 0)
     image = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\gold.png"),0, 0.07)
     EZ.trace_image(image ,x + 10, y + HAUTEUR//2 - EZ.dimension(image)[1]//2)
 
@@ -117,20 +117,20 @@ def traceCadre(x, y, longueur, hauteur, tailleBordure, tailleOmbreBordure, coule
     """
 
 
-    EZ.trace_rectangle_droit(x, y, longueur, hauteur, *couleurFond)
+    EZ.trace_rectangle_droit_v2(x, y, longueur, hauteur, *couleurFond)
     
     #Bordure
-    EZ.trace_rectangle_droit(x,y, longueur + tailleOmbreBordure, tailleBordure, *couleurBordure) #Haut
-    EZ.trace_rectangle_droit(x,y + hauteur, longueur + tailleOmbreBordure, tailleBordure + tailleOmbreBordure, *couleurBordure) #Bas
-    EZ.trace_rectangle_droit(x,y, tailleBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Gauche
-    EZ.trace_rectangle_droit(x + longueur,y, tailleBordure + tailleOmbreBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Droite
+    EZ.trace_rectangle_droit_v2(x,y, longueur + tailleOmbreBordure, tailleBordure, *couleurBordure) #Haut
+    EZ.trace_rectangle_droit_v2(x,y + hauteur, longueur + tailleOmbreBordure + tailleBordure, tailleBordure + tailleOmbreBordure, *couleurBordure) #Bas
+    EZ.trace_rectangle_droit_v2(x,y, tailleBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Gauche
+    EZ.trace_rectangle_droit_v2(x + longueur,y, tailleBordure + tailleOmbreBordure, hauteur + tailleOmbreBordure, *couleurBordure) #Droite
 
 def traceFlecheRetour(x, y, zoom):
     """Draw the back arrow
     Trace la flèche retour
     """
 
-    EZ.trace_rectangle_droit(x, y + int(35 * zoom), int(70 * zoom), int(10 * zoom), 255, 255, 255) # Rectangle
+    EZ.trace_rectangle_droit_v2(x, y + int(35 * zoom), int(70 * zoom), int(10 * zoom), 255, 255, 255) # Rectangle
 
     EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y, x - int(10 * zoom), y + int(40 * zoom), 255, 255, 255) #Haut
     EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y + int(70 * zoom), x + int(30 * zoom), y + int(80 * zoom), 255, 255, 255) # Bas

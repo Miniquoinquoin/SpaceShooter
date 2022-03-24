@@ -155,7 +155,7 @@ class ArmesAvecForme(Armes):
             EZ.trace_disque(int(self.x), int(self.y), self.size, *self.color)
         
         elif self.forme == "CARRE":
-            EZ.trace_rectangle_droit(int(self.x - self.size/2), int(self.y - self.size/2), self.size, self.size, *self.color)
+            EZ.trace_rectangle_droit_v2(int(self.x - self.size/2), int(self.y - self.size/2), self.size, self.size, *self.color)
             
 
 
