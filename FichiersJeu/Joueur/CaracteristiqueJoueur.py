@@ -7,6 +7,9 @@ import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Animation as Anim
 
+import FichiersJeu.InfoJoueur.ReadInfo as Reader
+
+
 
 class Joueur:
     """Class joueur"""
@@ -47,12 +50,12 @@ class Joueur:
     def charge(self):
         """Foncton qui charge l'image du personage"""
 
+        self.stats = Reader.ReadStatsPlayers()[self.personnage - 1] # Set les stats du joueur
 
         if self.personnage == 1:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3)
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A8.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A5.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A6.png"), 0, 3)]
-
 
         elif self.personnage == 2:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 3)

@@ -21,7 +21,7 @@ def ReadStatsPlayers():
         reader = csv.DictReader(csvStat, delimiter=';')
         for row in reader:
             if "Stats" in row['Personages']:
-                StatsPersonnage = { "name": row['name'], "price": row['price'] ,"vie": row['vie'], "regen": {"cooldown": row['regenCooldown'], "eficiency":row['regenEficiency'] },"damage": row['damage'], "range": row['range'] , "durability": row['durability'],"acc": row['acceleration'],"speed": row['speed'], "jumpPower": row['jumpPower'],  "maxvie": row['vie'] }
+                StatsPersonnage = { "name": row['name'], "price": row['price'] ,"vie": int(row['vie']), "regen": {"timer": 0, "cooldown": int(row['regenCooldown']), "eficiency": float(row['regenEficiency']) },"damage": int(row['damage']), "range": int(row['range']) , "durability": int(row['durability']) ,"acc": float(row['acceleration']),"speed": int(row['speed']), "jumpPower": float(row['jumpPower']),  "maxvie": int(row['vie']) }
                 StatsPlayers.append(StatsPersonnage)
             
     return StatsPlayers

@@ -206,7 +206,7 @@ def menuBuyPerso(gold, numPerso):
 
 
     statsPerso = Reader.ReadStatsPlayers()[numPerso]
-    MenuBuyPerso = Menuf.StatsPersonnage(LONGEUR, HAUTEUR, statsPerso['name'], statsPerso)
+    MenuBuyPerso = Menuf.StatsPersonnage(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso)
 
     play = True
     while play:
@@ -222,6 +222,9 @@ def menuBuyPerso(gold, numPerso):
 
             if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
                 return False 
+
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640:
+                print("tes pas si con")
 
         EZ.mise_a_jour()
         EZ.frame_suivante()

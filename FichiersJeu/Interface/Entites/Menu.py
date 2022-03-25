@@ -117,6 +117,10 @@ class SousMenu(Menu):
         self.texte = texte
         self.police = EZ.charge_police(50, "FichiersJeu\Interface\Entites\Police\CourageRoad.ttf", True)
         self.coordonneesFonts = [self.longeur//2 - EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[0], self.yDebutWidget- EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[1]] # [x, y]
+        
+        self.chargesPersonnage = None
+
+
 
     def chargeFond(self):
         """charge l'image du fond"""
@@ -156,6 +160,20 @@ class SousMenu(Menu):
         self.traceTitre()
         self.traceFlecheRetour()
 
+    def chargePersonnage(self):
+        """load Caracters
+        Charges les personnages
+        """
+
+        self.chargesPersonnage = {"Personnage1": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 5),
+        "Personnage2": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 5), 
+        "Personnage3": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A2.png"), 0, 5), 
+        "Personnage4": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A2.png"), 0, 5), 
+        "Personnage5": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A2.png"), 0, 5),
+        "Personnage6": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A2.png"), 0, 5),
+        "Personnage7": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A2.png"), 0, 5), 
+        "Personnage8": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A2.png"), 0, 5) }
+
     
 
 class Personnages(SousMenu):
@@ -174,9 +192,13 @@ class Personnages(SousMenu):
         self.couleurFondCadreEquipe = (50, 200, 50) 
         self.couleurBordureCadreEquipe = (0, 150, 0)
 
-        self.chargesPersonnage = None
 
         self.policeCadre = EZ.charge_police(60, "FichiersJeu\Interface\Entites\Police\PermanentMarker-Regular.ttf", True)
+
+    def chargePersonnage(self):
+        super().chargePersonnage()
+
+        self.largeurAllCadre = self.largeurCadrePlusEspace * len(self.chargesPersonnage)
 
     
     def TrieInventaire(self, Inventaire):
@@ -194,21 +216,7 @@ class Personnages(SousMenu):
         
         self.infoPersonnages = Personnages
     
-    def chargePersonnage(self):
-        """load Caracters
-        Charges les personnages
-        """
 
-        self.chargesPersonnage = {"Personnage1": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 5),
-        "Personnage2": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 5), 
-        "Personnage3": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso3\Perso3A2.png"), 0, 5), 
-        "Personnage4": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso4\Perso4A2.png"), 0, 5), 
-        "Personnage5": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso5\Perso5A2.png"), 0, 5),
-        "Personnage6": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso6\Perso6A2.png"), 0, 5),
-        "Personnage7": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A2.png"), 0, 5), 
-        "Personnage8": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A2.png"), 0, 5) }
-
-        self.largeurAllCadre = self.largeurCadrePlusEspace * len(self.chargesPersonnage)
 
 
     def TraceWidget(self, x):
@@ -310,15 +318,16 @@ class Personnages(SousMenu):
 
 class StatsPersonnage(SousMenu):
 
-    def __init__(self, longeur, hauteur, texte, stats):
+    def __init__(self, longeur, hauteur, numPerso,texte, stats):
         super().__init__(longeur, hauteur, texte)
         self.stats = stats
+        self.numPerso = numPerso
 
         self.largeurWidget = self.longeur - 100
 
         self.hauteurCardreInfo = int(3 * self.hauteurWidget/5)
         self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreInfo)//4 + self.yDebutWidget
-        self.largeurCadre = 350
+        self.largeurCadre = 400
 
         self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
         self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
@@ -331,19 +340,24 @@ class StatsPersonnage(SousMenu):
         """
         
         for Cadre in range(1, 3):
-            xCadre = Cadre * self.largeurWidget//3 + 50
+            xCadre = Cadre * self.largeurWidget//2.5 - 150
             Decor.traceCadre(xCadre, self.yDebutCadre, self.largeurCadre, self.hauteurCardreInfo, 2, 3, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
 
             if Cadre == 1:
-                pass
+                #Stats arme
+                EZ.trace_image(EZ.image_texte(f"Damage: {self.stats['damage']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 160)
+                EZ.trace_image(EZ.image_texte(f"Range: {self.stats['range']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 110)
+                EZ.trace_image(EZ.image_texte(f"Durability: {self.stats['durability']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 60)
+
 
             elif Cadre == 2:
-                #Stats
+                #Stats Joueur
                 EZ.trace_image(EZ.image_texte(f"Heal: {self.stats['vie']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
-                EZ.trace_image(EZ.image_texte(f"Regen: {self.stats['regen']['cooldown']} / {float(self.stats['regen']['eficiency']) * 10} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 50)
-                EZ.trace_image(EZ.image_texte(f"Speed: {self.stats['speed']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 90)
-                EZ.trace_image(EZ.image_texte(f"Acc: {self.stats['acc']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 140)
-                EZ.trace_image(EZ.image_texte(f"Jump Power: {self.stats['jumpPower']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 190)
+                EZ.trace_image(EZ.image_texte(f"Regen Time: {self.stats['regen']['cooldown']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 60)
+                EZ.trace_image(EZ.image_texte(f"Regen Power: {float(self.stats['regen']['eficiency']) * 10} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 110)
+                EZ.trace_image(EZ.image_texte(f"Speed: {self.stats['speed']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 160)
+                EZ.trace_image(EZ.image_texte(f"Acc: {self.stats['acc']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 210)
+                EZ.trace_image(EZ.image_texte(f"Jump Power: {self.stats['jumpPower']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 260)
 
     
 
@@ -360,7 +374,19 @@ class StatsPersonnage(SousMenu):
 
         Btn.Bouton(self.largeurWidget - 200, self.yDebutWidget + self.hauteurWidget - 100, 200, 80, "Buy", (255, 255, 255), (0, 128, 64), 1, 3)
 
+    def traceJoueur(self):
+        """Draw the player
+        Trace le joueur
+        """
 
+        if self.chargesPersonnage == None:
+            self.chargePersonnage()
+
+        EZ.trace_image(self.chargesPersonnage[f"Personnage{self.numPerso + 1}"], (self.largeurWidget//3) - 80 - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso}"])[0], self.yDebutCadre + self.hauteurCardreInfo - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso}"])[1])
+        
+
+
+        
 
     def DisplayMenu(self):
         """Display all the Menu
@@ -372,6 +398,8 @@ class StatsPersonnage(SousMenu):
         self.traceCadreInfo()
         self.tracePrix()
         self.traceBouttonBuy()
+
+        self.traceJoueur()
 
 
 
