@@ -14,7 +14,7 @@ import FichiersJeu.InfoJoueur.ReadInfo as Reader
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 8, stats = {"vie": 100, "regen": {"timer": EZ.clock(), "cooldown": 5, "eficiency":0.1 },"damage": 10, "range": 300 , "durability": 5,"acc": 1,"speed": 8, "jumpPower": 1,  "maxvie": 100 }, equipement = None):
+    def __init__(self, name, level, personnage = 1, stats = None, equipement = None):
         """Initialisation de Joueur
 
         Args:
@@ -27,10 +27,10 @@ class Joueur:
         self.name = name
         self.level = level
         self.personnage = personnage
-        self.stats = stats
+        self.stats = stats if stats != None else Reader.ReadStatsPlayers()[personnage - 1] # If stats == None, read stats from file / si stats == None, lire les stats du fichier
         self.equipement = equipement
         self.x = ID.LONGEUR//2
-        self.y = 150  #Hauteur d'aparition du joueur
+        self.y = 150  # height player spawn / Hauteur d'aparition du joueur
         self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
@@ -50,7 +50,7 @@ class Joueur:
     def charge(self):
         """Foncton qui charge l'image du personage"""
 
-        self.stats = Reader.ReadStatsPlayers()[self.personnage - 1] # Set les stats du joueur
+        self.stats = Reader.ReadStatsPlayers()[self.personnage - 1]
 
         if self.personnage == 1:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3)
@@ -92,9 +92,10 @@ class Joueur:
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A7.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A8.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
-            self.arme = [{"arme": Armef.Shuriken("Shuriken", self.stats["damage"], self.stats["range"], self.stats["durability"]), "speed": 10} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
-            self.last_arme = -1 # Dernier arme que le joueru a tire dans self.arme
-            self.timeShoot = [EZ.clock(), 0.2] # [temps du dernier tire, cooldown]
+        # Load weapon / charge l'arme
+        self.arme = [{"arme": Armef.Armes(self.stats['weapon']['name'], self.stats['weapon']["damage"], self.stats['weapon']["range"], self.stats['weapon']["durability"]), "speed": self.stats['weapon']['speed']} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}    
+        self.last_arme = -1 # last weapon that the player shot in self.arme / Dernier arme que le joueur a tire dans self.arme
+        self.timeShoot = [EZ.clock(), self.stats['weapon']['cooldown']] # [temps du dernier tire, cooldown]
 
         self.charges = True
 

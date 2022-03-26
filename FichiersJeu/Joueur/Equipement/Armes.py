@@ -1,13 +1,14 @@
 """Fichier contenant les diferant proprieter des armes / attack"""
 
+from unicodedata import name
 import FichiersJeu.Interface.EZ as EZ
 class Armes:
 
-    def __init__(self, name, damage, ranges):
+    def __init__(self, name, damage, ranges, durability):
         self.name = name
         self.damage = { "damage": damage, "basicDamage": damage}
         self.range = [ranges, 0] # [De base, pendant le tire]
-        self.durability = [1, 0] # [Durabiliter totale, duribiliter restante]
+        self.durability = [durability, durability] # [Durabiliter totale, duribiliter restante]
         self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
 
         self.charges = None
@@ -20,6 +21,15 @@ class Armes:
 
         self.Break = False # Definit si l'arme est casser ou non
 
+
+    def charge(self):
+        """load weapon
+        charge l'arme
+        """
+
+        if self.name == "Shuriken":
+            self.charges = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2.png"),0,2)
+            self.hitbox = [48, 48]
 
 
     def display(self, vitesse, vitesseFond):
@@ -120,23 +130,11 @@ class Armes:
             
     
 
-class Shuriken(Armes):
-
-    def __init__(self, name, damage, ranges, durability):
-        super().__init__(name, damage, ranges)
-        self.durability = [durability, durability] # [Durabiliter totale, duribiliter restante]
-
-
-    def charge(self):
-        """Charge l'image du shuriken"""
-        self.charges = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2.png"),0,2)
-        self.hitbox = [48, 48]
-
 
 class ArmesAvecForme(Armes):
 
-    def __init__(self, name, damage, ranges):
-        super().__init__(name, damage, ranges)
+    def __init__(self, name, damage, ranges, durability):
+        super().__init__(name, damage, ranges, durability)
         self.color = [0,0,0] #Couleur de l'arme
         self.forme = "DISQUE" #Forme de l'arme "DISQUE" / "CARRE"
         self.size = 10 # Rayon du disque pour un disque / Taille d'un coter pour un carré

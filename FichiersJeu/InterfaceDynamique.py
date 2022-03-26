@@ -6,7 +6,9 @@ import FichiersJeu.Interface.Entites.Menu as Menuf
 import FichiersJeu.Joueur.Monstres as Monstref
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
+
 import FichiersJeu.InfoJoueur.ReadInfo as Reader
+import FichiersJeu.InfoJoueur.SaveInfo as Writer
 
 
 import csv
@@ -36,6 +38,8 @@ def menu(gold, inventaire):
     EZ.reglage_fps(60)
 
     while play:
+        gold = Reader.ReadGold()
+        inventaire = Reader.ReadInventaire()
         MenuP.displayMenu(Joueur1.chargesAvant, gold)
 
         evenement = EZ.recupere_evenement()
@@ -48,8 +52,7 @@ def menu(gold, inventaire):
                 return "Game"
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
-                MenuPerso.TrieInventaire(inventaire)
-                leave = menuPerso(gold)
+                print("Shop")
 
 
 
@@ -58,11 +61,8 @@ def menu(gold, inventaire):
                 print("En phase devloppement")
 
             elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
-                if Joueur1.personnage < 8:
-                    Joueur1.personnage += 1
-                else:
-                    Joueur1.personnage = 1
-                Joueur1.charge()
+                MenuPerso.TrieInventaire(inventaire)
+                leave = menuPerso(gold)
                 
             elif 1060 < EZ.souris_x() < 1260 and 380 < EZ.souris_y() < 460: # Bouton Equipement / equipments button
                 print("En phase devloppement")
@@ -182,6 +182,10 @@ def menuPerso(gold):
                         else:
                             leave = menuBuyPerso(gold, cadre)
 
+                            if leave == "Menu":
+                                return False
+                            
+
 
                 
 
@@ -223,8 +227,16 @@ def menuBuyPerso(gold, numPerso):
             if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
                 return False 
 
-            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640:
-                print("tes pas si con")
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640: # Button Buy / Bouton Achat
+                if gold >= statsPerso['price']:
+                    gold -= statsPerso['price']
+                    Joueur1.personnage = numPerso + 1
+                    Joueur1.charge()
+                    Writer.SaveGold(gold)
+                    Writer.BuyCracters(numPerso + 1)
+                    return "Menu"
+                else:
+                    print("Pas assez d'argent")
 
         EZ.mise_a_jour()
         EZ.frame_suivante()
@@ -492,7 +504,6 @@ def game():
 
     mobKill = 0 #Computer of mob killed / Compteur de mob tué
 
-    # test1 = EZ.clock() set du premier temps de boucle 
     
     inGame = True
     play = True
@@ -588,11 +599,7 @@ def game():
 
             elif evenement == "EXIT":
                 EZ.destruction_fenetre()
-                return 0, 0
-
-            # Temps de la boucle
-            # print(round(EZ.clock() - test1, 2)) 
-            # test1 = EZ.clock()
+                return 0
 
             EZ.mise_a_jour()
             EZ.frame_suivante()
@@ -600,25 +607,26 @@ def game():
         Joueur1.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
         Game.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
 
-        #Gold generate / Gold generer 
+        #Gold generate / Or generer 
         gold = mobKill + (vague - 1) * 10
 
         if not(Joueur1.death()):
             demande = menuGame()
             if demande == "Game":
-                return "Game", 0
+                return "Game"
             
             elif demande == "Menu":
-                return "Menu", 0
+                return "Menu"
             
             elif not(demande):
-                return 0, 0
+                return 0
 
             else:
                 play = True
 
         else:
-            return menuDeath(gold, mobKill, vague), gold
+            Writer.SaveGold(gold + Reader.ReadGold())
+            return menuDeath(gold, mobKill, vague)
             
         
         

@@ -15,24 +15,25 @@ LONGEUR = 1280
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 def Shooter():
-    gold = int(Reader.ReadGold())
     inventaire = Reader.ReadInventaire()
+    gold = Reader.ReadGold() # Read gold from csv InfoGen
 
 
-    demande = ID.menu(gold, inventaire)
+    demande = "Menu"
     play = True
     while play:
 
         if demande == "Menu":
             demande = ID.menu(gold, inventaire)
+        
+        gold = int(Reader.ReadGold()) # Read gold from csv InfoGen
             
         if demande == "Game":
-            demande, tmpGold = ID.game()
-            gold += tmpGold
-            tmpGold = 0
+            demande = ID.game()
+
 
         if not(demande):
-            Writer.Save(gold, inventaire)
+            # Writer.Save(gold, inventaire)
             break
 
 Shooter()

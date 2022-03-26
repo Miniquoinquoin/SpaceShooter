@@ -97,7 +97,7 @@ def nombreDeGold(x, y, gold):
     image = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\gold.png"),0, 0.07)
     EZ.trace_image(image ,x + 10, y + HAUTEUR//2 - EZ.dimension(image)[1]//2)
 
-    texte = EZ.image_texte(f"{gold}",EZ.charge_police(int(70 * 1/(len(str(gold))/3)) if len(str(gold)) > 2 else 70, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf", True), *COULEUR_POLICE)
+    texte = EZ.image_texte('{:,}'.format(gold).replace(',', ' '),EZ.charge_police(int(70 * 1/(len(str(gold))/3)) if len(str(gold)) > 2 else 70, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf", True), *COULEUR_POLICE)
     EZ.trace_image(texte, x + 20 + EZ.dimension(image)[0], y + HAUTEUR//2 - EZ.dimension(texte)[1]//2)
 
 
