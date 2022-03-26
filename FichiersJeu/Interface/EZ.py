@@ -36,6 +36,7 @@ Liste des événements :
 "EXIT"
 """
 
+from tkinter import Canvas
 import pygame
 import time
 import math
@@ -64,7 +65,7 @@ def creation_fenetre(largeur=300,hauteur=200,nom="fenetre",icone=None):
         image=charge_image(icone)
     else:
         image=creation_image(25,25)
-        trace_rectangle_droit(0,0,25,25,255,0,0,canvas=image)
+        trace_rectangle_droit_v2(0,0,25,25,255,0,0,canvas=image)
     clavier={"q":"a",";":"m","a":"q","z":"w","w":"z","m":","}
     pygame.init()
     fenetre=pygame.display.set_mode((largeur,hauteur))
@@ -521,3 +522,31 @@ def frame_suivante():
     global fps
     global debut
     debut.tick(fps)
+
+
+
+
+
+    """Partie Heilmann Jonathan
+    Fonction dont j'avais besion que EZ ne propose pas encore
+    """
+
+def trace_rectangle_droit_v2(xA,yA,longueur,hauteur,rouge=0,vert=0,bleu=0,transparence=255,canvas=None):
+    """Trace un rectangle dont les cotées sont verticaux ou horizantaux de couleur noir par défaut
+    Si on donne un canvas alors le dessin se fait sur le canvas et pas sur l'ecran
+
+    Fonction simplement beaucoup plus performante
+    """
+
+    surface = __choix(canvas)
+    pygame.gfxdraw.box(surface, pygame.Rect(xA, yA, longueur, hauteur), pygame.Color(rouge, vert, bleu, transparence))
+
+def trace_polygonne(EnsemblePoint = [(0,0), (20, 20), (40, 40), (50, 95)], rouge=0,vert=0,bleu=0,transparence=255,canvas=None):
+    """Trace un polygonne dont les point sont des tuple dans une list noir par défaut
+    Si on donne un canvas alors le dessin se fait sur le canvas et pas sur l'ecran
+
+    """
+
+    surface = __choix(canvas)
+    pygame.gfxdraw.filled_polygon(surface, EnsemblePoint, pygame.Color(rouge, vert, bleu, transparence))
+    

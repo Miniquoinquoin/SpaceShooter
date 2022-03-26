@@ -2,7 +2,7 @@
 
 import FichiersJeu.Interface.EZ as EZ
 
-def Bouton(x,y,longeur, hauteur,Text,couleurText = (255,255,255), couleurFond = (0, 0,0)):
+def Bouton(x,y,longeur, hauteur,Text,couleurText = (255,255,255), couleurFond = (0, 0,0), tailleBorder = 3, tailleOmbre =3):
     """Drawn a button 
 
     Args:
@@ -15,22 +15,10 @@ def Bouton(x,y,longeur, hauteur,Text,couleurText = (255,255,255), couleurFond = 
         couleurFond (tuple, optional): color of the button / Couleur du bouton. Defaults to (0, 0,0).
     """
 
-    TAILLE_BORDER = 3
-    TAILLE_OMBRE = 3
-
-    EZ.trace_rectangle_droit(x, y, longeur + TAILLE_OMBRE, hauteur + TAILLE_OMBRE) # Crée les bordure
-    EZ.trace_rectangle_droit(x + TAILLE_BORDER, y + TAILLE_BORDER, longeur - 2*TAILLE_BORDER, hauteur - 2*TAILLE_BORDER, *couleurFond)
+    EZ.trace_rectangle_droit_v2(x, y, longeur + tailleOmbre, hauteur + tailleOmbre) # Crée les bordure
+    EZ.trace_rectangle_droit_v2(x + tailleBorder, y + tailleBorder, longeur - 2*tailleBorder, hauteur - 2*tailleBorder, *couleurFond)
     texte = EZ.image_texte(Text,EZ.charge_police(70, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf", True), *couleurText)
     EZ.trace_image(texte, x + longeur//2 - EZ.dimension(texte)[0]//2, y + hauteur//2 - EZ.dimension(texte)[1]//2)
 
 
-
-def BoutonPlayMenu(x, y,longeur = 1240, hauteur = 720):
-    """Trace le bouton play sur le menu
-
-    Args:
-        longeur (int, optional): longeur de la fenetre. Defaults to 1240.
-        hauteur (int, optional): hauteur de la fenetre. Defaults to 720.
-    """
-    EZ.trace_image(EZ.charge_image("..\Jeu-Dzarian-Miniquoinquoin\FichiersJeu\Interface\Entites\Fond\BoutonPlay.png"),x,y)  #Trace le bouton play(charge incluse car dans manu 1 seule charge pour l'instant)
 

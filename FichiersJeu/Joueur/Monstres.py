@@ -317,7 +317,7 @@ class MonstreShooter(Monstre):
     def __init__(self, name, xPlayer, range, Xspawn=0):
         super().__init__(name, xPlayer, Xspawn)
 
-        self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["damage"], range), "speed": 15}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
+        self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["damage"], range, 1), "speed": 15}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
         self.timeShoot = [EZ.clock(), 4] # [temps du dernier tire, cooldown]
     
 

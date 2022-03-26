@@ -7,6 +7,10 @@ import FichiersJeu.Joueur.Monstres as Monstref
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
 
+import FichiersJeu.InfoJoueur.ReadInfo as Reader
+import FichiersJeu.InfoJoueur.SaveInfo as Writer
+
+
 import csv
 import random
 
@@ -21,18 +25,22 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
+MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
 Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Joueur1.charge()
 
 
-def menu():
+def menu(gold, inventaire):
 
 
     play = True
+    leave = False
     EZ.reglage_fps(60)
 
     while play:
-        MenuP.displayMenu(Joueur1.chargesAvant)
+        gold = Reader.ReadGold()
+        inventaire = Reader.ReadInventaire()
+        MenuP.displayMenu(Joueur1.chargesAvant, gold)
 
         evenement = EZ.recupere_evenement()
         if evenement == "EXIT":
@@ -40,17 +48,34 @@ def menu():
             return 0
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 465 < EZ.souris_x() < 775 and 550 < EZ.souris_y() < 670:
+            if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton Play / Play button
                 return "Game"
+            
+            elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
+                print("Shop")
 
-        elif evenement == "TOUCHE_ENFONCEE":
-            if EZ.touche() == "p":
-                if Joueur1.personnage < 8:
-                    Joueur1.personnage += 1
-                else:
-                    Joueur1.personnage = 1
-                Joueur1.charge()
+
+
+            
+            elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
+                print("En phase devloppement")
+
+            elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
+                MenuPerso.TrieInventaire(inventaire)
+                leave = menuPerso(gold)
                 
+            elif 1060 < EZ.souris_x() < 1260 and 380 < EZ.souris_y() < 460: # Bouton Equipement / equipments button
+                print("En phase devloppement")
+
+            elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
+                print("En phase devloppement")
+
+            elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
+                EZ.destruction_fenetre()
+                return 0
+
+        if leave:
+            return 0
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
@@ -119,6 +144,119 @@ def menuGame():
     
         EZ.mise_a_jour()
         EZ.frame_suivante()
+
+def menuPerso(gold):
+
+    x = 100
+    xLast = 0
+    click = False
+
+    perso = True
+    leave = False
+    while perso:
+        MenuPerso.traceMenuPersonnages(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuPerso.yDebutCadre < EZ.souris_y() < MenuPerso.yDebutCadre + MenuPerso.hauteurCardreJoueur: # look if the click is in the Players frame area / regarde si le click se trouve dans la zone des cadres Joueurs
+                xSouris = EZ.souris_x()
+
+                for cadre in range(len(MenuPerso.chargesPersonnage)):
+                    if cadre * MenuPerso.largeurCadrePlusEspace + x < xSouris < cadre * MenuPerso.largeurCadrePlusEspace + x + MenuPerso.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        if MenuPerso.infoPersonnages[f"Personnage{cadre + 1}"][0] == True:
+                            Joueur1.personnage = cadre + 1
+                            Joueur1.charge()
+                            return False
+                        
+                        else:
+                            leave = menuBuyPerso(gold, cadre)
+
+                            if leave == "Menu":
+                                return False
+                            
+
+
+                
+
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuPerso.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+def menuBuyPerso(gold, numPerso):
+
+
+    statsPerso = Reader.ReadStatsPlayers()[numPerso]
+    MenuBuyPerso = Menuf.StatsPersonnage(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso)
+
+    play = True
+    while play:
+        MenuBuyPerso.DisplayMenu()
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640: # Button Buy / Bouton Achat
+                if gold >= statsPerso['price']:
+                    gold -= statsPerso['price']
+                    Joueur1.personnage = numPerso + 1
+                    Joueur1.charge()
+                    Writer.SaveGold(gold)
+                    Writer.BuyCracters(numPerso + 1)
+                    return "Menu"
+                else:
+                    print("Pas assez d'argent")
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def genratesMob(name, type = "COMMON"):
     """Genere un mob
@@ -366,7 +504,6 @@ def game():
 
     mobKill = 0 #Computer of mob killed / Compteur de mob tué
 
-    # test1 = EZ.clock() set du premier temps de boucle 
     
     inGame = True
     play = True
@@ -464,15 +601,14 @@ def game():
                 EZ.destruction_fenetre()
                 return 0
 
-            # Temps de la boucle
-            # print(round(EZ.clock() - test1, 2)) 
-            # test1 = EZ.clock()
-
             EZ.mise_a_jour()
             EZ.frame_suivante()
 
         Joueur1.move_info = {"right": False, "left": False, "saut": False, "speed": 0}
         Game.move_info = {"right": False, "left": False, "saut": False, "inertie": 0}
+
+        #Gold generate / Or generer 
+        gold = mobKill + (vague - 1) * 10
 
         if not(Joueur1.death()):
             demande = menuGame()
@@ -489,7 +625,8 @@ def game():
                 play = True
 
         else:
-            return menuDeath(mobKill + (vague - 1) * 10, mobKill, vague)
+            Writer.SaveGold(gold + Reader.ReadGold())
+            return menuDeath(gold, mobKill, vague)
             
         
         
