@@ -1,5 +1,6 @@
 """Fichier avec les proprieter des monstres"""
 
+import random
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
@@ -7,7 +8,7 @@ import FichiersJeu.Joueur.Equipement.Armes as Armef
 
 class Monstre:
 
-    def __init__(self, name, xPlayer, Xspawn = 0):
+    def __init__(self, name, xPlayer, hauteurSol ,Xspawn = 0):
 
         self.name = name
 
@@ -22,6 +23,8 @@ class Monstre:
         self.move_info = {"right": True, "left": False}
         self.vitesseFond = 0 # Vitesse de déplacement du fond
         self.x = Xspawn
+        self.hauteurSol = hauteurSol
+        self.y = 0 # Position y of the monstre / Position y du monstre
         
         self.xPlayer = xPlayer + 30 # Point que va suivre le monstre
 
@@ -61,10 +64,8 @@ class Monstre:
         
 
 
-
+        self.y = self.hauteurSol - self.hitbox[1]
         self.charges = self.chargesRight[self.lastchargesRight[0]]
-        self.y = ID.HAUTEUR_SOL - self.hitbox[1]
-
 
     def display(self, vitesseFond):
         """Affiche le monstre"""
@@ -242,12 +243,12 @@ class Monstre:
 class Wizard(Monstre):
     """Monstre avec des effet/ buff autour d'eux"""
 
-    def __init__(self, name, xPlayer, Xspawn, type, range = 250, power = 20):
-        super().__init__(name, xPlayer, Xspawn)
+    def __init__(self, name, xPlayer, HauteurSol, Xspawn, type, range = 250, power = 20, cooldown = 10):
+        super().__init__(name, xPlayer, HauteurSol, Xspawn)
 
         """ type: "HEAL" / "STRENGTH" range = rayon cooldown: [derniere utilisation, cooldown]"""
-        self.power = {"type": type, "range": range, "power": power, "cooldown": [EZ.clock(),10]}  
-        self.zonePowerlist = [[0, 0], [0,0], [0,0], [0,0]]
+        self.power = {"type": type, "range": range, "power": power, "cooldown": [EZ.clock() - random.randint(0, cooldown - 1),cooldown]}  # [type, range, power, cooldown] 
+        self.zonePowerlist = [[0, 0], [0,0], [0,0], [0,0]] # [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
 
     def display(self, vitesseFond):
         super().display(vitesseFond)
@@ -314,8 +315,8 @@ class Wizard(Monstre):
 
 class MonstreShooter(Monstre):
 
-    def __init__(self, name, xPlayer, range, Xspawn=0):
-        super().__init__(name, xPlayer, Xspawn)
+    def __init__(self, name, HauteurSol, xPlayer, range, Xspawn=0):
+        super().__init__(name, xPlayer, HauteurSol, Xspawn)
 
         self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["damage"], range, 1), "speed": 15}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
         self.timeShoot = [EZ.clock(), 4] # [temps du dernier tire, cooldown]

@@ -1,8 +1,55 @@
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Interface.Entites.Bouton as Btn
 
+# permet de charger l'image une seul fois
+image_monstre = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\monstre.png"),0,0.5)
+image_wave = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Wave\I.png"),0,0.5),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Wave\V.png"),0,0.5), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Wave\X.png"),0,0.5), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Wave\L.png"),0,0.5)] 
 
-image_monstre = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\monstre.png"),0,0.5) # permet de charger l'image une seul fois
+
+def nombre_romain(nombre):
+    """Function that transforme the number on roman number
+    fonction qui transforme nombre en chiffre romain"""
+
+    #dictionnaire des chiffres romains
+    romain = {50:image_wave[3], 40:(image_wave[2] , image_wave[3]), 10:image_wave[2], 9:(image_wave[0] , image_wave[2]), 5:image_wave[1], 4:(image_wave[1] , image_wave[2]), 1:image_wave[0]}
+
+    #liste des chiffres romains
+    liste_romain = []
+
+    #tant que le nombre n'est pas nul
+    while nombre!=0:
+        #on regarde quel chiffre romain correspond le plus au nombre
+        for i in romain:
+            if nombre >= i:
+                #on ajoute le chiffre romain
+                if type(romain[i]) != tuple:
+                    liste_romain.append(romain[i])
+                else:
+                    liste_romain.append(romain[i][0])
+                    liste_romain.append(romain[i][1])
+                #on enleve le chiffre romain de la valeur
+                nombre-=i
+                #on sort de la boucle
+                break
+    #on retourne la liste des chiffres romains
+    return liste_romain
+
+"""Info:
+
+
+    decal = 10
+for i in range(len(x)):
+    if x[i] == image_wave[0]:
+        EZ.trace_image(x[i] , decal, 0)
+        decal += 15
+    elif x[i] == image_wave[1]:
+        EZ.trace_image(x[i] , decal, 10)
+        decal += 50
+
+    else:
+        EZ.trace_image(x[i] , decal, 10)
+        decal += 30"""
+
 
 def display_coeur(x,y,taille,vie,vie_max):
     
@@ -59,15 +106,24 @@ def info_vie(x,y,taille=50,vie=20,vie_max=20,barre=True):
     else:
         EZ.trace_image(EZ.image_texte(str(int(vie)),EZ.charge_police(int(taille/1.75),None),255,255,255),x+17*taille/100,y+taille/4)
            
-def nombre_kills(x,y,nb_kills,LONGUEUR = 0,LARGEUR = 0):
+def monster_left(x,y,nb_kills):
+    """Function that display the number of monster left
+    fonction qui affiche le nombre de monstre restant"""
     
     #trace le rectangle Gris clair
-    EZ.trace_rectangle_droit_v2(x-2,y-2,LONGUEUR+104,LARGEUR+54)
-    EZ.trace_rectangle_droit_v2(x,y,LONGUEUR+100,LARGEUR+50,191,201,202)
+    EZ.trace_rectangle_droit_v2(x-2,y-2,104,54)
+    EZ.trace_rectangle_droit_v2(x,y,100,50,191,201,202)
 
     #trace la position du texte
     EZ.trace_image(image_monstre,x+40,y)
     EZ.trace_image(EZ.image_texte(str(nb_kills),EZ.charge_police(30)),x+16,y+17)
+
+def wave_number(x,y,nb_wave):
+    """Function that display the number of the wave
+    fonction qui affiche le nombre de la vague"""
+    
+    pass
+
 
 def barre_vie_montre(x,y,vie,maxvie,zoom):
     """Fonction qui trace la barre de vie du monstre 

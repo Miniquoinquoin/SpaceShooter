@@ -13,7 +13,8 @@ Perfcompt = Perfcompteur.TimeDistribution()
 
 
 class Interface:
-    """Class mere de toute les interface"""
+    """parent class for all the interface
+    Class mere de toute les interface"""
 
     def __init__(self, longeur, hauteur):
         self.longeur = longeur
@@ -22,7 +23,8 @@ class Interface:
 
 
 class Menu(Interface):
-    """Class du menu de base"""
+    """Basic class for all the menu
+    Class du menu de base"""
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
@@ -33,7 +35,8 @@ class Menu(Interface):
 
 
     def displayFond(self):
-        """Trace le fond du menu"""
+        """Display the background
+        Trace le fond du menu"""
 
         if self.chargesFond == None:
             self.chargeFond()
@@ -48,13 +51,16 @@ class Menu(Interface):
 
 
 class MenuPricipale(Menu):
+    """class of the main menu
+    Classe du menu principal"""
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
         self.etapeAnimationFond = 0 # etape de l'animation du fond
         
     def chargeFond(self):
-        """Charge l'image du fond"""
+        """ load the background image
+        Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\Fond_menu2.png")
 
@@ -68,7 +74,8 @@ class MenuPricipale(Menu):
             self.etapeAnimationFond = 0
     
     def displayMenu(self, personnage, gold):
-        """Trace le Menu"""
+        """ draw the menu
+        Trace le Menu"""
 
         self.displayAnimationFond()
         self.displayFond() # Les boutton de l'interface
@@ -76,12 +83,15 @@ class MenuPricipale(Menu):
         Decor.nombreDeGold(900, 10, gold)
 
 class MenuDeath(Menu):
+    """player death menu"
+    Menu de mort du joueur"""
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
 
     def chargeFond(self):
-        """Charge l'image du fond"""
+        """ load the background image
+        Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMort.png")
 
@@ -98,12 +108,15 @@ class MenuGame(Menu):
         super().__init__(longeur, hauteur)
 
     def chargeFond(self):
-        """Charge l'image du fond"""
+        """ load the background image
+        Charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\MenuGame.png")
 
 
 class SousMenu(Menu):
+    """class for all the submenu
+    Classe pour tout les sous menu"""
 
     def __init__(self, longeur, hauteur, texte):
         super().__init__(longeur, hauteur)
@@ -123,7 +136,8 @@ class SousMenu(Menu):
 
 
     def chargeFond(self):
-        """charge l'image du fond"""
+        """ load the background image
+        charge l'image du fond"""
 
         self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondSousMenu.png")
 
@@ -177,7 +191,8 @@ class SousMenu(Menu):
     
 
 class Personnages(SousMenu):
-    """Player Menu class / Class du Menu des personnages"""
+    """Player Menu class 
+    Class du Menu des personnages"""
 
     def __init__(self, longeur, hauteur, texte, Inventaire = {}):
         super().__init__(longeur, hauteur, texte)
@@ -317,6 +332,8 @@ class Personnages(SousMenu):
 
 
 class StatsPersonnage(SousMenu):
+    """Class to display the Stats of a Caracter and is price
+    Classe pour afficher les stats d'un personnage et son prix"""
 
     def __init__(self, longeur, hauteur, numPerso,texte, stats):
         super().__init__(longeur, hauteur, texte)
@@ -401,9 +418,18 @@ class StatsPersonnage(SousMenu):
 
         self.traceJoueur()
 
+class Mode(SousMenu):
+    """Class to choice the game mode
+    class pour choisir le mode de jeu"""
+
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.largeurWidget = self.longeur - 100
 
 
 class Game(Interface):
+    """Class to display the Game and manage it
+    Classe pour afficher le jeu et le gérer"""
 
     def __init__(self, longeur, hauteur):
         super().__init__(longeur, hauteur)
@@ -417,31 +443,49 @@ class Game(Interface):
         self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
         self.contact = False
 
+        self.map = "Mars"
+        self.largeurFond = 2400 # map width / Largeur de la map
+        self.hauteurSol = 604 # ground height / Hauteur du sol
+
+    def setMap(self, map):
+        """Set the map
+        Defini la map"""
+        self.map = map
+        self.chargeFond()
 
     def chargeFond(self):
-        """Charge l'image du fond"""
+        """ Load the background image
+        Charge l'image du fond"""
 
-        self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondGame.png")
+        if self.map == "Mars":
+            self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Mars.png")
+            self.largeurFond = 2400
+            self.hauteurSol = 604
+        
+        elif self.map == "Terre":
+            self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Terre.jpg")
+            self.largeurFond = 5000
+            self.hauteurSol = 620
     
     def displayFond(self, acc, vitesse):
-        """Trace le fond du jeu"""
+        """ display the background image
+        Trace le fond du jeu"""
 
-        LARGEUR_FOND = 2040
 
         if self.chargesFond == None:
             self.chargeFond()
         
         self.move(acc,vitesse)
 
-        while not(0 <= self.decal <= LARGEUR_FOND):
-            if self.decal > LARGEUR_FOND:
-                self.decal -= LARGEUR_FOND
+        while not(0 <= self.decal <= self.largeurFond):
+            if self.decal > self.largeurFond:
+                self.decal -= self.largeurFond
 
             elif self.decal < 0:
-                self.decal += LARGEUR_FOND
+                self.decal += self.largeurFond
         
 
-        decal_x = [self.decal - LARGEUR_FOND, self.decal]
+        decal_x = [self.decal - self.largeurFond, self.decal]
 
         for fond in range(2):
             EZ.trace_image(self.chargesFond ,decal_x[fond],0)
@@ -450,6 +494,8 @@ class Game(Interface):
     
 
     def move(self, acc, vitesse):
+        """Move the background image for give on the player a movement
+        Deplace l'image du fond pour donner au joueur un mouvement"""
 
         if not(self.contact):
             if not(self.move_info["saut"]):

@@ -39,3 +39,4 @@ def ReadInventaire():
                 inventaire.update({row[0]:[ True if row[1] == "True" else False, int(row[2]), int(row[3])]})
 
     return inventaire
+

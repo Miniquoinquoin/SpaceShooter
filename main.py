@@ -16,7 +16,7 @@ EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 def Shooter():
     inventaire = Reader.ReadInventaire()
-    gold = Reader.ReadGold() # Read gold from csv InfoGen
+    gold = Reader.ReadGold() # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
 
 
     demande = "Menu"
@@ -24,12 +24,12 @@ def Shooter():
     while play:
 
         if demande == "Menu":
-            demande = ID.menu(gold, inventaire)
+            demande, map = ID.menu(gold, inventaire)
         
-        gold = int(Reader.ReadGold()) # Read gold from csv InfoGen
+        gold = int(Reader.ReadGold()) # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
             
         if demande == "Game":
-            demande = ID.game()
+            demande = ID.game(map)
 
 
         if not(demande):

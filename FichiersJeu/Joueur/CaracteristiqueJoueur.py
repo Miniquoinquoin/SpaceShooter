@@ -31,7 +31,7 @@ class Joueur:
         self.equipement = equipement
         self.x = ID.LONGEUR//2
         self.y = 150  # height player spawn / Hauteur d'aparition du joueur
-        self.y_sol = ID.HAUTEUR_SOL - 144 #Hauteur de marche du joueur 460 + 3* 48 = 604
+        self.y_sol = 0 #Hauteur de marche du joueur - 3* 48
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
         self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
@@ -99,6 +99,11 @@ class Joueur:
 
         self.charges = True
 
+    def setHauteurSol(self, hauteur):
+        """Set y_sol to the height of the ground
+        définie la hauteur du sol
+        """
+        self.y_sol = hauteur - 144
 
     def display(self):
         """Fonction qui trace le Joueur

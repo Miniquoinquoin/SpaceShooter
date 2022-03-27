@@ -17,7 +17,6 @@ import random
 
 HAUTEUR = 720
 LONGEUR = 1280
-HAUTEUR_SOL = 604
 TIMER_VAGUE = 2 #en seconde
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
@@ -31,10 +30,13 @@ Joueur1.charge()
 
 
 def menu(gold, inventaire):
+    """function of main menu
+    fonction du menu principal"""
 
 
     play = True
     leave = False
+    map = "Terre"
     EZ.reglage_fps(60)
 
     while play:
@@ -45,11 +47,11 @@ def menu(gold, inventaire):
         evenement = EZ.recupere_evenement()
         if evenement == "EXIT":
             EZ.destruction_fenetre()
-            return 0
+            return 0, 0
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton Play / Play button
-                return "Game"
+                return "Game", map
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
                 print("Shop")
@@ -72,15 +74,17 @@ def menu(gold, inventaire):
 
             elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
                 EZ.destruction_fenetre()
-                return 0
+                return 0, 0
 
         if leave:
-            return 0
+            return 0, 0
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
 def menuDeath(gold, kill, wave):
+    """function of death menu
+    fonction du menu de mort"""
 
     play = True
     EZ.reglage_fps(60)
@@ -113,7 +117,8 @@ def menuDeath(gold, kill, wave):
         EZ.frame_suivante()
 
 def menuGame():
-    """Fonction du menu en jeux"""
+    """ function of game menu ( press escape to go in menuGame )
+    Fonction du menu en jeux ( appuyer sur echape pour venir au menuGame )"""
 
     MenuG.displayFond()
 
@@ -146,6 +151,9 @@ def menuGame():
         EZ.frame_suivante()
 
 def menuPerso(gold):
+    """Function of player menu for selecting caracter
+    Fonction du menu de selection de personnage"""
+
 
     x = 100
     xLast = 0
@@ -207,6 +215,8 @@ def menuPerso(gold):
 
 
 def menuBuyPerso(gold, numPerso):
+    """Function of the menu to buy a character and see the stats of the character
+    Fonction du menu d'achat d'un personnage et de voir les stats du personnage"""
 
 
     statsPerso = Reader.ReadStatsPlayers()[numPerso]
@@ -258,58 +268,60 @@ def menuBuyPerso(gold, numPerso):
 
 
 
-def genratesMob(name, type = "COMMON"):
-    """Genere un mob
+def genratesMob(name, hauteurSol,type = "COMMON"):
+    """generate a mob
+    Genere un mob
 
     Args:
-        name (str): Nom du monstre
+        name (str): Name of monster / Nom du monstre
 
     Returns:
-        object: le monstre
+        object: the monster /le monstre
     """
     
-    BaseMonstre = ["Amalgam_Sprite"]
-    WizzardMonstre = ["Adept_Sprite"]
 
     if type == "COMMON":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.Monstre(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+            return Monstref.Monstre(name, Joueur1.x, hauteurSol, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.Monstre(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+            return Monstref.Monstre(name, Joueur1.x , hauteurSol, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
 
-        return Monstref.Monstre(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
+        return Monstref.Monstre(name, Joueur1.x, hauteurSol, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
     elif type == "STRENGTH" or type == "HEAL":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), type)
+            return Monstref.Wizard(name, Joueur1.x, hauteurSol, random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)), type)
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.Wizard(name, Joueur1.x, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), type)
+            return Monstref.Wizard(name, Joueur1.x, hauteurSol, random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), type)
 
-        return Monstref.Wizard(name, Joueur1.x, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), type)
+        return Monstref.Wizard(name, Joueur1.x, hauteurSol, random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]), type)
 
     elif type == "SHOOTER":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.MonstreShooter(name, Joueur1.x, 250,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.MonstreShooter(name, Joueur1.x, 250,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
 
-        return Monstref.MonstreShooter(name, Joueur1.x, 250,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
-
-
+        return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
 
 
-def Startwave(number):
-    """Genere les monstres en début de vague
+
+
+def Startwave(number, hauteurSol):
+    """ generate the monsters of the wave
+    Genere les monstres en début de vague
 
     Args:
-        number (int): numero de la vague
+        number (int): number of wave / numero de la vague
 
     Returns:
-        list: listMob: tout les mob de la vague , listWizzard: list de tout les sorcier (mob avec effet)
+        list:   listMob: list all mob of the wave / liste de tout les mob de la vague , 
+                listWizzard: list of all wizzard (mob with effect) / liste de tout les sorcier (mob avec effet), 
+                listShooter: list of all shooter mob / liste de tout les monstres qui tirs
     """
 
     listMob = []
@@ -320,13 +332,13 @@ def Startwave(number):
         reader = csv.DictReader(csvfile, delimiter=';')
         for row in reader:
             if row[f'type_wave_{number}'] == "COMMON":
-                listMob += [genratesMob(row[f'name_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+                listMob += [genratesMob(row[f'name_wave_{number}'],hauteurSol)for monstre in range(int(row[f'number_wave_{number}']))]
 
             elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
-                listWizzard += [genratesMob(row[f'name_wave_{number}'], row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+                listWizzard += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
             elif row[f'type_wave_{number}'] == "SHOOTER":
-                listShooter += [genratesMob(row[f'name_wave_{number}'], row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+                listShooter += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
 
             # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
@@ -338,7 +350,8 @@ def Startwave(number):
     return listMob, listWizzard, listShooter
 
 def Verifzone(zone1, zone2):
-    """Verifie si deux zone se touche
+    """ check if 2 zone are in the same zone
+    Verifie si deux zone se touche
 
     Args:
         zone1 (objet): premier objet
@@ -350,7 +363,8 @@ def Verifzone(zone1, zone2):
     return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
 
 def VerifzonePower(zonePower, zoneMonstre):
-    """Verifie si deux zone se touche
+    """ check if 2 zone are in the same zone for power
+    Verifie si deux zone se touche pour les effet de pouvoir
 
     Args:
         zoneMonstre (objet): Monstre qui reçoit l'effet
@@ -362,7 +376,8 @@ def VerifzonePower(zonePower, zoneMonstre):
     return ((zonePower.zonePowerlist[0][0] <= zoneMonstre.zoneHitBoxlist[0][0] <= zonePower.zonePowerlist[1][0]) or (zonePower.zonePowerlist[0][0] <= zoneMonstre.zoneHitBoxlist[1][0] <= zonePower.zonePowerlist[1][0])) and ((zonePower.zonePowerlist[0][1] <= zoneMonstre.zoneHitBoxlist[0][1] <= zonePower.zonePowerlist[3][1]) or (zonePower.zonePowerlist[0][1] <= zoneMonstre.zoneHitBoxlist[3][1] <= zonePower.zonePowerlist[3][1]) ) # verifie si des zonePower touche un mob
 
 def getNearSide(zone1, zone2):
-    """Donne le coter le plus proche ou zone1 touche zone2
+    """ get the near side where zone1 touch zone2
+    Donne le coter le plus proche ou zone1 touche zone2
 
     Args:
         zone1 (objet): objet dont le coter proche sera donner
@@ -379,7 +394,8 @@ def getNearSide(zone1, zone2):
 
 
 def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
-    """ Fonction qui compare la position des different ellement et mets des degat si nessesaire
+    """ function to check if the player is hit by the monsters and if monstre is hit by the player
+    Fonction qui compare la position des different ellement et mets des degat si nessesaire
     
     Args:
         monstres(list): Liste de tout les monstre en vie
@@ -415,6 +431,8 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
     return monstres, True, mobKill
 
 def VerifBuff(wizzards, monstres):
+    """function to check if the wizzard give buff to the near monsters
+    Fonction qui verifie si les sorciers donne un buff aux monstre"""
     
     for indiceWizzard, wizzard in enumerate(wizzards):
         
@@ -436,7 +454,8 @@ def VerifBuff(wizzards, monstres):
 
 
 def VerifContactX(objets, Fondjoueur,joueur):
-    """Verifie si un objet et un contacte avec le joueur"""
+    """ check if the player is in contact with an object
+    Verifie si un objet et un contacte avec le joueur"""
     contact = False
     for objet in objets:
         if Verifzone(objet, joueur):
@@ -473,7 +492,8 @@ def VerifContactX(objets, Fondjoueur,joueur):
 
 
 def autoShoot(monstres, joueur):
-    """dit au joueur de quel coter il doit tirée quand il est a l'arret"""
+    """ say to the player where i must shoot when he is stop
+    dit au joueur de quel coter il doit tirée quand il est a l'arret"""
 
     nearMonstre = [LONGEUR + 1001, "right"]
 
@@ -489,11 +509,14 @@ def autoShoot(monstres, joueur):
     return nearMonstre[1]
 
 
-def game():
-    """Fonction principale du jeux en partie"""
+def game(map):
+    """ function that manage the game
+    fonction qui gere le jeu"""
     EZ.reglage_fps()
 
     Game = Menuf.Game(LONGEUR, HAUTEUR)
+    Game.setMap(map)
+    Joueur1.setHauteurSol(Game.hauteurSol)
     Joueur1.resetStats()
 
     vague = 0
@@ -519,7 +542,7 @@ def game():
                 border.display(Game.CoordonnerFictive + Joueur1.x)
             
             #Affiche le nombre de monstre restant
-            Decor.nombre_kills(LONGEUR - 124, 20, len(MonstreList))
+            Decor.monster_left(LONGEUR - 124, 20, len(MonstreList))
 
             #Affiche le joueur et sa vie
             Joueur1.display()
@@ -552,7 +575,7 @@ def game():
                     timeLastWave[1] = False
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
-                    MonstreList, WizzardList , ShooterList = Startwave(vague)  # Gener la nouvelle vague
+                    MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
             
