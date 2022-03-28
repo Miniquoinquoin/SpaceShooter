@@ -34,21 +34,28 @@ def nombre_romain(nombre):
     #on retourne la liste des chiffres romains
     return liste_romain
 
-"""Info:
+def saveNumberRoman(nombre):
+    """Fonction that save the roman number of the wave
+    fonction qui sauvegarde le nombre romain de la vague"""
+    
+    decalx = 0
+    suiteImage = nombre_romain(nombre)
+    raport = 200//len(suiteImage) if len(suiteImage) != 0 else 0
+    image = EZ.creation_image(200, 50)
+    EZ.trace_rectangle_droit_v2(0,0,200,50,255,255,255, 255, image)
+    for i in suiteImage:
+        decalx+= EZ.dimension(i)[0] * raport
+        if i == image_wave[0]:
+            EZ.trace_image(i,decalx,0,255, image)
+        
+        elif i == image_wave[1]:
+            EZ.trace_image(i,decalx,10,255, image)
 
+        else:
+            EZ.trace_image(i,decalx,10,255, image)
+    
 
-    decal = 10
-for i in range(len(x)):
-    if x[i] == image_wave[0]:
-        EZ.trace_image(x[i] , decal, 0)
-        decal += 15
-    elif x[i] == image_wave[1]:
-        EZ.trace_image(x[i] , decal, 10)
-        decal += 50
-
-    else:
-        EZ.trace_image(x[i] , decal, 10)
-        decal += 30"""
+    return image
 
 
 def display_coeur(x,y,taille,vie,vie_max):

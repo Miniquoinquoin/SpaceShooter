@@ -520,6 +520,7 @@ def game(map):
     Joueur1.resetStats()
 
     vague = 0
+    Game.saveNumeroVague(vague)
     MonstreList = [] # List contenant l'ensemble des monstre en vie de la vague
     WizzardList = [] # List contenant l'ensemble des montre a effet
     ShooterList = [] # List contenant l'ensemble des montre qui tire
@@ -578,6 +579,7 @@ def game(map):
                     MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
+                    Game.saveNumeroVague(vague)
             
             #Informe le fond sur l'etat du saut chez le joueur
             if not(Joueur1.move_info["saut"]):

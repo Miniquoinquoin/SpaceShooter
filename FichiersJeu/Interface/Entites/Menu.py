@@ -490,6 +490,8 @@ class Game(Interface):
         for fond in range(2):
             EZ.trace_image(self.chargesFond ,decal_x[fond],0)
 
+        self.displayNumeroVague()
+
         
     
 
@@ -574,3 +576,20 @@ class Game(Interface):
 
         self.decal -= self.decalage # Le fond bouge dans le sens inverse
         self.CoordonnerFictive += self.decalage
+    
+    def saveNumeroVague(self, numero):
+        """Save the number of the wave
+        sauvegarde le numero de la vague"""
+
+        self.numVague = Decor.saveNumberRoman(numero)
+    
+    def displayNumeroVague(self):
+        """Display the number of the wave
+        Affiche le numero de la vague"""
+
+        X = self.longeur - self.longeur//4
+        Y = 20
+
+        if self.numVague != None:
+            Decor.traceCadre(X, Y, 200, 50, 1, 0, (200,200,200), (0,0,0))
+            EZ.trace_image(self.numVague, X + 10, Y)
