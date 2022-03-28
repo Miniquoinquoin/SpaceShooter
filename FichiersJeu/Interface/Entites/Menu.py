@@ -425,6 +425,34 @@ class Mode(SousMenu):
     def __init__(self, longeur, hauteur, texte):
         super().__init__(longeur, hauteur, texte)
         self.largeurWidget = self.longeur - 100
+        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
+        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
+
+
+        self.chargesBouton = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Mode\BoutonCampagne.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Mode\BoutonInfini.png")]
+
+    def traceImage(self):
+        """Draw the images of button mode
+        Trace les images des boutons mode
+        """
+
+        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 - 3 + 50, self.yDebutWidget + self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25, EZ.dimension(self.chargesBouton[0])[0] + 3, EZ.dimension(self.chargesBouton[0])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+        EZ.trace_image(self.chargesBouton[0], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 + 50, self.yDebutWidget +  1 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25)
+
+        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 - 3 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[1])[1]//2 + 25, EZ.dimension(self.chargesBouton[1])[0] + 3, EZ.dimension(self.chargesBouton[1])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+        EZ.trace_image(self.chargesBouton[1], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 + 25)
+    
+    def DisplayMenu(self):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceImage()
+
+
+        
 
 
 class Game(Interface):
@@ -490,7 +518,6 @@ class Game(Interface):
         for fond in range(2):
             EZ.trace_image(self.chargesFond ,decal_x[fond],0)
 
-        self.displayNumeroVague()
 
         
     
@@ -581,7 +608,7 @@ class Game(Interface):
         """Save the number of the wave
         sauvegarde le numero de la vague"""
 
-        self.numVague = Decor.saveNumberRoman(numero)
+        self.numVague = Decor.saveNumberRoman(numero, (200,200,200))
     
     def displayNumeroVague(self):
         """Display the number of the wave
@@ -591,5 +618,5 @@ class Game(Interface):
         Y = 20
 
         if self.numVague != None:
-            Decor.traceCadre(X, Y, 200, 50, 1, 0, (200,200,200), (0,0,0))
-            EZ.trace_image(self.numVague, X + 10, Y)
+            Decor.traceCadre(X, Y, 204, 50, 2, 0, (200,200,200), (0,0,0))
+            EZ.trace_image(self.numVague, X + 2, Y + 2)

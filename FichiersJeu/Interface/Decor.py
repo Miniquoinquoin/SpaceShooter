@@ -11,7 +11,7 @@ def nombre_romain(nombre):
     fonction qui transforme nombre en chiffre romain"""
 
     #dictionnaire des chiffres romains
-    romain = {50:image_wave[3], 40:(image_wave[2] , image_wave[3]), 10:image_wave[2], 9:(image_wave[0] , image_wave[2]), 5:image_wave[1], 4:(image_wave[1] , image_wave[2]), 1:image_wave[0]}
+    romain = {50:image_wave[3], 40:(image_wave[2] , image_wave[3]), 10:image_wave[2], 9:(image_wave[0] , image_wave[2]), 5:image_wave[1], 4:(image_wave[0] , image_wave[1]), 1:image_wave[0]}
 
     #liste des chiffres romains
     liste_romain = []
@@ -34,25 +34,25 @@ def nombre_romain(nombre):
     #on retourne la liste des chiffres romains
     return liste_romain
 
-def saveNumberRoman(nombre):
+def saveNumberRoman(nombre, couleurFond = (255,255,255)):
     """Fonction that save the roman number of the wave
     fonction qui sauvegarde le nombre romain de la vague"""
     
     decalx = 0
     suiteImage = nombre_romain(nombre)
-    raport = 200//len(suiteImage) if len(suiteImage) != 0 else 0
-    image = EZ.creation_image(200, 50)
-    EZ.trace_rectangle_droit_v2(0,0,200,50,255,255,255, 255, image)
+    image = EZ.creation_image(200, 46)
+    EZ.trace_rectangle_droit_v2(0,0,200,50,*couleurFond, canvas=image)
     for i in suiteImage:
-        decalx+= EZ.dimension(i)[0] * raport
         if i == image_wave[0]:
             EZ.trace_image(i,decalx,0,255, image)
         
         elif i == image_wave[1]:
+            decalx -= 10
             EZ.trace_image(i,decalx,10,255, image)
 
         else:
             EZ.trace_image(i,decalx,10,255, image)
+        decalx += EZ.dimension(i)[0] - 5
     
 
     return image

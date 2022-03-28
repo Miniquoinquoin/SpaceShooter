@@ -20,12 +20,22 @@ LONGEUR = 1280
 TIMER_VAGUE = 2 #en seconde
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
+
+# Joueur
 Joueur1 = CJ.Joueur("Bob", 0)
+
+# Menu de selection
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
+MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
+MenuMode = Menuf.Mode(LONGEUR, HAUTEUR, "Mode")
+
+#In game
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
 MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
-MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
+
+#Objects
 Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
+
 Joueur1.charge()
 
 
@@ -60,7 +70,7 @@ def menu(gold, inventaire):
 
             
             elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
-                print("En phase devloppement")
+                leave = menuMode()
 
             elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
                 MenuPerso.TrieInventaire(inventaire)
@@ -252,7 +262,39 @@ def menuBuyPerso(gold, numPerso):
         EZ.frame_suivante()
 
 
+def menuMode():
+    """Function of the menu to select the mode of the game
+    Fonction du menu de selection du mode de jeux"""
 
+    MenuMode.DisplayMenu()
+
+    play = True
+
+    while play:
+
+        evenement = EZ.recupere_evenement()
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 100 < EZ.souris_x() < 1180 and 170 < EZ.souris_y() < 380:   #Bouton Campagne
+                return "Campagne"
+
+            elif 100 < EZ.souris_x() < 1180 and 400 < EZ.souris_y() < 610: # Bouton Infini
+                return "Infini"
+
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+            
+    
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 
@@ -542,7 +584,8 @@ def game(map):
             for border in Border:
                 border.display(Game.CoordonnerFictive + Joueur1.x)
             
-            #Affiche le nombre de monstre restant
+            #Affiche le nombre de monstre restant et le numero de la vague
+            Game.displayNumeroVague()
             Decor.monster_left(LONGEUR - 124, 20, len(MonstreList))
 
             #Affiche le joueur et sa vie
