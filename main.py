@@ -24,12 +24,12 @@ def Shooter():
     while play:
 
         if demande == "Menu":
-            demande, map = ID.menu(gold, inventaire)
+            demande, infoGame = ID.menu(gold, inventaire)
         
         gold = int(Reader.ReadGold()) # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
             
         if demande == "Game":
-            demande = ID.game(map)
+            demande = ID.game(infoGame['map'], infoGame['mode'])
 
 
         if not(demande):

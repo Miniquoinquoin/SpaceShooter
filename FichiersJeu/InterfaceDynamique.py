@@ -28,6 +28,7 @@ Joueur1 = CJ.Joueur("Bob", 0)
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
 MenuMode = Menuf.Mode(LONGEUR, HAUTEUR, "Mode")
+MenuMap = Menuf.Infini(LONGEUR, HAUTEUR, "Map")
 
 #In game
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
@@ -46,7 +47,7 @@ def menu(gold, inventaire):
 
     play = True
     leave = False
-    map = "Terre"
+    infoGame = {"map": "Terre", "mode": "Infini"}
     EZ.reglage_fps(60)
 
     while play:
@@ -57,11 +58,11 @@ def menu(gold, inventaire):
         evenement = EZ.recupere_evenement()
         if evenement == "EXIT":
             EZ.destruction_fenetre()
-            return 0, 0
+            return 0, infoGame
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton Play / Play button
-                return "Game", map
+                return "Game", infoGame
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
                 print("Shop")
@@ -71,6 +72,19 @@ def menu(gold, inventaire):
             
             elif 80 < EZ.souris_x() < 330 and 575 < EZ.souris_y() < 700: # Bouton Mode / Game mode button
                 leave = menuMode()
+                if type(leave) == str:
+                    demande = leave
+                    if demande == "Campagne":
+                        infoGame["map"] = "Terre"
+                        infoGame["mode"] = "Campagne"
+
+                    elif demande == "Infini":
+                        infoGame = menuInfini(infoGame)
+                        infoGame["map"] = "Mars"
+                        infoGame["mode"] = "Infini"
+                        
+
+                    leave = False
 
             elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
                 MenuPerso.TrieInventaire(inventaire)
@@ -84,10 +98,10 @@ def menu(gold, inventaire):
 
             elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
                 EZ.destruction_fenetre()
-                return 0, 0
+                return 0, infoGame
 
         if leave:
-            return 0, 0
+            return 0, infoGame
         
         EZ.mise_a_jour()
         EZ.frame_suivante()
@@ -297,6 +311,68 @@ def menuMode():
         EZ.frame_suivante()
 
 
+def menuInfini(infoGame):
+    """Function of the Menu Infini for choses the map
+    Fonction du menu Infini pour choisir la carte"""
+
+    x = 100
+    xLast = 0
+    click = False
+
+    perso = True
+    leave = False
+    while perso:
+        MenuMap.displayMenu(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuMap.yDebutCadre < EZ.souris_y() < MenuMap.yDebutCadre + MenuMap.hauteurCadre: # look if the click is in a frame area / regarde si le click se trouve dans la zone des cadres
+                xSouris = EZ.souris_x()
+
+                for cadre, map in enumerate(MenuMap.chargesMap):
+                    if cadre * MenuMap.largeurCadrePlusEspace + x < xSouris < cadre * MenuMap.largeurCadrePlusEspace + x + MenuMap.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        infoGame['map'] = map
+                        return infoGame
+                    
+                            
+
+
+                
+
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuMap.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+
+
+
+
+
+
 
 
 
@@ -353,12 +429,15 @@ def genratesMob(name, hauteurSol,type = "COMMON"):
 
 
 
-def Startwave(number, hauteurSol):
+def Startwave(number, hauteurSol, mode, map= "Mars"):
     """ generate the monsters of the wave
     Genere les monstres en début de vague
 
     Args:
         number (int): number of wave / numero de la vague
+        hauteurSol (int): height of the ground / hauteur du sol
+        mode (str): mode of the game / mode de jeux "Infini" ou "Campagne"
+        map (str): name of the map / nom de la carte
 
     Returns:
         list:   listMob: list all mob of the wave / liste de tout les mob de la vague , 
@@ -370,20 +449,37 @@ def Startwave(number, hauteurSol):
     listWizzard = []
     listShooter = []
 
-    with open('FichiersJeu/InfoWave/names.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=';')
-        for row in reader:
-            if row[f'type_wave_{number}'] == "COMMON":
-                listMob += [genratesMob(row[f'name_wave_{number}'],hauteurSol)for monstre in range(int(row[f'number_wave_{number}']))]
+    if mode == "Campagne":
 
-            elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
-                listWizzard += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+        with open(f'FichiersJeu/InfoWave/Mob{map}.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';')
+            for row in reader:
+                if row[f'type_wave_{number}'] == "COMMON":
+                    listMob += [genratesMob(row[f'name_wave_{number}'],hauteurSol)for monstre in range(int(row[f'number_wave_{number}']))]
 
-            elif row[f'type_wave_{number}'] == "SHOOTER":
-                listShooter += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+                elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
+                    listWizzard += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+
+                elif row[f'type_wave_{number}'] == "SHOOTER":
+                    listShooter += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
 
-            # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
+                # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
+    
+    elif mode == "Infini":
+        AllMob = {"COMMON": "Amalgam_Sprite", "STRENGTH": "Adept_Sprite", "HEAL": "ArchMage_Sprite", "SHOOTER": "Ammonite_Sprite"}
+
+        for mob in range(number*10 + 1):
+            typeMob = random.choice(list(AllMob.keys()))
+            if typeMob == "COMMON":
+                listMob += [genratesMob(AllMob[typeMob], hauteurSol)]
+            
+            elif typeMob == "STRENGTH" or typeMob == "HEAL":
+                listWizzard += [genratesMob(AllMob[typeMob], hauteurSol, typeMob)]
+            
+            elif typeMob == "SHOOTER":
+                listShooter += [genratesMob(AllMob[typeMob], hauteurSol, typeMob)]
+            
   
 
     listMob += listWizzard
@@ -551,9 +647,21 @@ def autoShoot(monstres, joueur):
     return nearMonstre[1]
 
 
-def game(map):
+def game(map, mode, limiteWave = -1):
     """ function that manage the game
-    fonction qui gere le jeu"""
+    fonction qui gere le jeu
+    
+    Args:
+        map (str): name of the map
+        mode (str): name of the mode
+        limiteWave (int): number of wave to play
+        
+    Returns:
+        int/str: 1 if the player win, 0 if the player loose or quit, "Menu" if the player want to go to the menu", "Game" if the player want to replay the game
+        
+        
+        
+        """
     EZ.reglage_fps()
 
     Game = Menuf.Game(LONGEUR, HAUTEUR)
@@ -619,7 +727,7 @@ def game(map):
                     timeLastWave[1] = False
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
-                    MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol)  # Gener la nouvelle vague
+                    MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol, mode)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
                     Game.saveNumeroVague(vague)

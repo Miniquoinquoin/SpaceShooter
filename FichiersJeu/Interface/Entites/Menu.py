@@ -188,18 +188,66 @@ class SousMenu(Menu):
         "Personnage7": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso7\Perso7A2.png"), 0, 5), 
         "Personnage8": EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A2.png"), 0, 5) }
 
-    
 
-class Personnages(SousMenu):
+class SlideMenu(SousMenu):
+    """Class for the slide menu
+    Classe pour le slide menu"""
+
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.hauteurCadre = int(3 * self.hauteurWidget/4)
+        self.hauteurCardreInfo = int(3 * self.hauteurWidget/5)
+        self.largeurCadre = 300
+        self.largeurCadrePlusEspace = self.largeurCadre//0.9 # largeur du cadare plus l'espace qu'il laisse après lui pour ne pas être coller au prochain
+        self.yDebutCadre = (self.hauteurWidget - self.hauteurCadre)//2 + self.yDebutWidget # y de début du cadre
+
+        self.couleurFondCadre = (180, 180, 180) # couleur de fond des cadres
+        self.couleurBordureCadre = (140, 140, 140) # couleur de la bordure des cadres
+        self.policeCadre = EZ.charge_police(50, "FichiersJeu\Interface\Entites\Police\PermanentMarker-Regular.ttf", True)
+
+
+      
+
+    def TraceWidget(self, x):
+        """Drawn the widget of the slide Menu
+        trace le widget du Menu Slide
+
+        x (int): offset of the Caracters frame / decalage des Cadre des personnages
+        """
+
+        if x + 150 >= 100:
+            Decor.traceCadre(x - 50, self.yDebutWidget, self.longeur + 150, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        elif x < -(len(self.chargesPersonnage) * self.largeurCadrePlusEspace - self.longeur):
+            Decor.traceCadre(-10, self.yDebutWidget, 20 + (x + len(self.chargesPersonnage) * self.largeurCadrePlusEspace), self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        else:
+            Decor.traceCadre(-10, self.yDebutWidget, self.longeur + 20, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+        
+        self.traceTitre()
+        self.traceFlecheRetour()
+    
+    def traceBasicCadre(self, x, texte):
+        """Draw frames that move
+        Trace les Cadre qui bougent
+
+        x (int): offset of the Caracters frame / decalage des Cadre des personnages
+        texte (str): text to drawn / texte a afficher
+        """
+
+        Decor.traceCadre(x, self.yDebutCadre, self.largeurCadre, 3 *self.hauteurCadre//4, 3, 2, self.couleurFondCadre, self.couleurBordureCadre) # Haut du cadre
+        Decor.traceCadre(x, self.yDebutCadre + 3 *self.hauteurCadre//4, 300, self.hauteurCadre//4, 3, 2, self.couleurBordureCadre, self.couleurBordureCadre) # Bas du cadre
+
+        EZ.trace_image(EZ.image_texte(texte, self.policeCadre, 255, 255, 255), x + self.largeurCadre//2 - EZ.dimension(EZ.image_texte(texte, self.policeCadre, 255, 255, 255))[0]//2, self.yDebutCadre + 7 * self.hauteurCadre//8 - EZ.dimension(EZ.image_texte(texte, self.police, 255, 255, 255))[1]//2) # Texte du cadre
+
+class Personnages(SlideMenu):
     """Player Menu class 
     Class du Menu des personnages"""
 
     def __init__(self, longeur, hauteur, texte, Inventaire = {}):
         super().__init__(longeur, hauteur, texte)
         self.hauteurCardreJoueur = int(3 * self.hauteurWidget/4)
-        self.largeurCadre = 300
-        self.largeurCadrePlusEspace = self.largeurCadre//0.9 # largeur du cadare plus l'espace qu'il laisse après lui pour ne pas être coller au prochain
-        self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreJoueur)//2 + self.yDebutWidget
+        
 
         self.couleurFondCadreAchete = (200, 50, 50) 
         self.couleurBordureCadreAchete = (150, 0, 0) 
@@ -230,32 +278,6 @@ class Personnages(SousMenu):
                 Personnages.update({keys: Inventaire[keys]})
         
         self.infoPersonnages = Personnages
-    
-
-
-
-    def TraceWidget(self, x):
-        """Drawn the widget of the Caracters Menu
-        trace le widget du Menu Personnages
-
-        x (int): offset of the Caracters frame / decalage des Cadre des personnages
-        """
-
-        if x + 150 >= 100:
-            Decor.traceCadre(x - 50, self.yDebutWidget, self.longeur + 150, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
-        
-        elif x < -(len(self.chargesPersonnage) * self.largeurCadrePlusEspace - self.longeur):
-            Decor.traceCadre(-10, self.yDebutWidget, 20 + (x + len(self.chargesPersonnage) * self.largeurCadrePlusEspace), self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
-        
-        else:
-            Decor.traceCadre(-10, self.yDebutWidget, self.longeur + 20, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
-        
-        self.traceTitre()
-        self.traceFlecheRetour()
-
-
-
-
 
 
 
@@ -342,7 +364,7 @@ class StatsPersonnage(SousMenu):
 
         self.largeurWidget = self.longeur - 100
 
-        self.hauteurCardreInfo = int(3 * self.hauteurWidget/5)
+        
         self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreInfo)//4 + self.yDebutWidget
         self.largeurCadre = 400
 
@@ -452,7 +474,40 @@ class Mode(SousMenu):
         self.traceImage()
 
 
-        
+
+class Infini(SlideMenu):
+    """Class to choice the map for mode Infini
+    class pour choisir la carte pour le mode Infini"""
+
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.largeurWidget = self.longeur - 100
+
+        self.chargesMap = { "Terre": EZ.selectionne_partie_image(EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Terre.jpg"), 0, 400, self.largeurCadre - 50, self.hauteurCardreInfo - 50), 
+        "Mars": EZ.selectionne_partie_image(EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Mars.png"), 0, 400, self.largeurCadre - 50, self.hauteurCardreInfo - 50)}
+
+        self.largeurAllCadre = self.largeurCadrePlusEspace * len(self.chargesMap)
+
+    def traceAllCadre(self,x):
+        """Draw all the cadre
+        Trace tout les cadre
+        """
+
+        xStart = x
+        for map in self.chargesMap:
+            self.traceBasicCadre(xStart, map)
+            EZ.trace_image(self.chargesMap[map], xStart + self.largeurCadre//2 - EZ.dimension(self.chargesMap[map])[0]//2, self.yDebutCadre + self.hauteurCardreInfo//2 - EZ.dimension(self.chargesMap[map])[1]//2)
+            xStart += self.largeurCadrePlusEspace
+
+    
+    def displayMenu(self,x):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(x)
+        self.traceAllCadre(x)
 
 
 class Game(Interface):
@@ -487,7 +542,7 @@ class Game(Interface):
 
         if self.map == "Mars":
             self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Mars.png")
-            self.largeurFond = 2400
+            self.largeurFond = 2040
             self.hauteurSol = 604
         
         elif self.map == "Terre":
