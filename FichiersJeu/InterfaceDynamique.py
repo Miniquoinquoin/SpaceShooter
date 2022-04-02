@@ -67,6 +67,9 @@ def menu(gold, inventaire):
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
                 print("Shop")
 
+                Writer.UpWeapon(1,Reader.ReadInventaire()[f"Personnage{1}"][2] + 1)
+                Joueur1.charge()
+
 
 
             
@@ -80,8 +83,6 @@ def menu(gold, inventaire):
 
                     elif demande == "Infini":
                         infoGame = menuInfini(infoGame)
-                        infoGame["map"] = "Mars"
-                        infoGame["mode"] = "Infini"
                         
 
                     leave = False
@@ -315,6 +316,8 @@ def menuInfini(infoGame):
     """Function of the Menu Infini for choses the map
     Fonction du menu Infini pour choisir la carte"""
 
+
+    infoGame['mode'] = "Infini"
     x = 100
     xLast = 0
     click = False
@@ -335,7 +338,7 @@ def menuInfini(infoGame):
             xLast = EZ.souris_x()
 
             if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
-                return False 
+                return infoGame 
 
             elif MenuMap.yDebutCadre < EZ.souris_y() < MenuMap.yDebutCadre + MenuMap.hauteurCadre: # look if the click is in a frame area / regarde si le click se trouve dans la zone des cadres
                 xSouris = EZ.souris_x()

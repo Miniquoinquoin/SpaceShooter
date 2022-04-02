@@ -364,9 +364,12 @@ class StatsPersonnage(SousMenu):
 
         self.largeurWidget = self.longeur - 100
 
-        
+        self.hauteurCardreInfo = int(3 * self.hauteurWidget/5)
         self.yDebutCadre = (self.hauteurWidget - self.hauteurCardreInfo)//4 + self.yDebutWidget
         self.largeurCadre = 400
+
+        self.tailleImage = [EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl1.png"))[0], EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl1.png"))[1]] # [largeur, hauteur]
+        self.chargesImageArme = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl1.png"), 0, 100//self.tailleImage[0])
 
         self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
         self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
@@ -383,10 +386,12 @@ class StatsPersonnage(SousMenu):
             Decor.traceCadre(xCadre, self.yDebutCadre, self.largeurCadre, self.hauteurCardreInfo, 2, 3, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
 
             if Cadre == 1:
+                EZ.trace_image(self.chargesImageArme, xCadre + self.largeurCadre//2 - EZ.dimension(self.chargesImageArme)[0]//2, self.yDebutCadre + self.hauteurCardreInfo//4 - EZ.dimension(self.chargesImageArme)[1]//2)
+
                 #Stats arme
-                EZ.trace_image(EZ.image_texte(f"Damage: {self.stats['damage']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 160)
-                EZ.trace_image(EZ.image_texte(f"Range: {self.stats['range']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 110)
-                EZ.trace_image(EZ.image_texte(f"Durability: {self.stats['durability']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 60)
+                EZ.trace_image(EZ.image_texte(f"Damage: {self.stats['weapon']['damage']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 160)
+                EZ.trace_image(EZ.image_texte(f"Range: {self.stats['weapon']['range']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 110)
+                EZ.trace_image(EZ.image_texte(f"Durability: {self.stats['weapon']['durability']}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 60)
 
 
             elif Cadre == 2:

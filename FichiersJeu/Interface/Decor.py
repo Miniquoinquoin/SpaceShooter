@@ -38,8 +38,8 @@ def saveNumberRoman(nombre, couleurFond = (255,255,255)):
     """Fonction that save the roman number of the wave
     fonction qui sauvegarde le nombre romain de la vague"""
     
-    decalx = 0
     suiteImage = nombre_romain(nombre)
+    decalx = 100 - len(suiteImage)*20
     image = EZ.creation_image(200, 46)
     EZ.trace_rectangle_droit_v2(0,0,200,50,*couleurFond, canvas=image)
     for i in suiteImage:

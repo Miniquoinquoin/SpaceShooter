@@ -26,8 +26,9 @@ class Joueur:
         """
         self.name = name
         self.level = level
-        self.personnage = personnage
+        self.personnage = personnage # Player Number / numeros du joueur
         self.stats = stats if stats != None else Reader.ReadStatsPlayers()[personnage - 1] # If stats == None, read stats from file / si stats == None, lire les stats du fichier
+
         self.equipement = equipement
         self.x = ID.LONGEUR//2
         self.y = 150  # height player spawn / Hauteur d'aparition du joueur
@@ -56,6 +57,7 @@ class Joueur:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3)
             self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A8.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A9.png"), 0, 3)]
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A5.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A6.png"), 0, 3)]
+            
 
         elif self.personnage == 2:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso2\Perso2A2.png"), 0, 3)
@@ -93,7 +95,8 @@ class Joueur:
             self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A4.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A5.png"), 0, 3), EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso8\Perso8A6.png"), 0, 3)]
 
         # Load weapon / charge l'arme
-        self.arme = [{"arme": Armef.Armes(self.stats['weapon']['name'], self.stats['weapon']["damage"], self.stats['weapon']["range"], self.stats['weapon']["durability"]), "speed": self.stats['weapon']['speed']} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}    
+        self.weaponLevel = Reader.ReadInventaire()[f"Personnage{self.personnage}"][2]
+        self.arme = [{"arme": Armef.Armes(self.stats['weapon']['name'], self.stats['weapon']["damage"], self.stats['weapon']["range"], self.stats['weapon']["durability"], self.weaponLevel), "speed": self.stats['weapon']['speed']} for nombre_arme in range(10)]  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}    
         self.last_arme = -1 # last weapon that the player shot in self.arme / Dernier arme que le joueur a tire dans self.arme
         self.timeShoot = [EZ.clock(), self.stats['weapon']['cooldown']] # [temps du dernier tire, cooldown]
 
@@ -250,13 +253,13 @@ class Joueur:
             self.timeShoot[0] = EZ.clock()
 
             if self.move_etat["right"]:
-                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "right", self.move_info["speed"])
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y, "right", self.move_info["speed"])
             
             elif self.move_etat["left"]:
-                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, "left", self.move_info["speed"])
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y, "left", self.move_info["speed"])
 
             else:
-                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y + 50, self.autoShoot , self.move_info["speed"])
+                self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y, self.autoShoot , self.move_info["speed"])
                 
 
 
