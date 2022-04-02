@@ -12,10 +12,11 @@ class Armes:
         self.durability = [durability, durability] # [Durabiliter totale, duribiliter restante]
         self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
 
-        self.charges = None
+        self.chargesB = None
         self.x = 1300
         self.y = 0
         self.hauteurTir = 50 # hauteur du tir entre le haut du personnage et l'arme / Height of the shot between the top of the character and the weapon
+        self.RotationSpeed = [1,0] # vitesse de rotation de l'arme [degres par tick, degres actuel] / Rotation speed of the weapon [degrees per tick, current degrees]
         self.xSetup = 1300
         
         self.direction = "right"
@@ -29,33 +30,34 @@ class Armes:
         charge l'arme
         """
         if self.name == "Hache":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme1\Arme1lvl{self.level}.png"),0,2)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme1\Arme1lvl{self.level}.png"),0,2)
+            self.RotationSpeed = [3,0]
 
         elif self.name == "Dague":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2lvl{self.level}.png"),0,2)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2lvl{self.level}.png"),0,2)
 
         elif self.name == "BouleElectrique":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme3\Arme3lvl{self.level}.png"),90,0.2)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme3\Arme3lvl{self.level}.png"),90,0.2)
         
         elif self.name == "Epee":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme4\Arme4lvl{self.level}.png"),0,2)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme4\Arme4lvl{self.level}.png"),0,2)
         
         elif self.name == "Flechette":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme5\Arme5lvl{self.level}.png"),0,1)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme5\Arme5lvl{self.level}.png"),0,1)
             self.hauteurTir = 70
             
         elif self.name == "Lance":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme6\Arme6lvl{self.level}.png"),0,0.5)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme6\Arme6lvl{self.level}.png"),0,0.5)
         
         elif self.name == "BouleDeFeu":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),0,0.5)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),0,0.5)
         
         elif self.name == "Shuriken":
-            self.charges = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme8\Arme8lvl{self.level}.png"),0,2)
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme8\Arme8lvl{self.level}.png"),0,2)
         
 
         
-        self.hitbox = [EZ.dimension(self.charges)[0], EZ.dimension(self.charges)[1]]
+        self.hitbox = [EZ.dimension(self.chargesB)[0], EZ.dimension(self.chargesB)[1]]
 
 
     def display(self, vitesse, vitesseFond):
@@ -65,7 +67,7 @@ class Armes:
             vitesse (int): vitesse de l'arme definit dans caracteristiqueJoueur
             vitesseFond (float): vittesse de deplacement du fond
         """
-        if self.charges == None:
+        if self.chargesB == None:
             self.charge()
 
         self.verifDurability()
@@ -107,9 +109,11 @@ class Armes:
 
         if direction == "right":
             self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court
+            self.RotationSpeed[1] = 90 if self.RotationSpeed[0] != 0 else 0 # Rotation de l'arme si l'arme a une rotation
         
         else:
             self.range[1] = self.range[0] * (1 - inertie/10) # donne une range plus grand quand le joueur cour
+            self.RotationSpeed[1] = -90 if self.RotationSpeed[0] != 0 else 0 # Rotation de l'arme si l'arme a une rotation
 
 
     def move(self, vitesse, vitesseFond, direction):
@@ -122,9 +126,13 @@ class Armes:
         """
         if direction == "right":
             self.x += vitesse - vitesseFond + self.inertie
+            self.RotationSpeed[1] -= self.RotationSpeed[0]
+            self.charges = EZ.transforme_image(self.chargesB, self.RotationSpeed[1], 1)
 
         else:
             self.x -= vitesse + vitesseFond - self.inertie
+            self.RotationSpeed[1] += self.RotationSpeed[0]
+            self.charges = EZ.transforme_image(self.chargesB, self.RotationSpeed[1], 1)
 
         self.xSetup -= vitesseFond
     
@@ -182,6 +190,22 @@ class ArmesAvecForme(Armes):
             EZ.trace_rectangle_droit_v2(int(self.x - self.size/2), int(self.y - self.size/2), self.size, self.size, *self.color)
             
 
+    def move(self, vitesse, vitesseFond, direction):
+        """Deplace l'arme
+
+        Args:
+            vitesse (int): vitesse de l'arme definie dans CaracteristiqueJoueur
+            vitesseFond (float): vitesse de deplacement du fond
+            direction (str): direction de l'arme
+        """
+        if direction == "right":
+            self.x += vitesse - vitesseFond + self.inertie
+
+        else:
+            self.x -= vitesse + vitesseFond - self.inertie
+
+
+        self.xSetup -= vitesseFond
 
 
 

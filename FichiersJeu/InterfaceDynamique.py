@@ -10,6 +10,9 @@ import FichiersJeu.Interface.Entites.ObjetsInterractifs as OI
 import FichiersJeu.InfoJoueur.ReadInfo as Reader
 import FichiersJeu.InfoJoueur.SaveInfo as Writer
 
+import Outiles.PerfCompteur as Perfcompteur
+Perfcompt = Perfcompteur.TimeDistribution()
+
 
 import csv
 import random

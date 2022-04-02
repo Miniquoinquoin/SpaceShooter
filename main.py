@@ -33,7 +33,6 @@ def Shooter():
 
 
         if not(demande):
-            # Writer.Save(gold, inventaire)
             break
 
 Shooter()
