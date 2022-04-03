@@ -523,6 +523,16 @@ def frame_suivante():
     global debut
     debut.tick(fps)
 
+def selectionne_partie_image(image,x,y,l,h) :
+    """
+    selectionne un morceau de l'image prechargee
+    Attention modifier l'image decoupee modifie aussi l image d'origine donc il n'y a pas creation de memoire
+    cepedant vous pouvez utiliser la fonction transformation dessus ou l afficher.
+    
+    """
+    return image.subsurface(Rect(x,y,l,h))
+
+
 
 
 
