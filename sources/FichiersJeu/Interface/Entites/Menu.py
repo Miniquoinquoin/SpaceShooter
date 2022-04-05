@@ -582,7 +582,7 @@ class Game(Interface):
         elif self.map == "Dead Zone":
             self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\DeadZone.jpg")
             self.largeurFond = 3000
-            self.hauteurSol = 590
+            self.hauteurSol = 615
 
         elif self.map == "Candya":
             self.chargesFond = EZ.charge_image("FichiersJeu\Interface\Entites\Fond\FondMap\Candya.jpg")

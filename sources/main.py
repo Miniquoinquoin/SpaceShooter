@@ -15,7 +15,7 @@ LONGEUR = 1280
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 def Shooter():
-    inventaire = Reader.ReadInventaire()
+    inventaire = Reader.ReadInventaire()  
     gold = Reader.ReadGold() # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
 
 
@@ -36,3 +36,5 @@ def Shooter():
             break
 
 Shooter()
+
+

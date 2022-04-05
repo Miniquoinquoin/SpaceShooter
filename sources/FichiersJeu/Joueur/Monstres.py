@@ -12,8 +12,8 @@ class Monstre:
 
         self.name = name
 
-        self.stats = {"vie": 100, "damage": 2, "speed": 3, "jumpPower": 1 , "maxvie": 100}
-        self.baseDamage = self.stats["damage"]
+        self.stats = {"vie": 100, "damage": 0, "speed": 3, "maxvie": 100}
+        self.baseDamage = self.stats["damage"] # base damage for boost / degat de base pour les boosts
         self.hitbox = [50, 100] #Modifier au moment du chargement du monstre
 
         self.charges = None
@@ -33,39 +33,331 @@ class Monstre:
 
 
     def __charge(self,nb_image):
-        """Charges les image du monstre et definit sa taille"""  
+        """ Load the monster images and is hitbox
+        Charges les image du monstre et definit sa taille
+        
+        nb_image : number of picture / nombre d'image du monstre"""  
 
         self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(nb_image)]
         self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(nb_image)]
         self.hitbox = [EZ.dimension(self.chargesRight[0])[0], EZ.dimension(self.chargesRight[0])[1]]
 
     def charge(self):
-        """Charge le monstre avec ces stats en fonction de son nom"""
+        """ Load the monster images and is stats
+        Charge le monstre avec ces stats en fonction de son nom
 
-        if self.name == "Amalgam_Sprite":
+        For all the monsters: name, number of picture, number of repetition before change
+        Pour chaque Monstre : nom du monstre, nombre d'image, nombre de repetition avant changement, stats du Monstre"""
+
+
+        # Map : Terre
+        if self.name == "Bolt_Sprite" or self.name == "NutTroop_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+        elif self.name == "NutArcher_Sprite" or self.name == "BoltArcher_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "KingToad_Sprite":
+            self.__charge(27)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Rocky_Sprite":
+            self.__charge(4)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+        elif self.name == "NutMage_Sprite1":
+            self.__charge(7)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        elif self.name == "Dolphin_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+        elif self.name == "Manmo_Sprite":
+            self.__charge(10)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+        elif self.name == "Magmaite_Sprite" or self.name == "Vulcan_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
-            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+
+
+        # Map : Mars
+        elif self.name == "Amalgam_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "Adept_Sprite":
             self.__charge(5)
             self.setSpeedEffect(3)
-            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1, "speed": 2, "maxvie": 100}
 
         elif self.name == "ArchMage_Sprite":
             self.__charge(5)
             self.setSpeedEffect(3)
-            self.stats = {"vie": 100, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 100}
+            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1, "speed": 2, "maxvie": 100}
         
         elif self.name == "Ammonite_Sprite":
             self.__charge(6)
             self.setSpeedEffect(5)
-            self.stats = {"vie": 50, "damage": 1,"speed": 3, "jumpPower": 1 , "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
         
+        elif self.name == "Gonger_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(5)
+            self.stats = {"type": "COMMON", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+
+        elif self.name == "RedDrake_Sprite" or self.name == "Spiker_Sprite":
+            self.__charge(30)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+
+        elif self.name == "Shroom_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(5)
+            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+
+        # Map : Gluton
+        elif self.name == "Berserker_Sprite":
+            self.__charge(24)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "CharybScylla_Sprite":
+            self.__charge(18)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "IceToad_Sprite":
+            self.__charge(27)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Drak_Sprite" or self.name == "LizardMan_Sprite" or self.name == "Newt_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        elif self.name == "Elder_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+
+
+
+        # Map : Volcano
+        elif self.name == "BarbBulb_Sprite":
+            self.__charge(40)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Sleepy_Sprite" or self.name == "Hopper_Sprite":
+            self.__charge(7)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "MadGong_Sprite":
+            self.__charge(31)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Roach_Sprite" or self.name == "GiantRoach_Sprite":
+            self.__charge(7)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "TarMan_Sprite" or self.name == "LavaMan_Sprite" or self.name == "ToxicMan_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        elif self.name == "Chimera_Sprite":
+            self.__charge(18)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Golem_Sprite":
+            self.__charge(4)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+
+
+        # Map : Forestia  
+        elif self.name == "Angler_Sprite":
+            self.__charge(36)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "PainWeed_Sprite" or self.name == "RankWeed_Sprite" or self.name == "VileWeed_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "VileWeed_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Codger_Sprite":
+            self.__charge(5)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "FoulWeed_Sprite":
+            self.__charge(7)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Gonghead_Sprite":
+            self.__charge(31)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Mutant_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Slasher_Sprite" or self.name == "Ripper_Sprite":
+            self.__charge(12)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "TankBot_Sprite" or self.name == "HyperBot_Sprite" or self.name == "ArmorBot_Sprite" or self.name == "ProtoBot_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Plant42_Sprite" or self.name == "Audrey_Sprite1":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "SHOOTER_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        elif self.name == "Gazer_Sprite":
+            self.__charge(24)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "ManTrap_Sprite":
+            self.__charge(7)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "MyriaIIIBoss_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Nue_Sprite":
+            self.__charge(11)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Insector_Sprite" or self.name == "FlyMan_Sprite":
+            self.__charge(20)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+
+
+        # Map : Dead Zone
+        elif self.name == "Bat_Sprite" :
+            self.__charge(4)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "PipeBomb_Sprite" or self.name == "Bomber_Sprite" or self.name == "BombSeed_Sprite":
+            self.__charge(3)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "DeathBot_Sprite" or self.name == "MultiBot_Sprite":
+            self.__charge(24)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "MistMan_Sprite" or self.name == "Armor_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        elif self.name == "DragonZombie_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Phantom_Sprite" or self.name == "Reaper_Sprite" or self.name == "Revenant_Sprite":
+            self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Vampire_Sprite":
+            self.__charge(16)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+        
+        # Map : Candya
+
+        elif self.name == "Scorpion_Sprite" or self.name == "GiantCrab_Sprite":
+            self.__charge(10)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Gooey_Sprite" or self.name == "GooKing_Sprite" or self.name == "GooTitan_Sprite" or self.name == "EyeGoo_Sprite" or self.name == "MageGoo_Sprite" or self.name == "PuffGoo_Sprite":
+            self.__charge(11)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Thunder_Sprite" or self.name == "Volt_Sprite":
+            self.__charge(16)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "HugeSlug_Sprite":
+            self.__charge(6)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+        elif self.name == "Sample4_Sprite":
+            self.__charge(30)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+
+
+
+
+
+
 
 
         self.y = self.hauteurSol - self.hitbox[1]
         self.charges = self.chargesRight[self.lastchargesRight[0]]
+
+        self.baseDamage = self.stats["damage"]
+        self.cooldwon = [EZ.clock(), 1]
 
     def display(self, vitesseFond):
         """Affiche le monstre"""
@@ -137,6 +429,9 @@ class Monstre:
 
         elif self.move_info["left"]:
             self.x -= self.stats["speed"] + vitesseFond
+        
+        else:
+            self.x -= vitesseFond
 
 
 
@@ -241,7 +536,8 @@ class Monstre:
         
         
 class Wizard(Monstre):
-    """Monstre avec des effet/ buff autour d'eux"""
+    """ Monstre with effect around it
+    Monstre avec des effet/ buff autour d'eux"""
 
     def __init__(self, name, xPlayer, HauteurSol, Xspawn, type, range = 250, power = 20, cooldown = 10):
         super().__init__(name, xPlayer, HauteurSol, Xspawn)
@@ -269,7 +565,8 @@ class Wizard(Monstre):
 
 
     def zonePower(self):
-        """Definit la zone ou le monstre donnera l'effet"""
+        """ Set the area of the power
+        Definit la zone ou le monstre donnera l'effet"""
     
         self.zonePowerlist = [[self.x - self.power["range"] , self.y - self.power["range"]], 
         [self.x + self.hitbox[0] + self.power["range"], self.y - self.power["range"]],
@@ -299,7 +596,8 @@ class Wizard(Monstre):
                 EZ.trace_disque(int(self.x + self.hitbox[0]//2), int(self.y + self.hitbox[1]//2), int(Radius), 0, int(100 + disque * (100/(NOMBRE_DISQUE + 1))), 0, int(100 - disque * (100/(NOMBRE_DISQUE + 1))))
 
     def StrenghEffect(self):
-        """Trace l'effet de la zone de force"""
+        """ Draw the strength effect
+        Trace l'effet de la zone de force"""
         DURER_DEFFET = 1 # Durer de l'effet
         NOMBRE_DISQUE = 2 # Varie les nuance
 
@@ -315,20 +613,25 @@ class Wizard(Monstre):
 
 class MonstreShooter(Monstre):
 
-    def __init__(self, name, HauteurSol, xPlayer, range, Xspawn=0):
+    def __init__(self, name, xPlayer, HauteurSol, Xspawn=0):
         super().__init__(name, xPlayer, HauteurSol, Xspawn)
+        super().charge()
 
-        self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["damage"], range, 1), "speed": 15}  # {Type d'arme, vitesse de l'arme, [dernier tire de l'arme, temps de recharge]}
-        self.timeShoot = [EZ.clock(), 4] # [temps du dernier tire, cooldown]
+        self.range = self.stats["range"] # Rayon de tir / range of monster
+        self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.range, 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
+        self.timeShoot = self.cooldwon # [temps du dernier tire, cooldown] / [time of last shoot, cooldown]
+
+        self.lastMove = {"right": True, "left": False} # Direction vers laquelle le monstre regarde / direction of the monster
     
 
     def shoot(self):
-        """Fait tirer le Montre"""
+        """ Do the shoot
+        Fait tirer le Montre"""
 
-        if self.move_info["right"]:
+        if self.move_info["right"] or self.lastMove["right"]:
             self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "right")
         
-        elif self.move_info["left"]:
+        elif self.move_info["left"] or self.lastMove["left"]:
             self.arme["arme"].Setup(self.x + self.hitbox[0]//2, self.y + self.hitbox[1]//2, "left")
             
     def display(self, vitesseFond):
@@ -337,10 +640,65 @@ class MonstreShooter(Monstre):
 
 
     def onShoot(self):
-        """Deplace la balle pendant le tire"""
+        """Move the bullet during the shoot
+        Deplace la balle pendant le tire"""
         self.arme["arme"].display(self.arme["speed"], self.vitesseFond)
 
         if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]: # cooldown de l'arme
             self.timeShoot[0] = EZ.clock()
             self.shoot()
 
+
+    def move(self, vitesseFond):
+        """ Move the monster in function of the player
+        Deplace le monstre en fonction de la position du joueur
+
+        Args:
+            vitesseFond (float): deplacement du fond
+        """
+        
+
+        if self.x < self.xPlayer - self.range + 50: # + 50 pour eviter de ne pas toucher le joueur / + 50 to avoid to touch the player
+            self.move_info["right"] = True
+            self.move_info["left"] = False
+
+            self.lastMove["right"] = True
+            self.lastMove["left"] = False
+        
+        elif self.x > self.xPlayer + self.range - 50: # - 50 pour eviter de ne pas toucher le joueur / - 50 to avoid to touch the player
+            self.move_info["left"] = True 
+            self.move_info["right"] = False
+
+            self.lastMove["left"] = True
+            self.lastMove["right"] = False
+        
+
+        else:
+            self.move_info["left"] = False
+            self.move_info["right"] = False
+
+            if self.x < self.xPlayer:
+                self.lastMove["right"] = True
+                self.lastMove["left"] = False
+            
+            elif self.x > self.xPlayer:
+                self.lastMove["left"] = True
+                self.lastMove["right"] = False
+
+        self.moveX(vitesseFond)
+        self.moveEffect()
+
+        self.zoneHitBox()
+        self.vitesseFond = vitesseFond
+    
+    def moveEffect(self):
+
+        if self.move_info["right"] or self.move_info["left"]:
+            super().moveEffect()
+
+        else:
+            if self.lastMove["left"]:
+                self.moveEffectLeft()
+            
+            elif self.lastMove["right"]:
+                self.moveEffectRight()

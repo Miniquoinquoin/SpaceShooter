@@ -12,7 +12,7 @@ class Armes:
         self.durability = [durability, durability] # [Durabiliter totale, duribiliter restante]
         self.hitbox = [50, 50] #Modifier pendant le chargement de l'image
 
-        self.chargesB = None
+        self.chargesB = None # Image de base de l'arme avant modification de rotation / base image before modification of rotation
         self.x = 1300
         self.y = 0
         self.hauteurTir = 50 # hauteur du tir entre le haut du personnage et l'arme / Height of the shot between the top of the character and the weapon
@@ -60,16 +60,16 @@ class Armes:
             self.RotationSpeed = [15,0]
         
 
-        
         self.hitbox = [EZ.dimension(self.chargesB)[0], EZ.dimension(self.chargesB)[1]]
 
 
     def display(self, vitesse, vitesseFond):
-        """Trace l'amre
+        """ Drawn the weapon
+        Trace l'amre
 
         Args:
-            vitesse (int): vitesse de l'arme definit dans caracteristiqueJoueur
-            vitesseFond (float): vittesse de deplacement du fond
+            vitesse (int): vitesse de l'arme / weapon speed
+            vitesseFond (float): vittesse de deplacement du fond / background speed
         """
         if self.chargesB == None:
             self.charge()
@@ -111,14 +111,14 @@ class Armes:
         self.damage["damage"] = self.damage["basicDamage"] * (1+abs(inertie)/5)
 
         if direction == "right":
-            self.range[1] = self.range[0] * (1 + inertie/10) # donne une range plus grand quand le joueur court / give a range bigger when the player is running
+            self.range[1] = self.range[0] * (1 + inertie/10) # donne une porter plus grand quand le joueur court / give a range bigger when the player is running
             self.RotationSpeed[1] = 0 if self.RotationSpeed[0] != 0 else 180 # Rotation de l'arme si l'arme a une rotation / rotate the weapon if the weapon has a rotation
 
             self.xSetup = x
             self.x = x
         
         else:
-            self.range[1] = self.range[0] * (1 - inertie/10) # donne une range plus grand quand le joueur cour / give a range bigger when the player is running
+            self.range[1] = self.range[0] * (1 - inertie/10) # donne une porter plus grand quand le joueur cour / give a range bigger when the player is running
             self.RotationSpeed[1] = -90 if self.RotationSpeed[0] != 0 else 0 # Rotation de l'arme si l'arme a une rotation / rotate the weapon if the weapon has a rotation
 
             self.xSetup = x - self.hitbox[0] # position de l'arme - self.hitbox[0] pour que l'arme soit a gauche du joueur / position of the weapon - self.hitbox[0] to make the weapon to the left of the player
@@ -181,6 +181,7 @@ class ArmesAvecForme(Armes):
         self.color = [0,0,0] #Couleur de l'arme
         self.forme = "DISQUE" #Forme de l'arme "DISQUE" / "CARRE"
         self.size = 10 # Rayon du disque pour un disque / Taille d'un coter pour un carré
+        self.hauteurTir = 0 # Hauteur du tir / Height of the shot
 
     def charge(self):
 
@@ -188,6 +189,8 @@ class ArmesAvecForme(Armes):
             self.color = [0, 200, 0]
             self.forme = "DISQUE"
             self.size = 7
+
+        self.chargesB = True
 
     def trace_arme(self):
         """Trace l'arme"""
@@ -214,7 +217,6 @@ class ArmesAvecForme(Armes):
             self.x -= vitesse + vitesseFond - self.inertie
 
 
-        self.xSetup -= vitesseFond
 
 
 

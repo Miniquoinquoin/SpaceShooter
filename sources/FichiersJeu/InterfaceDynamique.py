@@ -442,12 +442,12 @@ def genratesMob(name, hauteurSol,type = "COMMON"):
 
     elif type == "SHOOTER":
         if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
-            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
         
         elif Joueur1.x + 250 >= Border[1].xFictif:
-            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+            return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
 
-        return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol, 250,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
+        return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
 
 
@@ -578,8 +578,8 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
 
     # Monstres sur Joueur
         if Verifzone(Joueur, monstre):
-            if monstre.attaque():
-                Joueur.domage(monstre.stats["damage"]) # Inflige les degat au joueur
+            if monstre.attaque() and monstre.stats["damage"] != 0:
+                Joueur.domage(monstre.stats["damage"])  # Inflige les degat au joueur
 
     for shooter in Shooters:
         if Verifzone(Joueur, shooter.arme["arme"]):
