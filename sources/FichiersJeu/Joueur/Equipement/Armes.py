@@ -184,11 +184,18 @@ class ArmesAvecForme(Armes):
         self.hauteurTir = 0 # Hauteur du tir / Height of the shot
 
     def charge(self):
-
+        
+        # Terre
         if self.name == "Ammonite_Sprite":
             self.color = [0, 200, 0]
             self.forme = "DISQUE"
             self.size = 7
+        
+        # Gluton
+        elif self.name == "CharybScylla_Sprite":
+            self.color = [200, 100, 0]
+            self.forme = "DISQUE"
+            self.size = 13
 
         self.chargesB = True
 

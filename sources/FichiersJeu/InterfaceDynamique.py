@@ -491,18 +491,40 @@ def Startwave(number, hauteurSol, mode, map= "Mars"):
                 # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])
     
     elif mode == "Infini":
-        AllMob = {"COMMON": "Amalgam_Sprite", "STRENGTH": "Adept_Sprite", "HEAL": "ArchMage_Sprite", "SHOOTER": "Ammonite_Sprite"}
+        EnTete = ['Map']
+        for maptemp in MenuMap.getMapName():
+            EnTete.append(f'{maptemp}Name')
+            EnTete.append(f'{maptemp}Dificulty')
+            EnTete.append(f'{maptemp}Type')
 
-        for mob in range(number*10 + 1):
+        AllMob = {"COMMON": [], "STRENGTH": [], "HEAL": [], "SHOOTER": []}
+        with open(f'FichiersJeu\InfoWave\AllMobe.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';', fieldnames=EnTete)
+
+            lastType = "COMMON"
+            for row in reader:
+                if row[f'{map}Name'] != '' and row[f'{map}Name'] != 'Name' and row[f'{map}Name'] != map and (row[f'{map}Type'] in AllMob.keys() or lastType in AllMob.keys()): # Si la ligne n'est pas vide 
+                    AllMob[row[f'{map}Type']].append(row[f'{map}Name']) if row[f'{map}Type'] != '' else AllMob[lastType].append(row[f'{map}Name'])
+                lastType = row[f'{map}Type']
+
+
+        for monstre in range(number*5 + 1): # load the wave / charge la vague
             typeMob = random.choice(list(AllMob.keys()))
+
+            if AllMob[typeMob] != []: # if there is a mob of this type / si il y a un mob de ce type
+                mob = random.choice(AllMob[typeMob])
+
+            else: # if there is no mob of this type / si il n'y a pas de mob de ce type
+                continue
+
             if typeMob == "COMMON":
-                listMob += [genratesMob(AllMob[typeMob], hauteurSol)]
+                listMob += [genratesMob(mob, hauteurSol)]
             
             elif typeMob == "STRENGTH" or typeMob == "HEAL":
-                listWizzard += [genratesMob(AllMob[typeMob], hauteurSol, typeMob)]
+                listWizzard += [genratesMob(mob, hauteurSol, typeMob)]
             
             elif typeMob == "SHOOTER":
-                listShooter += [genratesMob(AllMob[typeMob], hauteurSol, typeMob)]
+                listShooter += [genratesMob(mob, hauteurSol, typeMob)]
             
   
 
@@ -751,7 +773,7 @@ def game(map, mode, limiteWave = -1):
                     timeLastWave[1] = False
                 
                 if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
-                    MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol, mode)  # Gener la nouvelle vague
+                    MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol, mode, map)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
                     Game.saveNumeroVague(vague)

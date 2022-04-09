@@ -522,6 +522,12 @@ class Infini(SlideMenu):
         self.displayFond()
         self.TraceWidget(x, self.chargesMap)
         self.traceAllCadre(x)
+    
+    def getMapName(self):
+        """Return the name of the maps
+        Retourne le nom des cartes"""
+
+        return list(self.chargesMap.keys())
 
 
 class Game(Interface):

@@ -32,15 +32,22 @@ class Monstre:
         self.effect = {"boostDamage": False, "cooldownBoostDamage": [0, 5]} # cooldown [temps du dernier buff, durer du buff]
 
 
-    def __charge(self,nb_image):
+    def __charge(self,nb_image, zoom = 1, reverse = False):
         """ Load the monster images and is hitbox
         Charges les image du monstre et definit sa taille
         
-        nb_image : number of picture / nombre d'image du monstre"""  
+        nb_image : number of picture / nombre d'image du monstre
+        zoom : zoom of the picture / zoom de l'image
+        reverse : if the picture must be flip / si l'image doit etre inversé"""  
 
-        self.chargesRight = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png") for image in range(nb_image)]
-        self.chargesLeft = [EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png") for image in range(nb_image)]
+        self.chargesRight = [EZ.transforme_image(EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/base/{self.name}_{image}.png"),0,zoom) for image in range(nb_image)]
+        self.chargesLeft = [EZ.transforme_image(EZ.charge_image(f"FichiersJeu/Interface/Entites/Items/Monstres/{self.name}/reverse/{self.name}_reverse_{image}.png"),0, zoom) for image in range(nb_image)]
         self.hitbox = [EZ.dimension(self.chargesRight[0])[0], EZ.dimension(self.chargesRight[0])[1]]
+
+        if reverse:
+            temp = self.chargesRight
+            self.chargesRight = self.chargesLeft
+            self.chargesLeft = temp
 
     def charge(self):
         """ Load the monster images and is stats
@@ -52,19 +59,22 @@ class Monstre:
 
         # Map : Terre
         if self.name == "Bolt_Sprite" or self.name == "NutTroop_Sprite":
-            self.__charge(6)
+            self.__charge(6,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "NutArcher_Sprite" or self.name == "BoltArcher_Sprite":
-            self.__charge(6)
+            self.__charge(6,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "KingToad_Sprite":
             self.__charge(27)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "Rocky_Sprite":
             self.__charge(4)
@@ -72,7 +82,7 @@ class Monstre:
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
         
         elif self.name == "NutMage_Sprite1":
-            self.__charge(7)
+            self.__charge(7,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -117,9 +127,9 @@ class Monstre:
             self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
         
         elif self.name == "Gonger_Sprite":
-            self.__charge(6)
+            self.__charge(6,1.5)
             self.setSpeedEffect(5)
-            self.stats = {"type": "COMMON", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "RedDrake_Sprite" or self.name == "Spiker_Sprite":
             self.__charge(30)
@@ -133,24 +143,27 @@ class Monstre:
 
         # Map : Gluton
         elif self.name == "Berserker_Sprite":
-            self.__charge(24)
+            self.__charge(24,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "CharybScylla_Sprite":
-            self.__charge(18)
+            self.__charge(18, 1, True)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "IceToad_Sprite":
             self.__charge(27)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "Drak_Sprite" or self.name == "LizardMan_Sprite" or self.name == "Newt_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
 
         elif self.name == "Elder_Sprite":
@@ -163,7 +176,7 @@ class Monstre:
 
         # Map : Volcano
         elif self.name == "BarbBulb_Sprite":
-            self.__charge(40)
+            self.__charge(40,1.5)
             self.setSpeedEffect(2)
             self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -183,7 +196,7 @@ class Monstre:
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "TarMan_Sprite" or self.name == "LavaMan_Sprite" or self.name == "ToxicMan_Sprite":
-            self.__charge(8)
+            self.__charge(8,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -205,14 +218,21 @@ class Monstre:
             self.__charge(36)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.hauteurSol += 25 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "PainWeed_Sprite" or self.name == "RankWeed_Sprite" or self.name == "VileWeed_Sprite":
-            self.__charge(8)
+            self.__charge(8,1.2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "VileWeed_Sprite":
             self.__charge(8)
+            self.setSpeedEffect(2)
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+        
+        elif self.name == "Cacti_Sprite":
+            self.__charge(8,1.3)
             self.setSpeedEffect(2)
             self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -227,12 +247,12 @@ class Monstre:
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "Gonghead_Sprite":
-            self.__charge(31)
+            self.__charge(31,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "Mutant_Sprite":
-            self.__charge(8)
+            self.__charge(8,1.5,True)
             self.setSpeedEffect(2)
             self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -242,14 +262,14 @@ class Monstre:
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "TankBot_Sprite" or self.name == "HyperBot_Sprite" or self.name == "ArmorBot_Sprite" or self.name == "ProtoBot_Sprite":
-            self.__charge(6)
+            self.__charge(6,2,True)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
 
         elif self.name == "Plant42_Sprite" or self.name == "Audrey_Sprite1":
             self.__charge(6)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "SHOOTER_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
 
 
         elif self.name == "Gazer_Sprite":
@@ -282,22 +302,22 @@ class Monstre:
 
         # Map : Dead Zone
         elif self.name == "Bat_Sprite" :
-            self.__charge(4)
+            self.__charge(4,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "PipeBomb_Sprite" or self.name == "Bomber_Sprite" or self.name == "BombSeed_Sprite":
-            self.__charge(3)
+            self.__charge(3,2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "DeathBot_Sprite" or self.name == "MultiBot_Sprite":
-            self.__charge(24)
+            self.__charge(24,1.5)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "MistMan_Sprite" or self.name == "Armor_Sprite":
-            self.__charge(8)
+            self.__charge(8,1.5)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
@@ -327,7 +347,7 @@ class Monstre:
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         elif self.name == "Gooey_Sprite" or self.name == "GooKing_Sprite" or self.name == "GooTitan_Sprite" or self.name == "EyeGoo_Sprite" or self.name == "MageGoo_Sprite" or self.name == "PuffGoo_Sprite":
-            self.__charge(11)
+            self.__charge(11, 2)
             self.setSpeedEffect(2)
             self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
 
