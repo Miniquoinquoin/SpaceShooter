@@ -55,6 +55,10 @@ class Armes:
         elif self.name == "BouleDeFeu":
             self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),180,0.5)
         
+        elif self.name == "BouleDeFeuMini":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),180,0.1)
+            self.hauteurTir = -10
+
         elif self.name == "Shuriken":
             self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme8\Arme8lvl{self.level}.png"),0,2)
             self.RotationSpeed = [15,0]
@@ -63,7 +67,7 @@ class Armes:
         self.hitbox = [EZ.dimension(self.chargesB)[0], EZ.dimension(self.chargesB)[1]]
 
 
-    def display(self, vitesse, vitesseFond):
+    def display(self, vitesse, vitesseFond, vieTireur):
         """ Drawn the weapon
         Trace l'amre
 
@@ -74,7 +78,7 @@ class Armes:
         if self.chargesB == None:
             self.charge()
 
-        self.verifDurability()
+        self.verifDurability(vieTireur)
         if not(self.Break):
             self.move(vitesse, vitesseFond, self.direction)
             self.zoneHitBox()
@@ -158,14 +162,18 @@ class Armes:
     
 
 
-    def verifDurability(self):
-        """Verifie sur l'arme est casser
+    def verifDurability(self, vieTireur):
+        """ Check if the weapon is broken or not
+        Verifie si l'arme est casser
+
+        Args:
+            vieTireur (int): heath of the shooter/ vie du tireur
 
 
         Returns:
             bool: True si arme encore utilisable False si arme casser
         """
-        if self.durability[1] <= 0 or not(self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]):
+        if self.durability[1] <= 0 or not(self.xSetup - self.range[1] <= self.x <= self.xSetup + self.range[1]) or vieTireur <= 0:
             self.Break = True
 
         else:
@@ -176,9 +184,9 @@ class Armes:
 
 class ArmesAvecForme(Armes):
 
-    def __init__(self, name, damage, ranges, durability):
+    def __init__(self, name, damage, ranges, durability, color = (0,0,0)):
         super().__init__(name, damage, ranges, durability)
-        self.color = [0,0,0] #Couleur de l'arme
+        self.color = color #Couleur de l'arme
         self.forme = "DISQUE" #Forme de l'arme "DISQUE" / "CARRE"
         self.size = 10 # Rayon du disque pour un disque / Taille d'un coter pour un carré
         self.hauteurTir = 0 # Hauteur du tir / Height of the shot
@@ -187,15 +195,8 @@ class ArmesAvecForme(Armes):
         
         # Terre
         if self.name == "Ammonite_Sprite":
-            self.color = [0, 200, 0]
-            self.forme = "DISQUE"
             self.size = 7
         
-        # Gluton
-        elif self.name == "CharybScylla_Sprite":
-            self.color = [200, 100, 0]
-            self.forme = "DISQUE"
-            self.size = 13
 
         self.chargesB = True
 

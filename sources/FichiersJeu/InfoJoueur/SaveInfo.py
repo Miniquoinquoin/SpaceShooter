@@ -59,6 +59,28 @@ def BuyCracters(numCaracters):
         for row in File:
             Writer.writerow(row)
 
+def UpCaracter(numCaracters):
+    """chage level of Caracter in InfoGen
+    Change le niveau des personnages dans InfoGen
+
+    Args:
+        numCaracters (int): number of the caracters / numero du personnages
+    """
+
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == 'Personnage' + str(numCaracters):
+                row[2] = row[2].replace(row[2], str(int(row[2]) + 1))
+            
+            File.append(row)
+    
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)
+
 
 def UpWeapon(numCaracters, weaponLevel):
     """chage Weapon level of Caracter in InfoGen

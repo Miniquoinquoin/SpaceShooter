@@ -25,13 +25,20 @@ TIMER_VAGUE = 2 #en seconde
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 # Joueur
-Joueur1 = CJ.Joueur("Bob", 0)
+Joueur1 = CJ.Joueur("Bob",0,)
+Joueur1.setEquipement(["shield"])
 
 # Menu de selection
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
+
 MenuMode = Menuf.Mode(LONGEUR, HAUTEUR, "Mode")
 MenuMap = Menuf.Infini(LONGEUR, HAUTEUR, "Map")
+
+MenuShop = Menuf.Shop(LONGEUR, HAUTEUR, "Shop")
+MenuShopUpgrade = Menuf.ShopUpgradePersonnageSlide(LONGEUR, HAUTEUR, "Shop")
+MenuShopUpgradeWeaponSlide = Menuf.ShopUpgradeArmeSlide(LONGEUR, HAUTEUR, "Shop")
+
 
 #In game
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
@@ -68,10 +75,21 @@ def menu(gold, inventaire):
                 return "Game", infoGame
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
-                print("Shop")
+                leave = menuShop()
+                if type(leave) == str:
+                    demande = leave
+                    leave = False
+                    if demande == "Joueur":
+                        MenuShopUpgrade.TrieInventaire(inventaire)
+                        leave = menuShopUpgrade(gold)
+                    
+                    elif demande == "Armes":
+                        MenuShopUpgradeWeaponSlide.TrieInventaire(inventaire)
+                        leave = menuShopUpgradeWeaponSlide(gold)
 
-                Writer.UpWeapon(1,Reader.ReadInventaire()[f"Personnage{1}"][2] + 1)
-                Joueur1.charge()
+                    elif demande == "Equipement":
+                        print("Equipement")
+
 
 
 
@@ -252,7 +270,7 @@ def menuBuyPerso(gold, numPerso):
 
 
     statsPerso = Reader.ReadStatsPlayers()[numPerso]
-    MenuBuyPerso = Menuf.StatsPersonnage(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso)
+    MenuBuyPerso = Menuf.BuyPersonnage(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso)
 
     play = True
     while play:
@@ -391,15 +409,260 @@ def menuInfini(infoGame):
         EZ.frame_suivante()
 
 
+def menuShop():
+    """Function of the menu to select the mode of the game
+    Fonction du menu de selection du mode de jeux"""
+
+    MenuShop.DisplayMenu()
+
+    play = True
+    while play:
+
+        evenement = EZ.recupere_evenement()
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 100 < EZ.souris_x() < 640 and 170 < EZ.souris_y() < 380:   #Bouton pour améliorer le niveau du personnage et de son arme ( coter gauche: Joueur )
+                return "Joueur"
+
+            elif 640 <= EZ.souris_x() < 1180 and 170 < EZ.souris_y() < 380:   #Bouton pour améliorer le niveau du personnage et de son arme ( coter droit: Armes )
+                return "Armes"
+
+            elif 100 < EZ.souris_x() < 1180 and 400 < EZ.souris_y() < 610: # Bouton pour acheter des equipements
+                return "Equipement"
+
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+            
+    
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+
+def menuShopUpgrade(gold):
+    """Function of player menu for selecting caracter
+    Fonction du menu de selection de personnage"""
+
+
+    x = 100
+    xLast = 0
+    click = False
+    leave = False
+
+    perso = True
+    while perso:
+        MenuShopUpgrade.traceMenuShopUpgrade(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        if evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuShopUpgrade.yDebutCadre < EZ.souris_y() < MenuShopUpgrade.yDebutCadre + MenuShopUpgrade.hauteurCardreJoueur: # look if the click is in the Players frame area / regarde si le click se trouve dans la zone des cadres Joueurs
+                xSouris = EZ.souris_x()
+
+                for cadre in range(len(MenuShopUpgrade.chargesPersonnage)):
+                    if cadre * MenuShopUpgrade.largeurCadrePlusEspace + x < xSouris < cadre * MenuShopUpgrade.largeurCadrePlusEspace + x + MenuShopUpgrade.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        leave = menuShopUpgradePersonnage(gold, int(MenuShopUpgrade.getListPersonnage()[cadre].split("Personnage")[-1])-1)
+                            
+
+
+                
+
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuShopUpgrade.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+        
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 
 
+def menuShopUpgradePersonnage(gold, numPerso):
+    """Function for the menu of upgrade of the character
+    Fonction du menu d'amelioration du personnage"""
+
+    statsPerso = Reader.ReadStatsPlayers()[numPerso]
+    statsUpPerso = Reader.ReadUpStatsPlayers()[numPerso]
+    MenuUpPerso = Menuf.ShopUpgradePersonnage(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso, statsUpPerso)
+
+    play = True
+    while play:
+        MenuUpPerso.DisplayMenu()
+        CharactersLevel = Reader.ReadInventaire()[f"Personnage{numPerso +1}"][1]
+        MenuUpPerso.SetCarcatersLevel(CharactersLevel)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+        
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640: # Button Buy / Bouton Achat
+                if gold >= statsUpPerso['price'] * CharactersLevel:
+                    gold -= statsUpPerso['price'] * CharactersLevel
+
+                    Writer.SaveGold(gold)
+                    Writer.UpCaracter(numPerso + 1)
+                    Joueur1.CalculateStats()
+
+                else:
+                    print("Pas assez d'argent")
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 
+def menuShopUpgradeWeaponSlide(gold):
+    """Function of menu for selecting weapon
+    Fonction du menu de selection de l'arme"""
 
 
+    x = 100
+    xLast = 0
+    click = False
+    leave = False
+    
+
+    perso = True
+    while perso:
+        MenuShopUpgradeWeaponSlide.SetlevelWeapon()
+        MenuShopUpgradeWeaponSlide.traceMenuShopUpgrade(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        if evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuShopUpgradeWeaponSlide.yDebutCadre < EZ.souris_y() < MenuShopUpgradeWeaponSlide.yDebutCadre + MenuShopUpgradeWeaponSlide.hauteurCardreJoueur: # look if the click is in the Players frame area / regarde si le click se trouve dans la zone des cadres Joueurs
+                xSouris = EZ.souris_x()
+
+                for cadre in range(len(MenuShopUpgradeWeaponSlide.chargesWeapons)):
+                    if cadre * MenuShopUpgradeWeaponSlide.largeurCadrePlusEspace + x < xSouris < cadre * MenuShopUpgradeWeaponSlide.largeurCadrePlusEspace + x + MenuShopUpgradeWeaponSlide.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        leave = menuShopUpgradeWeapon(gold, int(MenuShopUpgradeWeaponSlide.getListPersonnage()[cadre].split("Personnage")[-1])-1)
+                            
+
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuShopUpgradeWeaponSlide.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+        
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+def menuShopUpgradeWeapon(gold, numPerso):
+    """Function for the menu of upgrade of the weapon
+    Fonction du menu d'amelioration de l'arme"""
+
+
+    statsPerso = Reader.ReadStatsPlayers()[numPerso]
+    statsUpPerso = Reader.ReadUpStatsPlayers()[numPerso]
+    MenuUpWeapon = Menuf.ShopUpgradeWeapon(LONGEUR, HAUTEUR, numPerso ,statsPerso['name'], statsPerso, statsUpPerso, MenuShopUpgradeWeaponSlide.getNumberOfUpgrade(f"Personnage{numPerso +1}"))
+
+    play = True
+    while play:
+        weaponLevel = Reader.ReadInventaire()[f"Personnage{numPerso +1}"][2]
+        MenuUpWeapon.SetWeaponLevel(weaponLevel)
+        MenuUpWeapon.DisplayMenu()
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+        
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640: # Button Buy / Bouton Achat
+                if gold >= statsUpPerso['price'] * weaponLevel and weaponLevel < MenuShopUpgradeWeaponSlide.getNumberOfUpgrade(f"Personnage{numPerso +1}"):
+                    gold -= statsUpPerso['price'] * weaponLevel
+
+                    Writer.SaveGold(gold)
+                    Writer.UpWeapon(numPerso +1, weaponLevel +1)
+                    Joueur1.CalculateStats()
+                    Joueur1.charge()
+                
+                elif weaponLevel >= MenuShopUpgradeWeaponSlide.getNumberOfUpgrade(f"Personnage{numPerso +1}"):
+                    print("Vous avez atteint le nombre maximum d'ameliorations")
+
+                else:
+                    print("Pas assez d'argent")
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 

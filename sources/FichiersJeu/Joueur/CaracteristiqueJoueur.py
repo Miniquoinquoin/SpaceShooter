@@ -3,6 +3,7 @@
 
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.Equipement.Armes as Armef
+import FichiersJeu.Joueur.Equipement.Equipement as Equipement
 import FichiersJeu.InterfaceDynamique as ID
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Animation as Anim
@@ -14,7 +15,7 @@ import FichiersJeu.InfoJoueur.ReadInfo as Reader
 class Joueur:
     """Class joueur"""
 
-    def __init__(self, name, level, personnage = 1, stats = None, equipement = None):
+    def __init__(self, name, level, personnage = 1, stats = None):
         """Initialisation de Joueur
 
         Args:
@@ -22,20 +23,20 @@ class Joueur:
             level (int): level du joueur
             personnage(str): nom du personnage
             stats (dic): toutes les stats du joueur {"vie": 100, "damage": 10, "acc": 1,"speed": 10, "jumpPower": 2 }
-            equipement (dic): Toutes ces objet [weapon, shield]
+            equipement (list): Toutes ces objet [grenade, shield,...]
         """
         self.name = name
-        self.level = level
+        self.level = level # Character level / Niveau du personnage
         self.personnage = personnage # Player Number / numeros du joueur
-        self.stats = stats if stats != None else Reader.ReadStatsPlayers()[personnage - 1] # If stats == None, read stats from file / si stats == None, lire les stats du fichier
+        self.stats = stats if stats != None else self.CalculateStats() # If stats == None, read stats from file / si stats == None, lire les stats du fichier
 
-        self.equipement = equipement
-        self.x = ID.LONGEUR//2
+        self.equipement = {'shield': None, 'grenade': None, 'potion': None} # Equipment of the player / équipement du joueur
+        self.x = ID.LONGEUR//2 - 65 # X position of the player / position en x du joueur - 65 pour centrer le joueur (65 = hitbox[0]/2)
         self.y = 150  # height player spawn / Hauteur d'aparition du joueur
         self.y_sol = 0 #Hauteur de marche du joueur - 3* 48
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
-        self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interfire certain deplacement)
+        self.move_possible = {"right": True, "left": True}  #Donne les deplacement que le joueur peux effectuer (permet d'interdire certain deplacement)
         self.autoShoot = "right"
 
         self.timeSaut = EZ.clock() # temps du dernier saut / ici temps au lancement
@@ -45,13 +46,13 @@ class Joueur:
         # Dernier charge effectuer
         self.lastchargesRight = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetiton]
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
-        self.lastchargesEffetDomage = [2 * Anim.MAX_INTENSITE]  # [intensiter ]
+        self.lastchargesEffetDomage = [2 * Anim.MAX_INTENSITE, "health"]  # [intensiter, type: "health" ou "shield"]
 
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
 
-        self.stats = Reader.ReadStatsPlayers()[self.personnage - 1]
+        self.CalculateStats()
 
         if self.personnage == 1:
             self.chargesAvant = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3)
@@ -106,6 +107,38 @@ class Joueur:
         définie la hauteur du sol
         """
         self.y_sol = hauteur - 144
+    
+    def setEquipement(self, equipements):
+        """Set the equipment of the player
+        définie l'équipement du joueur
+
+        Args:
+            equipements (list): list of the equipment of the player can be : 'shield', 'grenade' and 'potion'/ liste des équipements du joueur peut être : 'shield', 'grenade' et 'potion'
+        """
+        for equipement in equipements:
+            if equipement == 'shield':
+                self.equipement['shield'] = Equipement.Bouclier(5)
+            
+            elif equipement == 'grenade':
+                self.equipement['grenade'] = True
+            
+            elif equipement == 'potion':
+                self.equipement['potion'] = True
+        
+    def CalculateStats(self):
+        """Calculate the stats of the player in terms of the level of the player
+        Calcul les stats du joueur en fonction du niveau du joueur"""
+
+        BaseStats = Reader.ReadStatsPlayers()[self.personnage - 1]
+        UpStats = Reader.ReadUpStatsPlayers()[self.personnage - 1]
+        self.level = Reader.ReadInventaire()[f"Personnage{self.personnage}"][1] -1 # -1 because the level is starting at 1 and not 0 / -1 car le niveau commence à 1 et pas 0
+        self.weaponLevel = Reader.ReadInventaire()[f"Personnage{self.personnage}"][2]  -1 # -1 because the level is starting at 1 and not 0 / -1 car le niveau commence à 1 et pas 0
+        self.stats = { "name": BaseStats['name'], "price": BaseStats['price'] ,"vie": BaseStats['vie'] + self.level * UpStats['vie'], 
+                    "regen": {"timer": 0, "cooldown": BaseStats['regen']['cooldown'] + self.level * UpStats['regen']['cooldown'], "eficiency": BaseStats['regen']['eficiency'] + self.level * UpStats['regen']['eficiency']},
+                    "weapon": {"name": BaseStats['weapon']['name'], "price": BaseStats['weapon']['price'], "damage": BaseStats['weapon']['damage']  + self.weaponLevel * UpStats['weapon']['damage'], "range": BaseStats['weapon']['range'] + self.weaponLevel * UpStats['weapon']['range'], "durability": BaseStats['weapon']['durability'] + self.weaponLevel * UpStats['weapon']['durability'], "cooldown": BaseStats['weapon']['cooldown'] + self.weaponLevel * UpStats['weapon']['cooldown'], "speed": BaseStats['weapon']['speed'] + self.weaponLevel * UpStats['weapon']['speed']},
+                    "acc": BaseStats['acc'] + self.level * UpStats['acc'],"speed": BaseStats['speed'] + self.level * UpStats['speed'], "jumpPower": BaseStats['jumpPower'] + self.level * UpStats['jumpPower'],  "maxvie": BaseStats['vie'] + self.level * UpStats['vie'] }
+
+
 
     def display(self):
         """Fonction qui trace le Joueur
@@ -266,7 +299,7 @@ class Joueur:
     def onShoot(self):
         """Deplace la balle pendant le tire"""
         for armes in range(len(self.arme)):
-            self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"])
+            self.arme[armes]["arme"].display(self.arme[armes]["speed"], self.move_info["speed"], self.stats["vie"])
 
     def effetDomage(self, speed):
         """Cree l'effet de degat du joueur"""
@@ -276,10 +309,10 @@ class Joueur:
             self.lastchargesEffetDomage[0] += speed
 
             if self.lastchargesEffetDomage[0] <= Anim.MAX_INTENSITE:
-                Anim.traceEffetDegatJoueur(self.lastchargesEffetDomage[0], ID.LONGEUR, ID.HAUTEUR)
+                Anim.traceEffetDegatJoueur(self.lastchargesEffetDomage[0], ID.LONGEUR, ID.HAUTEUR, None, (255,0,0) if self.lastchargesEffetDomage[1] == "health" else (0,0,255))
             
             else:
-                Anim.traceEffetDegatJoueur( Anim.MAX_INTENSITE + (Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0]), ID.LONGEUR, ID.HAUTEUR)
+                Anim.traceEffetDegatJoueur( Anim.MAX_INTENSITE + (Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0]), ID.LONGEUR, ID.HAUTEUR,None, (255,0,0) if self.lastchargesEffetDomage[1] == "health" else (0,0,255))
 
     def domage(self, domage):
         """S'inflige des degat
@@ -288,8 +321,15 @@ class Joueur:
             domage (int): degat qu'il s'inflige
         """
 
-        self.stats["vie"] -= domage
-        self.stats["regen"]["timer"] = EZ.clock()
+        if self.equipement["shield"] != None and not(self.equipement["shield"].isBroken()):
+            self.equipement["shield"].use()
+            self.lastchargesEffetDomage[1] = "shield"
+                
+        else:
+            self.stats["vie"] -= domage
+            self.stats["regen"]["timer"] = EZ.clock()
+            self.lastchargesEffetDomage[1] = "health"
+
         self.lastchargesEffetDomage[0] = 0 if self.lastchargesEffetDomage[0] >= 2 * Anim.MAX_INTENSITE else  2 * Anim.MAX_INTENSITE - self.lastchargesEffetDomage[0] if self.lastchargesEffetDomage[0] > Anim.MAX_INTENSITE else self.lastchargesEffetDomage[0]
     
         

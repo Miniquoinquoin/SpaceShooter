@@ -14,7 +14,7 @@ import FichiersJeu.Interface.Entites.Bouton as Btn
 
 MAX_INTENSITE = 50
 
-def traceEffetDegatJoueurPartie1(raport ,longeurFenetre, hauteurFenetre, precision ,surface):
+def traceEffetDegatJoueurPartie1(raport ,longeurFenetre, hauteurFenetre, precision ,surface, couleur = (255,0,0)):
     """Fonction qui trace la partie 1 de l'effe tdegat joueur = coin superieur droit
 
     Args:
@@ -29,10 +29,10 @@ def traceEffetDegatJoueurPartie1(raport ,longeurFenetre, hauteurFenetre, precisi
     
     AllPoint = [(longeur + longeur * raport * math.cos(math.radians(angle)) + longeur * (1 - raport), hauteur - hauteur * (1 - raport) - hauteur * math.sin(math.radians(angle)) * raport) for angle in range(0,91, precision)]
     AllPoint.append((longeurFenetre,0)) #Coin 
-    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(255,0,0,int(64*raport)))
+    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(couleur[0],couleur[1],couleur[2],int(64*raport)))
 
 
-def traceEffetDegatJoueurPartie2(raport ,longeurFenetre, hauteurFenetre, precision ,surface):
+def traceEffetDegatJoueurPartie2(raport ,longeurFenetre, hauteurFenetre, precision ,surface, couleur = (255,0,0)):
     """Fonction qui trace la partie 2 de l'effe tdegat joueur = coin inferieur droit
 
     Args:
@@ -47,9 +47,9 @@ def traceEffetDegatJoueurPartie2(raport ,longeurFenetre, hauteurFenetre, precisi
     
     AllPoint = [(longeur + longeur * raport * math.cos(math.radians(angle)) + longeur * (1 - raport), hauteur + hauteur * (1 - raport) - hauteur * math.sin(math.radians(angle)) * raport) for angle in range(270,361, precision)]
     AllPoint.append((longeurFenetre, hauteurFenetre)) #Coin 
-    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(255,0,0,int(64*raport)))
+    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(couleur[0],couleur[1],couleur[2],int(64*raport)))
 
-def traceEffetDegatJoueurPartie3(raport ,longeurFenetre, hauteurFenetre, precision ,surface):
+def traceEffetDegatJoueurPartie3(raport ,longeurFenetre, hauteurFenetre, precision ,surface, couleur = (255,0,0)):
     """Fonction qui trace la partie 3 de l'effe tdegat joueur = coin inferieur gauche
 
     Args:
@@ -64,9 +64,9 @@ def traceEffetDegatJoueurPartie3(raport ,longeurFenetre, hauteurFenetre, precisi
     
     AllPoint = [(longeur + longeur * raport * math.cos(math.radians(angle)) - longeur * (1 - raport), hauteur + hauteur * (1 - raport) - hauteur * math.sin(math.radians(angle)) * raport) for angle in range(180,271, precision)]
     AllPoint.append((0, hauteurFenetre)) #Coin 
-    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(255,0,0,int(64*raport)))
+    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(couleur[0],couleur[1],couleur[2],int(64*raport)))
 
-def traceEffetDegatJoueurPartie4(raport ,longeurFenetre, hauteurFenetre, precision ,surface):
+def traceEffetDegatJoueurPartie4(raport ,longeurFenetre, hauteurFenetre, precision ,surface, couleur = (255,0,0)):
     """Fonction qui trace la partie 4 de l'effe tdegat joueur = coin superieure gauche
 
     Args:
@@ -81,9 +81,9 @@ def traceEffetDegatJoueurPartie4(raport ,longeurFenetre, hauteurFenetre, precisi
     
     AllPoint = [(longeur + longeur * raport * math.cos(math.radians(angle)) - longeur * (1 - raport), hauteur - hauteur * (1 - raport) - hauteur * math.sin(math.radians(angle)) * raport) for angle in range(90,181, precision)]
     AllPoint.append((0, 0)) #Coin 
-    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(255,0,0,int(64*raport)))
+    pygame.gfxdraw.filled_polygon(surface, AllPoint, pygame.Color(couleur[0],couleur[1],couleur[2],int(64*raport)))
 
-def traceEffetDegatJoueur(intensite, longeur, hauteur ,canvas = None):
+def traceEffetDegatJoueur(intensite, longeur, hauteur ,canvas = None, couleur = (255,0,0)):
     """Trace l'effet de degat du joueur
 
     Args:
@@ -98,10 +98,10 @@ def traceEffetDegatJoueur(intensite, longeur, hauteur ,canvas = None):
 
     surface = EZ.__choix(canvas)
     raport = intensite/MAX_INTENSITE * 0.8
-    traceEffetDegatJoueurPartie1(raport,longeur, hauteur, PRECISION ,surface)
-    traceEffetDegatJoueurPartie2(raport,longeur, hauteur, PRECISION ,surface)
-    traceEffetDegatJoueurPartie3(raport,longeur, hauteur, PRECISION ,surface)
-    traceEffetDegatJoueurPartie4(raport,longeur, hauteur, PRECISION ,surface)
+    traceEffetDegatJoueurPartie1(raport,longeur, hauteur, PRECISION ,surface, couleur)
+    traceEffetDegatJoueurPartie2(raport,longeur, hauteur, PRECISION ,surface, couleur)
+    traceEffetDegatJoueurPartie3(raport,longeur, hauteur, PRECISION ,surface, couleur)
+    traceEffetDegatJoueurPartie4(raport,longeur, hauteur, PRECISION ,surface, couleur)
 
 """Effet Mort Joueur / Player death effect"""
 

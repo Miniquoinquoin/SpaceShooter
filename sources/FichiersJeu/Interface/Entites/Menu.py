@@ -1,11 +1,14 @@
 """Fichier contenant l'ensemble des menu du jeu"""
 
+from ctypes import sizeof
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Animation as Anim
 
 import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.Entites.Bouton as Btn
+
+import FichiersJeu.InfoJoueur.ReadInfo as Reader
 
 import Outiles.PerfCompteur as Perfcompteur
 Perfcompt = Perfcompteur.TimeDistribution()
@@ -131,7 +134,7 @@ class SousMenu(Menu):
         self.police = EZ.charge_police(50, "FichiersJeu\Interface\Entites\Police\CourageRoad.ttf", True)
         self.coordonneesFonts = [self.longeur//2 - EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[0], self.yDebutWidget- EZ.dimension(EZ.image_texte(texte, self.police, 0, 0, 0))[1]] # [x, y]
         
-        self.chargesPersonnage = None
+        self.chargesPersonnage = {} # Dictonary of the player's image / Dictionnaire des images du joueur
 
 
 
@@ -241,6 +244,37 @@ class SlideMenu(SousMenu):
 
         EZ.trace_image(EZ.image_texte(texte, self.policeCadre, 255, 255, 255), x + self.largeurCadre//2 - EZ.dimension(EZ.image_texte(texte, self.policeCadre, 255, 255, 255))[0]//2, self.yDebutCadre + 7 * self.hauteurCadre//8 - EZ.dimension(EZ.image_texte(texte, self.police, 255, 255, 255))[1]//2) # Texte du cadre
 
+
+class Menu2Choice(SousMenu):
+    """Class to choice the game mode
+    class pour choisir le mode de jeu"""
+
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.largeurWidget = self.longeur - 100
+        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
+        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
+
+    def traceImage(self):
+        """Draw the images of button mode
+        Trace les images des boutons mode
+        """
+
+        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 - 3 + 50, self.yDebutWidget + self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25, EZ.dimension(self.chargesBouton[0])[0] + 3, EZ.dimension(self.chargesBouton[0])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+        EZ.trace_image(self.chargesBouton[0], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 + 50, self.yDebutWidget +  1 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25)
+
+        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 - 3 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[1])[1]//2 + 25, EZ.dimension(self.chargesBouton[1])[0] + 3, EZ.dimension(self.chargesBouton[1])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+        EZ.trace_image(self.chargesBouton[1], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 + 25)
+    
+    def DisplayMenu(self):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceImage()
+
 class Personnages(SlideMenu):
     """Player Menu class 
     Class du Menu des personnages"""
@@ -319,7 +353,7 @@ class Personnages(SlideMenu):
             x (int): x start of frames / x du debut des Cadres
         """
 
-        if self.chargesPersonnage == None:
+        if self.chargesPersonnage == {}:
             self.chargePersonnage()
 
         xStart = x
@@ -371,14 +405,14 @@ class StatsPersonnage(SousMenu):
 
         self.chargeImageArme = EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl1.png" ) # Load the image of the weapon / Charge l'image de l'arme
         self.tailleImage = [EZ.dimension(self.chargeImageArme)[0], EZ.dimension(self.chargeImageArme)[1]] # [largeur, hauteur]
-        self.chargesImageArme = EZ.transforme_image(self.chargeImageArme, 0, 150/(self.tailleImage[1] if self.tailleImage[0] * 150/self.tailleImage[1] < self.largeurCadre else self.tailleImage[0]//2))
+        self.chargesImageArme = EZ.transforme_image(self.chargeImageArme, 0, 150/(self.tailleImage[1] if self.tailleImage[0] * 150/self.tailleImage[1] < self.largeurCadre else self.tailleImage[0]//2)) # give the perfect size at the picture / donne la taille idéale à l'image
 
         self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
         self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
 
         self.policeCadre = EZ.charge_police(40, "FichiersJeu\Interface\Entites\Police\JosefinSans-BoldItalic.ttf", True)
 
-    def traceCadreInfo(self):
+    def traceCadre(self):
         """Drawn the frames for Caracters info
         Trace les Cadre pour les info du personnages
         """
@@ -386,6 +420,50 @@ class StatsPersonnage(SousMenu):
         for Cadre in range(1, 3):
             xCadre = Cadre * self.largeurWidget//2.5 - 150
             Decor.traceCadre(xCadre, self.yDebutCadre, self.largeurCadre, self.hauteurCardreInfo, 2, 3, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
+
+    
+
+
+
+    def traceJoueur(self):
+        """Draw the player
+        Trace le joueur
+        """
+
+        if self.chargesPersonnage == {}:
+            self.chargePersonnage()
+
+        EZ.trace_image(self.chargesPersonnage[f"Personnage{self.numPerso + 1}"], (self.largeurWidget//3) - 80 - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso + 1}"])[0], self.yDebutCadre + self.hauteurCardreInfo - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso + 1}"])[1])
+        
+
+
+        
+
+    def DisplayMenu(self):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceCadre()
+        self.traceJoueur()
+
+
+class BuyPersonnage(StatsPersonnage):
+    """Class for the menu to buy a personnage
+    Classe pour le menu d'achat d'un personnage"""
+
+    def __init__(self, longeur, hauteur, numPerso, texte, stats):
+        super().__init__(longeur, hauteur, numPerso, texte, stats)
+
+    def traceCadreInfo(self):
+        """Drawn the Caracters info
+        Trace les info du personnages
+        """
+        
+        for Cadre in range(1, 3):
+            xCadre = Cadre * self.largeurWidget//2.5 - 150
 
             if Cadre == 1:
                 # Picture of the weapon / Image de l'arme
@@ -399,14 +477,13 @@ class StatsPersonnage(SousMenu):
 
             elif Cadre == 2:
                 # Caracters stats / Stats du personnage
-                EZ.trace_image(EZ.image_texte(f"Heal: {self.stats['vie']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
+                EZ.trace_image(EZ.image_texte(f"Health: {self.stats['vie']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
                 EZ.trace_image(EZ.image_texte(f"Regen Time: {self.stats['regen']['cooldown']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 60)
                 EZ.trace_image(EZ.image_texte(f"Regen Power: {float(self.stats['regen']['eficiency']) * 10} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 110)
                 EZ.trace_image(EZ.image_texte(f"Speed: {self.stats['speed']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 160)
                 EZ.trace_image(EZ.image_texte(f"Acc: {self.stats['acc']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 210)
                 EZ.trace_image(EZ.image_texte(f"Jump Power: {self.stats['jumpPower']}", self.policeCadre), xCadre + 10, self.yDebutCadre + 260)
 
-    
 
     def tracePrix(self):
         """Draw the price of the Caracters
@@ -420,67 +497,23 @@ class StatsPersonnage(SousMenu):
         """
 
         Btn.Bouton(self.largeurWidget - 200, self.yDebutWidget + self.hauteurWidget - 100, 200, 80, "Buy", (255, 255, 255), (0, 128, 64), 1, 3)
-
-    def traceJoueur(self):
-        """Draw the player
-        Trace le joueur
-        """
-
-        if self.chargesPersonnage == None:
-            self.chargePersonnage()
-
-        EZ.trace_image(self.chargesPersonnage[f"Personnage{self.numPerso + 1}"], (self.largeurWidget//3) - 80 - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso}"])[0], self.yDebutCadre + self.hauteurCardreInfo - EZ.dimension(self.chargesPersonnage[f"Personnage{self.numPerso}"])[1])
-        
+    
 
 
-        
 
     def DisplayMenu(self):
-        """Display all the Menu
-        Trace tout le Menu
-        """
-
-        self.displayFond()
-        self.TraceWidget(self.largeurWidget)
+        super().DisplayMenu()
         self.traceCadreInfo()
         self.tracePrix()
         self.traceBouttonBuy()
 
-        self.traceJoueur()
-
-class Mode(SousMenu):
+class Mode(Menu2Choice):
     """Class to choice the game mode
     class pour choisir le mode de jeu"""
 
     def __init__(self, longeur, hauteur, texte):
         super().__init__(longeur, hauteur, texte)
-        self.largeurWidget = self.longeur - 100
-        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
-        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
-
-
         self.chargesBouton = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Mode\BoutonCampagne.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Mode\BoutonInfini.png")]
-
-    def traceImage(self):
-        """Draw the images of button mode
-        Trace les images des boutons mode
-        """
-
-        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 - 3 + 50, self.yDebutWidget + self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25, EZ.dimension(self.chargesBouton[0])[0] + 3, EZ.dimension(self.chargesBouton[0])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
-        EZ.trace_image(self.chargesBouton[0], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[0])[0]//2 + 50, self.yDebutWidget +  1 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 - 25)
-
-        Decor.traceCadre(self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 - 3 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[1])[1]//2 + 25, EZ.dimension(self.chargesBouton[1])[0] + 3, EZ.dimension(self.chargesBouton[1])[1], 3, 2, self.couleurFondCadre, self.couleurBorderCadre) # Background / Fond
-        EZ.trace_image(self.chargesBouton[1], self.largeurWidget//2 - EZ.dimension(self.chargesBouton[1])[0]//2 + 50, self.yDebutWidget + 2 * self.hauteurWidget//3 - EZ.dimension(self.chargesBouton[0])[1]//2 + 25)
-    
-    def DisplayMenu(self):
-        """Display all the Menu
-        Trace tout le Menu
-        """
-
-        self.displayFond()
-        self.TraceWidget(self.largeurWidget)
-        self.traceImage()
-
 
 
 class Infini(SlideMenu):
@@ -528,6 +561,373 @@ class Infini(SlideMenu):
         Retourne le nom des cartes"""
 
         return list(self.chargesMap.keys())
+
+
+class Shop(Menu2Choice):
+    """class to choice the shop
+    class pour choisir le magasin"""
+
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.chargesBouton = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\AmeliorationArmeEtJoueur.jpg"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\equipement.jpg")]
+
+
+class ShopUpgrade(SlideMenu):
+    """class parent of slide Menu choice the character/Weapon in the shop
+    class parent de SlideMenu pour choisir le personnage/arme dans le magasin"""
+
+    def __init__(self, longeur, hauteur, texte, Inventaire = {}):
+        super().__init__(longeur, hauteur, texte)
+        self.hauteurCardreJoueur = int(3 * self.hauteurWidget/4)
+
+        self.couleurFondCadre = (200, 200, 200)
+        self.couleurBordureCadre = (150, 150, 150)
+
+        self.policeCadre = EZ.charge_police(60, "FichiersJeu\Interface\Entites\Police\PermanentMarker-Regular.ttf", True)
+
+        self.listPersonnage = [] # list of the character can be upgrade / liste des personnages pouvant etre ameliore
+
+
+
+    
+    def TrieInventaire(self, Inventaire):
+        """sort iventory to return Caracters infomartion
+        Trie Inventaire et renvoie les inforamtion sur les personnages
+
+        Args:
+            Inventaire (dict): dictionary of inventoty / dictionnaire de l'inventaire
+        """
+
+        Personnages = {}
+        NumberCadre = 0
+        for keys in Inventaire:
+            if "Personnage" in keys:
+                Personnages.update({keys: Inventaire[keys]})
+                if Inventaire[keys][0]:
+                    NumberCadre += 1
+        
+        self.infoPersonnages = Personnages
+
+        self.largeurAllCadre = self.largeurCadrePlusEspace * NumberCadre
+
+    def getListPersonnage(self):
+        """Return the list of the character can be upgrade
+        Retourne la liste des personnages pouvant etre ameliore"""
+            
+        return self.listPersonnage
+
+
+
+    def traceCadreJoueur(self, x):
+        """Draw the frame for Caracters
+        Trace le Cadre des Personnages
+
+        Args:
+            x (int): x start of frame / x début du Cadre
+        """
+
+        Decor.traceCadre(x, self.yDebutCadre, self.largeurCadre, 3 *self.hauteurCardreJoueur//4, 3, 2, self.couleurFondCadre, self.couleurBordureCadre) # Haut du cadre
+        Decor.traceCadre(x, self.yDebutCadre + 3 *self.hauteurCardreJoueur//4, 300, self.hauteurCardreJoueur//4, 3, 2, self.couleurBordureCadre, self.couleurBordureCadre) # Haut du cadre
+
+        coordonneesFonts = [x + self.largeurCadre//2 - EZ.dimension(EZ.image_texte("Upgrade", self.policeCadre, 0, 0, 0))[0]//2, self.yDebutCadre + 7 *self.hauteurCardreJoueur//8 - EZ.dimension(EZ.image_texte("Select", self.policeCadre, 0, 0, 0))[1]//2] # [x, y]
+        EZ.trace_image(EZ.image_texte("Upgrade", self.policeCadre, 0, 0, 0), coordonneesFonts[0] + self.tailleOmbrePolice , coordonneesFonts[1] + self.tailleOmbrePolice)
+        EZ.trace_image(EZ.image_texte("Upgrade", self.policeCadre, 255, 255, 255), coordonneesFonts[0], coordonneesFonts[1])
+
+
+
+
+
+    
+    def traceMenuShopUpgrade(self, x, liste):
+        """Drawn all the Menu of Caracters
+        Trace tout le Menu des Personnages
+
+        Args:
+            x (int): x gap of widget / x du debut des Cadres
+        """
+
+        self.displayFond()
+        self.TraceWidget(x, liste)
+
+
+class ShopUpgradePersonnageSlide(ShopUpgrade):
+    """Class of the slide menu for choice the character
+    class du slide menu pour choisir le personnage"""
+
+    def __init__(self, longeur, hauteur, texte, Inventaire={}):
+        super().__init__(longeur, hauteur, texte, Inventaire)
+
+
+
+    def traceAllPersonnages(self, x):
+        """Drawn all the Caracters and their frames of buys characters
+        Trace tout des personnages et leur cadre des personnages achetés
+
+        Args:
+            x (int): x start of frames / x du debut des Cadres
+        """
+
+        if self.chargesPersonnage == {}:
+            self.chargePersonnage()
+
+        listPersonnage = []
+        xStart = x
+        for infoPersonnage, ImagePeronnage in zip(self.infoPersonnages,self.chargesPersonnage):
+            if self.infoPersonnages[infoPersonnage][0] == True:
+                listPersonnage.append(infoPersonnage)
+                self.traceCadreJoueur(xStart)
+                EZ.trace_image(self.chargesPersonnage[ImagePeronnage], xStart + self.largeurCadre//2 - EZ.dimension(self.chargesPersonnage[ImagePeronnage])[0]//2, self.yDebutCadre + 20)
+                xStart += self.largeurCadrePlusEspace
+        
+        self.listPersonnage = listPersonnage
+    
+    def traceMenuShopUpgrade(self, x):
+        """Drawn all the Menu of Characters
+        Trace tout le Menu des Personnages
+
+        Args:
+            x (int): x gap of widget / x du debut des Cadres
+        """
+        super().traceMenuShopUpgrade(x, self.listPersonnage)
+        self.traceAllPersonnages(x)
+
+
+class ShopUpgradeArmeSlide(ShopUpgrade):
+    """Class of the slide menu for choice the weapon
+    class du slide menu pour choisir l'arme"""
+
+    def __init__(self, longeur, hauteur, texte, Inventaire={}):
+        super().__init__(longeur, hauteur, texte, Inventaire)
+        self.chargeWeapons() # dictionary of the weapons / dictionnaire des armes
+        self.levelWeapons = {} # dictionary of the level of the weapons / dictionnaire des niveaux des armes
+    
+    def chargeWeapons(self):
+        """Load the weapons
+        Charge les armes"""
+
+        sizeCoef = [150/(EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{n}\Arme{n}lvl1.png"))[1] if EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{n}\Arme{n}lvl1.png"))[0] * 150/EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{n}\Arme{n}lvl1.png"))[1] < self.largeurCadre else EZ.dimension(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{n}\Arme{n}lvl1.png"))[0]//2) for n in range(1, 9)]
+
+        self.chargesWeapons = {'Personnage1': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme1\Arme1lvl{n}.png"),0,sizeCoef[0])for n in range(1,5)],
+                                'Personnage2': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme2\Arme2lvl{n}.png"),0,sizeCoef[1])for n in range(1,5)],
+                                'Personnage3': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme3\Arme3lvl{n}.png"),0,sizeCoef[2])for n in range(1,4)],
+                                'Personnage4': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme4\Arme4lvl{n}.png"),0,sizeCoef[3])for n in range(1,6)],
+                                'Personnage5': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme5\Arme5lvl{n}.png"),0,sizeCoef[4])for n in range(1,5)],
+                                'Personnage6': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme6\Arme6lvl{n}.png"),0,sizeCoef[5])for n in range(1,6)],
+                                'Personnage7': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{n}.png"),0,sizeCoef[6])for n in range(1,6)],
+                                'Personnage8': [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme8\Arme8lvl{n}.png"),0,sizeCoef[7])for n in range(1,5)],
+        }
+    
+    def getNumberOfUpgrade(self, personnage):
+        """Get the number of upgrade of the weapon
+        Renvoie le nombre d'ameliorations de l'arme"""
+
+        return len(self.chargesWeapons[personnage])
+
+    
+    def SetlevelWeapon(self):
+        """Set the level of the weapons
+        Met a niveau des armes"""
+
+        Info = Reader.ReadInventaire()
+
+        infotemp = {}
+        for key, value in Info.items():
+            infotemp.update({key: value[2]})
+        
+        self.levelWeapons = infotemp
+
+        
+
+    def traceAllWeapons(self, x):
+        """Drawn all the weapons and their frames of buys weapons
+        Trace toutes les armes et leur cadre des armes achetées
+
+        Args:
+            x (int): x start of frames / x du debut des Cadres
+        """
+
+        listArme = []
+        xStart = x
+        for infoPersonnage, ImageArme in zip(self.infoPersonnages,self.chargesWeapons):
+            if self.infoPersonnages[infoPersonnage][0] == True:
+                listArme.append(infoPersonnage)
+                self.traceCadreJoueur(xStart)
+                EZ.trace_image(self.chargesWeapons[ImageArme][self.levelWeapons[infoPersonnage] -1 ], xStart + self.largeurCadre//2 - EZ.dimension(self.chargesWeapons[ImageArme][self.levelWeapons[infoPersonnage] -1 ])[0]//2, self.yDebutCadre + self.hauteurCardreInfo//2 - EZ.dimension(self.chargesWeapons[ImageArme][self.levelWeapons[infoPersonnage] -1 ])[1]//2)
+                xStart += self.largeurCadrePlusEspace
+        
+        self.listPersonnage = listArme
+
+    def traceMenuShopUpgrade(self, x):
+        """Drawn all the Menu of Weapons
+        Trace tout le Menu des Armes"""
+
+        super().traceMenuShopUpgrade(x, self.listPersonnage)
+        self.traceAllWeapons(x)
+
+
+
+class ShopUpgradePersonnage(StatsPersonnage):
+
+    def __init__(self, longeur, hauteur, numPerso, texte, stats, statsUpgrade):
+        super().__init__(longeur, hauteur, numPerso, texte, stats)
+        self.statsUpgrade = statsUpgrade # Stats of the upgrade of the Characters / Stats de l'amelioration du personnage
+        self.CaractersLevel = 1 # Level of the caracter / Niveau du personnage
+
+        self.policeLevel = EZ.charge_police(40, "FichiersJeu\Interface\Entites\Police\PermanentMarker-Regular.ttf", True)
+
+    def SetCarcatersLevel(self, CaractersLevel):
+        """Set the level of the Caracters
+        Set le niveau des personnages
+
+        Args:
+            CaractersLevel (int):level of Caracter / niveaux du personnage
+        """
+            
+        self.CaractersLevel = CaractersLevel
+
+    def traceCadreInfo(self):
+        """Draw the stats of the Caracter
+        Trace les stats du Personnage
+        """
+        
+        for Cadre in range(1, 3):
+            xCadre = Cadre * self.largeurWidget//2.5 - 150
+
+            if Cadre == 1:
+                # Caracters stats after the upgrade / Stats du personnage après amelioration
+                EZ.trace_image(EZ.image_texte(f"Health: {int(self.stats['vie']) + int(self.statsUpgrade['vie']) * (self.CaractersLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
+                EZ.trace_image(EZ.image_texte(f"Regen Time: {float(self.stats['regen']['cooldown']) + float(self.statsUpgrade['regen']['cooldown']) * (self.CaractersLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 60)
+                EZ.trace_image(EZ.image_texte(f"Regen Power: {round((float(self.stats['regen']['eficiency'])+ float(self.statsUpgrade['regen']['eficiency']) * (self.CaractersLevel -1)) * 10, 2)} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 110)
+                EZ.trace_image(EZ.image_texte(f"Speed: {int(self.stats['speed']) + float(self.statsUpgrade['speed']) * (self.CaractersLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 160)
+                EZ.trace_image(EZ.image_texte(f"Acc: {int(self.stats['acc']) + float(self.statsUpgrade['acc']) * (self.CaractersLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 210)
+                EZ.trace_image(EZ.image_texte(f"Jump Power: {float(self.stats['jumpPower']) + float(self.statsUpgrade['jumpPower']) * (self.CaractersLevel - 1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 260)
+
+
+            elif Cadre == 2:
+                # Caracters stats after the upgrade / Stats du personnage après amelioration
+                EZ.trace_image(EZ.image_texte(f"Health: {int(self.stats['vie']) + int(self.statsUpgrade['vie']) * (self.CaractersLevel)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 10)
+                EZ.trace_image(EZ.image_texte(f"Regen Time: {float(self.stats['regen']['cooldown']) + float(self.statsUpgrade['regen']['cooldown']) * (self.CaractersLevel)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 60)
+                EZ.trace_image(EZ.image_texte(f"Regen Power: {round((float(self.stats['regen']['eficiency'])+ float(self.statsUpgrade['regen']['eficiency']) * (self.CaractersLevel)) * 10,2)} ", self.policeCadre), xCadre + 10, self.yDebutCadre + 110)
+                EZ.trace_image(EZ.image_texte(f"Speed: {int(self.stats['speed']) + float(self.statsUpgrade['speed']) * (self.CaractersLevel)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 160)
+                EZ.trace_image(EZ.image_texte(f"Acc: {int(self.stats['acc']) + float(self.statsUpgrade['acc']) * (self.CaractersLevel)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 210)
+                EZ.trace_image(EZ.image_texte(f"Jump Power: {float(self.stats['jumpPower']) + float(self.statsUpgrade['jumpPower']) * (self.CaractersLevel)}", self.policeCadre), xCadre + 10, self.yDebutCadre + 260)
+    
+
+    def traceLevelCaracter(self):
+        """Draw the level of the Caracter
+        Trace le niveau du Personnage"""
+
+        EZ.trace_image(EZ.image_texte(f"Level: {self.CaractersLevel}", self.policeLevel), self.largeurWidget//6 - EZ.dimension(EZ.image_texte(f"Level: {self.CaractersLevel}", self.policeLevel))[0]//2, self.yDebutCadre + 20)
+    
+    def tracePrix(self):
+        """Draw the price of the Upgrade of the Caracters
+        Trace le prix de l'amelioration du Personnage"""
+
+        Decor.nombreDeGold(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, self.statsUpgrade['price']* self.CaractersLevel)
+    
+    def traceBouttonUp(self):
+        """Draw the buy button
+        Trace le bouton play
+        """
+
+        Btn.Bouton(self.largeurWidget - 250, self.yDebutWidget + self.hauteurWidget - 100, 250, 80, "Upgrade", (255, 255, 255), (0, 128, 64), 1, 3)
+
+    def DisplayMenu(self):
+        """Display the Menu of the Caracter
+        Affiche le Menu du Personnage"""
+        super().DisplayMenu()
+        self.traceCadreInfo()
+        self.traceLevelCaracter()
+        self.tracePrix()
+        self.traceBouttonUp()
+
+
+class ShopUpgradeWeapon(StatsPersonnage):
+
+
+    def __init__(self, longeur, hauteur, numPerso, texte, stats, statsUpgrade, numberOfWeaponUpgrade):
+        super().__init__(longeur, hauteur, numPerso, texte, stats)
+        self.statsUpgrade = statsUpgrade
+        self.chargeWeapons(numberOfWeaponUpgrade)
+
+    def SetWeaponLevel(self, level):
+        """Set the weapon level
+        Met le niveau de l'arme
+
+        Args:
+            level (int): level of the weapon
+        """
+
+        self.WeaponLevel = level
+
+
+    def chargeWeapons(self,numbWeapon):
+        """Load the weapons
+        Charge les armes
+        
+        Args:
+            numbWeapon (int): number of upgrade weapon / Nombre d'amelioration d'arme"""
+
+        imageCoef = EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl1.png")
+        sizeCoef = 150/(EZ.dimension(imageCoef)[1] if EZ.dimension(imageCoef)[0] * 150/EZ.dimension(imageCoef)[1] < self.largeurCadre else EZ.dimension(imageCoef)[0]//2)
+        self.chargesWeapons = [EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme{self.numPerso + 1}\Arme{self.numPerso + 1}lvl{n}.png"), 0, sizeCoef)for n in range(1,numbWeapon+1)]
+        self.numbWeapon = numbWeapon
+
+
+
+    def traceCadreInfo(self):
+        """Draw the info of the weapon
+        Trace les infos de l'arme"""
+
+        for Cadre in range(1, 3):
+            xCadre = Cadre * self.largeurWidget//2.5 - 150
+
+            if Cadre == 1:
+                # Picture of the weapon / Image de l'arme
+                EZ.trace_image(self.chargesWeapons[self.WeaponLevel - 1], xCadre + self.largeurCadre//2 - EZ.dimension(self.chargesWeapons[self.WeaponLevel - 1])[0]//2, self.yDebutCadre + self.hauteurCardreInfo//4 - EZ.dimension(self.chargesWeapons[self.WeaponLevel - 1])[1]//2)
+
+                # Weapon Stats / Stats de l'arme
+                EZ.trace_image(EZ.image_texte(f"Damage: {self.stats['weapon']['damage'] + self.statsUpgrade['weapon']['damage'] * (self.WeaponLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 160)
+                EZ.trace_image(EZ.image_texte(f"Range: {self.stats['weapon']['range'] + self.statsUpgrade['weapon']['range'] * (self.WeaponLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 110)
+                EZ.trace_image(EZ.image_texte(f"Durability: {self.stats['weapon']['durability'] + self.statsUpgrade['weapon']['durability'] * (self.WeaponLevel -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 60)
+            
+            elif Cadre == 2:
+                # Picture of the weapon / Image de l'arme
+                self.WeaponLevel2 = self.WeaponLevel + 1 if self.WeaponLevel + 1 <= self.numbWeapon else self.WeaponLevel
+                EZ.trace_image(self.chargesWeapons[self.WeaponLevel2 -1], xCadre + self.largeurCadre//2 - EZ.dimension(self.chargesWeapons[self.WeaponLevel2-1])[0]//2, self.yDebutCadre + self.hauteurCardreInfo//4 - EZ.dimension(self.chargesWeapons[self.WeaponLevel2 -1])[1]//2)
+
+                # Weapon Stats / Stats de l'arme
+                EZ.trace_image(EZ.image_texte(f"Damage: {self.stats['weapon']['damage'] + self.statsUpgrade['weapon']['damage'] * (self.WeaponLevel2 -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 160)
+                EZ.trace_image(EZ.image_texte(f"Range: {self.stats['weapon']['range'] + self.statsUpgrade['weapon']['range'] * (self.WeaponLevel2 -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 110)
+                EZ.trace_image(EZ.image_texte(f"Durability: {self.stats['weapon']['durability'] + self.statsUpgrade['weapon']['durability'] * (self.WeaponLevel2 -1)}", self.policeCadre), xCadre + 10, self.yDebutCadre + self.hauteurCardreInfo - 60)
+
+
+
+
+    def tracePrix(self):
+        """Draw the price of the Upgrade of the Caracters
+        Trace le prix de l'amelioration du Personnage"""
+
+        Decor.nombreDeGold(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, self.statsUpgrade['weapon']['price']* self.WeaponLevel if self.WeaponLevel < self.numbWeapon else 0)
+    
+    def traceBouttonUp(self):
+        """Draw the buy button
+        Trace le bouton play
+        """
+
+        Btn.Bouton(self.largeurWidget - 250, self.yDebutWidget + self.hauteurWidget - 100, 250, 80, "Upgrade" if self.WeaponLevel < self.numbWeapon else "Max", (255, 255, 255), (0, 128, 64), 1, 3)
+    
+
+    def DisplayMenu(self):
+        """Display the Menu of the Weapon upgrade
+        Affiche le Menu de l'amelioration d'arme"""
+        super().DisplayMenu()
+        self.traceCadreInfo()
+        self.tracePrix()
+        self.traceBouttonUp()
+
+
+
 
 
 class Game(Interface):
