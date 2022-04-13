@@ -26,7 +26,7 @@ EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 # Joueur
 Joueur1 = CJ.Joueur("Bob",0,)
-Joueur1.setEquipement(["shield"])
+
 
 # Menu de selection
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
@@ -856,6 +856,9 @@ def VerifDegat(monstres, armesJoueur, Joueur, Shooters = 0):
             if Verifzone(monstre, arme["arme"]):
                 monstre.domage(arme["arme"].damage["damage"])
                 arme["arme"].use()
+            
+        if Joueur.equipement["grenade"] != None and Joueur.equipement["grenade"].getDoDamage() and Verifzone(monstre, Joueur.equipement["grenade"]):
+            monstre.domage(Joueur.equipement["grenade"].getEfficiency())
 
         if monstre.death():
             monstres.pop(i)
@@ -976,6 +979,7 @@ def game(map, mode, limiteWave = -1):
     Game = Menuf.Game(LONGEUR, HAUTEUR)
     Game.setMap(map)
     Joueur1.setHauteurSol(Game.hauteurSol)
+    Joueur1.setEquipement(["shield","potion", "grenade"])
     Joueur1.resetStats()
 
     vague = 0
@@ -1068,7 +1072,13 @@ def game(map, mode, limiteWave = -1):
 
                 elif EZ.touche() == "return": #Corespond a la touche entre
                     Joueur1.shoot()
+                
+                elif EZ.touche() == "q": # Detection en qwerty donc == a : Utilise la potion de soin
+                    Joueur1.UsePotion()
             
+                elif EZ.touche() == "e": # Lance la grenade
+                    Joueur1.UseGrenade()
+
             elif evenement == "TOUCHE_RELACHEE":
                 if EZ.touche() == "d":
                     Joueur1.move_info["right"] = False

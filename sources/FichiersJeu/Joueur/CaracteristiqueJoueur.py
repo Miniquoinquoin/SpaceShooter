@@ -32,7 +32,7 @@ class Joueur:
 
         self.equipement = {'shield': None, 'grenade': None, 'potion': None} # Equipment of the player / équipement du joueur
         self.x = ID.LONGEUR//2 - 65 # X position of the player / position en x du joueur - 65 pour centrer le joueur (65 = hitbox[0]/2)
-        self.y = 150  # height player spawn / Hauteur d'aparition du joueur
+        self.y = 150  # height player spawn / Hauteur d'aparition du joueur --> = y_sol (saut)
         self.y_sol = 0 #Hauteur de marche du joueur - 3* 48
         self.move_info = {"right": False, "left": False, "saut": False, "speed": 0} # Etats demander par les touche
         self.move_etat = {"right": False, "left": False} # Etats du joueur sur l'ecrant
@@ -107,6 +107,7 @@ class Joueur:
         définie la hauteur du sol
         """
         self.y_sol = hauteur - 144
+        self.hauteurSol = hauteur
     
     def setEquipement(self, equipements):
         """Set the equipment of the player
@@ -117,13 +118,13 @@ class Joueur:
         """
         for equipement in equipements:
             if equipement == 'shield':
-                self.equipement['shield'] = Equipement.Bouclier(5)
+                self.equipement['shield'] = Equipement.Bouclier(5) # number of hits before the shield is destroyed / nombre de coups avant que le bouclier soit détruit
             
             elif equipement == 'grenade':
-                self.equipement['grenade'] = True
+                self.equipement['grenade'] = Equipement.Grenade(10, self.hauteurSol) # grenade damage *13 because she hit 25(numberofpicture)/2  / dégats de la grenade
             
             elif equipement == 'potion':
-                self.equipement['potion'] = True
+                self.equipement['potion'] = Equipement.Potion(20) # potion heal / soin de la potion
         
     def CalculateStats(self):
         """Calculate the stats of the player in terms of the level of the player
@@ -157,6 +158,7 @@ class Joueur:
         self.effetDomage(5)
         self.zoneHitBox()
         self.onShoot()
+        self.TraceEquipement()
 
         EZ.trace_image(self.charges, self.x, self.y)
         if self.stats["vie"] >= 0:
@@ -164,6 +166,9 @@ class Joueur:
 
         else:
             Decor.info_vie(20, 20, 100, 0, self.stats["maxvie"])
+        
+
+
 
 
     def moveRight(self):
@@ -376,6 +381,11 @@ class Joueur:
 
         #Effect / Effet
         self.lastchargesEffetDomage[0] = 2 * Anim.MAX_INTENSITE
+
+        #Equipement
+        for equipement in self.equipement:
+            if self.equipement[equipement] != None:
+                self.equipement[equipement].repair()
         
 
     def effetRegen(self):
@@ -390,6 +400,38 @@ class Joueur:
             elif self.stats["vie"] < self.stats["maxvie"]: # verifie si le joueur et proche de la vie max
                 self.stats["vie"] = self.stats["maxvie"]
 
+
+    def UsePotion(self):
+        """Use a potion if possible
+        Utilise une potion si possible"""
+
+        if self.equipement["potion"] != None and self.equipement["potion"].isUsable():
+            self.equipement["potion"].use()
+            self.stats["vie"] += self.equipement["potion"].getEfficiency() if self.equipement["potion"].getEfficiency() + self.stats["vie"] <= self.stats["maxvie"] else self.stats["maxvie"] - self.stats["vie"]
     
+    def UseGrenade(self):
+        """Use a grenade if possible
+        Utilise une grenade si possible"""
 
+        if self.equipement["grenade"] != None and self.equipement["grenade"].isUsable():
+            self.equipement["grenade"].use(self.x, (self.y + self.hitbox[1]//3), "right" if self.move_etat["right"] else "left", self.hitbox[0], self.move_info["speed"]) 
+    
+    def TraceEquipement(self):
+        """Draw the equipment of the player
+        Trace les équipements du joueur"""
+        
+        yStart = 100
+        if self.equipement["shield"] != None:
+            self.equipement["shield"].traceInfoEquipement(1200, yStart)
+            yStart += self.equipement["shield"].hauteur + 10
 
+        if self.equipement["grenade"] != None:
+            self.equipement["grenade"].traceInfoEquipement(1200, yStart)
+            yStart += self.equipement["grenade"].hauteur + 10
+
+            self.equipement['grenade'].onShoot(self.move_info["speed"])
+            self.equipement['grenade'].AnimationExplode(self.move_info["speed"])
+        
+        if self.equipement["potion"] != None:
+            self.equipement["potion"].traceInfoEquipement(1200, yStart)
+            
