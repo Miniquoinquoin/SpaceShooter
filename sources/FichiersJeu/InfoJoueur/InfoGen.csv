@@ -1,9 +1,12 @@
-Gold:1593822
+Gold:29575972
 Personnage1:True:3:1
 Personnage2:True:3:4
-Personnage3:False:1:1
-Personnage4:True:5:5
-Personnage5:True:1:1
+Personnage3:True:1:1
+Personnage4:False:5:5
+Personnage5:False:1:1
 Personnage6:True:1:1
 Personnage7:False:1:1
-Personnage8:True:1:1
+Personnage8:False:1:1
+Shield:True:1:60:2
+Grenade:True:15:60:20:0
+Potion:True:1:60:10

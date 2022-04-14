@@ -199,3 +199,35 @@ def traceFlecheRetour(x, y, zoom):
     EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y + int(70 * zoom), x + int(30 * zoom), y + int(80 * zoom), 255, 255, 255) # Bas
     EZ.trace_triangle(x, y + int(40 * zoom), x - int(10 * zoom), y + int(40 * zoom), x + int(30 * zoom), y + int(80 * zoom), 255, 255, 255) # Bas
     EZ.trace_triangle(x, y + int(40 * zoom), x + int(30 * zoom), y, x + int(30 * zoom), y + int(10 * zoom), 255, 255, 255) #Haut
+
+
+def traceFlecheAmelioration(x, y, zoom):
+    """Draw the upgrade arrow
+    Trace la flèche d'amélioration
+    """
+
+    EZ.trace_rectangle_droit_v2(x, y + int(35 * zoom), int(70 * zoom), int(10 * zoom), 0, 0, 0) # Rectangle
+
+    EZ.trace_triangle(x + int(70 * zoom), y + int(40 * zoom), x + int(40 * zoom), y, x + int(80 * zoom), y + int(40 * zoom),  0, 0, 0) #Haut
+    EZ.trace_triangle(x + int(70 * zoom), y + int(40 * zoom), x + int(40 * zoom), y + int(70 * zoom), x + int(40 * zoom), y + int(80 * zoom),  0, 0, 0) # Bas
+    EZ.trace_triangle(x + int(70 * zoom), y + int(40 * zoom), x + int(80 * zoom), y + int(40 * zoom), x + int(40 * zoom), y + int(80 * zoom),  0, 0, 0) # Bas
+    EZ.trace_triangle(x + int(70 * zoom), y + int(40 * zoom), x + int(40 * zoom), y, x + int(40 * zoom), y + int(10 * zoom),  0, 0, 0) #Haut
+
+def TraceTextArea(x, y, texte, police, couleur = (0,0,0),delimiteur="|"):
+    """Draw a text area
+    Trace une zone de texte
+
+    Args:
+        x (int): x start of the framework / x de depart du cadre
+        y (int): y start of the framework / y de depart du cadre
+        longueur (int): lenght of the framework / longueur du cadre
+        hauteur (int): height of the framework / hauteur du cadre
+        texte (str): text to display / texte a afficher
+        police (str): font / police
+        delimiteur (str): delimiter / delimiteur
+    """
+
+    texte = texte.split(delimiteur)
+    for i in range(len(texte)):
+        texte[i] = EZ.image_texte(texte[i], police, *couleur)
+        EZ.trace_image(texte[i], x, y + i * (EZ.dimension(texte[i])[1]/0.9))

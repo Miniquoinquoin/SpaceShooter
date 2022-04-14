@@ -116,15 +116,17 @@ class Joueur:
         Args:
             equipements (list): list of the equipment of the player can be : 'shield', 'grenade' and 'potion'/ liste des équipements du joueur peut être : 'shield', 'grenade' et 'potion'
         """
+
+        EquipementStats = Reader.ReadStatsEquipement()
         for equipement in equipements:
-            if equipement == 'shield':
-                self.equipement['shield'] = Equipement.Bouclier(5) # number of hits before the shield is destroyed / nombre de coups avant que le bouclier soit détruit
+            if equipement == 'Shield':
+                self.equipement['shield'] = Equipement.Bouclier(EquipementStats[equipement]["eficiency"], EquipementStats[equipement]["cooldown"]) # number of hits before the shield is destroyed / nombre de coups avant que le bouclier soit détruit
             
-            elif equipement == 'grenade':
-                self.equipement['grenade'] = Equipement.Grenade(10, self.hauteurSol) # grenade damage *13 because she hit 25(numberofpicture)/2  / dégats de la grenade
+            elif equipement == 'Grenade':
+                self.equipement['grenade'] = Equipement.Grenade(EquipementStats[equipement]["eficiency"], self.hauteurSol, EquipementStats[equipement]["cooldown"], EquipementStats[equipement]["BonusRange"]) # grenade damage *13 because she hit 25(numberofpicture)/2  / dégats de la grenade
             
-            elif equipement == 'potion':
-                self.equipement['potion'] = Equipement.Potion(20) # potion heal / soin de la potion
+            elif equipement == 'Potion':
+                self.equipement['potion'] = Equipement.Potion(EquipementStats[equipement]["eficiency"], EquipementStats[equipement]["cooldown"]) # potion heal / soin de la potion
         
     def CalculateStats(self):
         """Calculate the stats of the player in terms of the level of the player

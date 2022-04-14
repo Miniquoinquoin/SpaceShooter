@@ -22,6 +22,8 @@ HAUTEUR = 720
 LONGEUR = 1280
 TIMER_VAGUE = 2 #en seconde
 
+PRIX_EQUIPEMENT = {"Shield": 10000, "Grenade": 2500, "Potion": 5000}
+
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
 
 # Joueur
@@ -39,6 +41,7 @@ MenuShop = Menuf.Shop(LONGEUR, HAUTEUR, "Shop")
 MenuShopUpgrade = Menuf.ShopUpgradePersonnageSlide(LONGEUR, HAUTEUR, "Shop")
 MenuShopUpgradeWeaponSlide = Menuf.ShopUpgradeArmeSlide(LONGEUR, HAUTEUR, "Shop")
 
+MenuEquipement = Menuf.BuyEquipement(LONGEUR, HAUTEUR, "Equipement")
 
 #In game
 MenuD = Menuf.MenuDeath(LONGEUR, HAUTEUR)
@@ -113,7 +116,7 @@ def menu(gold, inventaire):
                 leave = menuPerso(gold)
                 
             elif 1060 < EZ.souris_x() < 1260 and 380 < EZ.souris_y() < 460: # Bouton Equipement / equipments button
-                print("En phase devloppement")
+                leave = menuEquipement(gold)
 
             elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
                 print("En phase devloppement")
@@ -433,14 +436,12 @@ def menuShop():
             if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
                 return False 
 
-            elif 100 < EZ.souris_x() < 640 and 170 < EZ.souris_y() < 380:   #Bouton pour améliorer le niveau du personnage et de son arme ( coter gauche: Joueur )
+            elif 100 < EZ.souris_x() < 1180 and 170 < EZ.souris_y() < 380:   #Bouton pour améliorer le niveau du personnage et de son arme 
                 return "Joueur"
 
-            elif 640 <= EZ.souris_x() < 1180 and 170 < EZ.souris_y() < 380:   #Bouton pour améliorer le niveau du personnage et de son arme ( coter droit: Armes )
-                return "Armes"
 
-            elif 100 < EZ.souris_x() < 1180 and 400 < EZ.souris_y() < 610: # Bouton pour acheter des equipements
-                return "Equipement"
+            elif 100 < EZ.souris_x() < 1180 and 400 < EZ.souris_y() < 610: #Bouton pour améliorer le niveau du personnage et de son arme 
+                return "Armes"
 
         elif evenement == "TOUCHE_ENFONCEE":
             if EZ.touche() == "escape":
@@ -665,11 +666,191 @@ def menuShopUpgradeWeapon(gold, numPerso):
         EZ.frame_suivante()
 
 
+def menuEquipement(gold):
+    """Function of the Menu Equipement for choice what equipement to buy
+    Fonction du menu d'équipement pour choisir quel équipement acheter"""
 
 
+    x = 100
+    xLast = 0
+    click = False
+
+    play = True
+    leave = False
+    while play:
+        MenuEquipement.displayMenu(x)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
 
 
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
 
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif MenuEquipement.yDebutCadre < EZ.souris_y() < MenuEquipement.yDebutCadre + MenuEquipement.hauteurCadre: # look if the click is in a frame area / regarde si le click se trouve dans la zone des cadres
+                xSouris = EZ.souris_x()
+
+                for cadre, equipement in enumerate(MenuEquipement.chargesEquipement):
+                    if cadre * MenuEquipement.largeurCadrePlusEspace + x < xSouris < cadre * MenuEquipement.largeurCadrePlusEspace + x + MenuEquipement.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+                        leave = menuBuyEquipement(gold, equipement, MenuEquipement.chargesEquipement[equipement])
+                        
+                    
+
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuEquipement.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+def menuBuyEquipement(gold, equipement, equipementPicture):
+    """Function of the menu to buy a equipement
+    Fonction du menu d'achat d'un équipement"""
+
+    MenuBuyEquipement = Menuf.InfoEquipement(LONGEUR, HAUTEUR, equipement, equipement, equipementPicture, PRIX_EQUIPEMENT[equipement])
+
+    leave = False
+    play = True
+    while play:
+        MenuBuyEquipement.DisplayMenu()
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+        
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            elif 980 <= EZ.souris_x() < 1180 and 560 < EZ.souris_y() < 640: # Button Buy / Bouton Achat
+                if gold >= PRIX_EQUIPEMENT[equipement] :
+                    gold -= PRIX_EQUIPEMENT[equipement]
+                    Writer.SaveGold(gold)
+                    Writer.BuyEquipement(equipement)
+                    return False
+                
+                elif Reader.ReadEquipement()[equipement]:
+                    print("Vous avez déjà acheté cet équipement")
+
+                else:
+                    print("Pas assez d'argent")
+            
+            elif 100 <= EZ.souris_x() < 350 and 560 < EZ.souris_y() < 640 and Reader.ReadEquipement()[equipement]: # Button Upgrade / Bouton Amelioration
+                leave = menuUpgradeEquipement(gold, equipement, equipementPicture)
+
+        if leave:
+            return True
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+def menuUpgradeEquipement(gold, equipement, equipementPicture):
+    """Function of the menu to upgrade a equipement
+    Fonction du menu d'amelioration d'un équipement"""
+
+    MenuUpgradeEquipement = Menuf.UgradeEquipement(LONGEUR, HAUTEUR, equipement, equipementPicture, PRIX_EQUIPEMENT[equipement]//2)
+
+    play = True
+    while play:
+        MenuUpgradeEquipement.DisplayMenu()
+        
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+        
+        elif evenement == "TOUCHE_ENFONCEE":
+            if EZ.touche() == "escape":
+                return False
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+            if 0 < EZ.souris_x() < 60 and 0 < EZ.souris_y() < 70:
+                return False 
+
+            if equipement == "Grenade":
+
+                if 1156 <= EZ.souris_x() < 1206 and 170 < EZ.souris_y() < 314: # Button Damage / Bouton Dommage
+                    if gold >= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']:
+                        gold -= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']
+                        Writer.SaveGold(gold)
+                        Writer.UpEquipement(equipement, "eficiency", Reader.ReadStatsEquipement()[equipement]['eficiency'] * 0.1)
+                    
+                    else:
+                        print("Pas assez d'argent")
+
+                elif 1156 <= EZ.souris_x() < 1206 and 330 < EZ.souris_y() < 474: # Button Cooldown / Bouton Cooldown
+                    if gold >= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']:
+                        gold -= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']
+                        Writer.SaveGold(gold)
+                        Writer.UpEquipement(equipement, "cooldown", -(Reader.ReadStatsEquipement()[equipement]['cooldown'] * 0.1) )
+
+                    else:
+                        print("Pas assez d'argent")
+
+                elif 1156 <= EZ.souris_x() < 1206 and 490 < EZ.souris_y() < 634: # Button Bonus range / Bouton Bonus Range
+                    if gold >= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']:
+                        gold -= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']
+                        Writer.SaveGold(gold)
+                        Writer.UpEquipement(equipement, "BonusRange", 10)
+
+                    else:
+                        print("Pas assez d'argent")
+
+            else:
+                
+                if 1156 <= EZ.souris_x() < 1206 and 170 < EZ.souris_y() < 386: # Button Damage / Bouton Dommage
+                    if gold >= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']:
+                        gold -= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']
+                        Writer.SaveGold(gold)
+                        Writer.UpEquipement(equipement, "eficiency", Reader.ReadStatsEquipement()[equipement]['eficiency'] * 0.1 if not(equipement == "Shield") else 1)
+
+                    else:
+                        print("Pas assez d'argent")
+
+
+                elif 1156 <= EZ.souris_x() < 1206 and 410 < EZ.souris_y() < 626: # Button Cooldown / Bouton Cooldown
+                    if gold >= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']:
+                        gold -= PRIX_EQUIPEMENT[equipement]//2 * Reader.ReadStatsEquipement()[equipement]['numberUpgrade']
+                        Writer.SaveGold(gold)
+                        Writer.UpEquipement(equipement, "cooldown", -(Reader.ReadStatsEquipement()[equipement]['cooldown'] * 0.1) )
+
+                    else:
+                        print("Pas assez d'argent")
+        
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
 
 
 
@@ -807,7 +988,7 @@ def Verifzone(zone1, zone2):
     Returns:
         bool: True si il se touche, sinon False
     """
-    return ((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and ((zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1]) or (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1] <= zone1.zoneHitBoxlist[3][1]) ) # verifie si des zonehitbox se touche
+    return ((((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[1][0] <= zone1.zoneHitBoxlist[1][0])) and (zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1])) or (((zone1.zoneHitBoxlist[0][0] <= zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0]) or (zone2.zoneHitBoxlist[0][0] <= zone1.zoneHitBoxlist[1][0] <= zone2.zoneHitBoxlist[1][0])) and ((zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[0][1] <= zone2.zoneHitBoxlist[3][1]) or (zone2.zoneHitBoxlist[0][1] <= zone1.zoneHitBoxlist[3][1] <= zone2.zoneHitBoxlist[3][1])) )) # verifie si des zonehitbox se touche
 
 def VerifzonePower(zonePower, zoneMonstre):
     """ check if 2 zone are in the same zone for power
@@ -979,7 +1160,7 @@ def game(map, mode, limiteWave = -1):
     Game = Menuf.Game(LONGEUR, HAUTEUR)
     Game.setMap(map)
     Joueur1.setHauteurSol(Game.hauteurSol)
-    Joueur1.setEquipement(["shield","potion", "grenade"])
+    Joueur1.setEquipement([equipements for equipements in Reader.ReadEquipement() if Reader.ReadEquipement()[equipements]])
     Joueur1.resetStats()
 
     vague = 0

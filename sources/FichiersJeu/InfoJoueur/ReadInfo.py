@@ -61,3 +61,38 @@ def ReadInventaire():
 
     return inventaire
 
+
+def ReadEquipement():
+    """Read if the Equipement is buy or not
+    li les equipement acheté ou pas"""
+
+    equipement = {"Shield": False, "Grenade": False, "Potion": False}
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        for row in reader:
+            for key in equipement:
+                if key in row[0] and row[1] == "True":
+                    equipement[key] = True
+    
+    return equipement
+
+
+
+def ReadStatsEquipement():
+    """Read the Stats of the Equipement
+    li les stats des equipement
+    
+    return: dict {"name": [numberUpgrade,cooldown,eficiency, BonusRange(%)]}
+    """
+
+    statsEquipement = {}
+    equipements = ["Shield", "Grenade", "Potion"]
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        for row in reader:
+            for equipement in equipements:
+                if equipement in row[0]:
+                    statsEquipement.update({equipement:{"numberUpgrade": int(row[2]), "cooldown": int(row[3]), "eficiency": int(row[4]), "BonusRange": int(row[5]) if equipement == "Grenade" else 0}})
+        
+    return statsEquipement
+

@@ -1,6 +1,7 @@
 """Fichier contenant l'ensemble des menu du jeu"""
 
 from ctypes import sizeof
+from operator import eq
 import FichiersJeu.Interface.EZ as EZ
 import FichiersJeu.Joueur.CaracteristiqueJoueur as CJ
 import FichiersJeu.Interface.Animation as Anim
@@ -219,7 +220,10 @@ class SlideMenu(SousMenu):
         listeImages (list): list of the images to drawn / liste des images a afficher
         """
 
-        if x + 150 >= 100:
+        if len(listeImages) * self.largeurCadrePlusEspace + 100 < self.longeur:
+            Decor.traceCadre(x - 50, self.yDebutWidget, self.longeur - 100, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
+
+        elif x + 150 >= 100:
             Decor.traceCadre(x - 50, self.yDebutWidget, self.longeur + 150, self.hauteurWidget, 3, 2, self.couleurFond, self.couleurBorder)
         
         elif x < -(len(listeImages) * self.largeurCadrePlusEspace - self.longeur):
@@ -928,7 +932,240 @@ class ShopUpgradeWeapon(StatsPersonnage):
 
 
 
+class BuyEquipement(SlideMenu):
+    """Class to choice the equipement to buy
+    class pour choisir l'équipement à acheter"""
 
+    def __init__(self, longeur, hauteur, texte):
+        super().__init__(longeur, hauteur, texte)
+        self.largeurWidget = self.longeur - 100
+
+        self.chargesEquipement = { "Shield": EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Equipement\Bouclier.png"), 
+        "Grenade": EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Equipement\Grenade.png"),
+        "Potion":EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Equipement\Potion.png"),
+        }
+
+        self.largeurAllCadre = self.largeurCadrePlusEspace * len(self.chargesEquipement)
+
+    def traceAllCadre(self,x):
+        """Draw all the cadre
+        Trace tout les cadre
+        """
+
+        xStart = x
+        for equipement in self.chargesEquipement:
+            self.traceBasicCadre(xStart, equipement)
+            EZ.trace_image(self.chargesEquipement[equipement], xStart + self.largeurCadre//2 - EZ.dimension(self.chargesEquipement[equipement])[0]//2, self.yDebutCadre + self.hauteurCardreInfo//2 - EZ.dimension(self.chargesEquipement[equipement])[1]//2)
+            xStart += self.largeurCadrePlusEspace
+
+    
+    def displayMenu(self,x):
+        """Display all the Menu
+        Trace tout le Menu
+        """
+
+        self.displayFond()
+        self.TraceWidget(x, self.chargesEquipement)
+        self.traceAllCadre(x)
+
+
+class InfoEquipement(SousMenu):
+    """Class to display the info of the equipement
+    class pour afficher les infos de l'équipement"""
+
+    def __init__(self, longeur, hauteur, texte, equipement, equipementPicture, price):
+        super().__init__(longeur, hauteur, texte)
+        self.largeurWidget = self.longeur - 100
+        self.hauteurCadre = int(2 * self.hauteurWidget/3)
+        self.yDebutCadre = self.yDebutWidget + 50
+        self.xDebutCadre = 100
+        self.largeurCadreG = self.largeurWidget//2 # lenght of the right frame / longueur du cadre droit
+        self.largeurCadreD = self.largeurWidget - 100 - self.largeurCadreG # lenght of the left frame / longueur du cadre gauche
+
+        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
+        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
+
+        self.equipement = equipement
+        self.equipementPicture = equipementPicture
+        self.price = price
+
+        self.policeInfo = EZ.charge_police(25, "FichiersJeu\Interface\Entites\Police\Handwritingg _3.ttf")
+        self.policeStats = EZ.charge_police(50, "FichiersJeu\Interface\Entites\Police\JosefinSans-BoldItalic.ttf")
+
+
+
+
+    
+    def traceCadreInfo(self):
+        """Draw the cadre info
+        Trace le cadre info """
+
+        Decor.traceCadre(self.xDebutCadre, self.yDebutCadre, self.largeurCadreG, self.hauteurCadre, 2, 1,self.couleurFondCadre, self.couleurBorderCadre) # Drawn the left frame / Trace le cadre gauche
+        Decor.traceCadre(self.xDebutCadre + self.largeurCadreG + 20, self.yDebutCadre, self.largeurCadreD, self.hauteurCadre, 2, 1,self.couleurFondCadre, self.couleurBorderCadre) # Drawn the right frame / Trace le cadre droit
+
+
+    def traceEquipement(self):
+        """Draw the equipement
+        Trace l'équipement"""
+
+        EZ.trace_image(self.equipementPicture, self.xDebutCadre + 10, self.yDebutCadre + self.hauteurCadre//2 - EZ.dimension(self.equipementPicture)[1]//2)
+    
+
+    def traceInfo(self):
+        """Draw the info of the equipement
+        Trace les infos de l'équipement"""
+
+        # Description of the equipement / Description de l'équipement
+        texte = {"Shield": "This shield is a basic shield.|It can be used to protect the|player from the enemy.| |You can see it's status,|in the top left corner in the game.| |It is automatically activated at|the beginning of the game|and at the end of the repair time.", 
+                "Grenade": "This grenade is a powerful grenade.|It can be used to kill mob|and especially for the small monster|that the traditional weapon|does not touch .| |You can see it's status, in the|top left corner in the game.| |You can launch it with the 'e' key |in game.", 
+                "Potion": "This potion is a heal potion.|It can be used to heal the player.| |You can see it's status, in the top|left corner in the game.| |You can drink it with the 'a' key |in game."}
+
+        Decor.TraceTextArea(self.xDebutCadre + 40 + EZ.dimension(self.equipementPicture)[0], self.yDebutCadre + self.hauteurCadre//2 - EZ.dimension(self.equipementPicture)[1]//2, texte[self.equipement], self.policeInfo, (0, 0, 0))
+
+        DECALAGE_HAUT = 80
+
+        # Stats of the equipement / Stats de l'équipement
+        StatsEquipement = Reader.ReadStatsEquipement()[self.equipement]
+        if self.equipement == "Shield":
+            EZ.trace_image(EZ.image_texte(f"Resistance: { StatsEquipement['eficiency']}",self.policeStats), self.xDebutCadre + self.largeurCadreG + 20 + self.largeurCadreD//2 - EZ.dimension(EZ.image_texte(f"Resistance: { StatsEquipement['eficiency']}",self.policeStats))[0]//2, self.yDebutCadre + DECALAGE_HAUT) 
+
+        elif self.equipement == "Grenade":
+            EZ.trace_image(EZ.image_texte(f"Damage: { StatsEquipement['eficiency']}",self.policeStats), self.xDebutCadre + self.largeurCadreG + 20 + self.largeurCadreD//2 - EZ.dimension(EZ.image_texte(f"Damage: { StatsEquipement['eficiency']}",self.policeStats))[0]//2, self.yDebutCadre + DECALAGE_HAUT)
+            EZ.trace_image(EZ.image_texte(f"Range Bonus: { StatsEquipement['BonusRange']}",self.policeStats), self.xDebutCadre + self.largeurCadreG + 20 + self.largeurCadreD//2 - EZ.dimension(EZ.image_texte(f"Range Bonus: { StatsEquipement['BonusRange']}",self.policeStats))[0]//2, self.yDebutCadre + DECALAGE_HAUT + 2 * EZ.dimension(EZ.image_texte(f"Range Bonus: { StatsEquipement['BonusRange']}",self.policeStats))[1]//0.8)
+
+
+        elif self.equipement == "Potion":
+            EZ.trace_image(EZ.image_texte(f"Heal: { StatsEquipement['eficiency']}",self.policeStats), self.xDebutCadre + self.largeurCadreG + 20 + self.largeurCadreD//2 - EZ.dimension(EZ.image_texte(f"Heal: { StatsEquipement['eficiency']}",self.policeStats))[0]//2, self.yDebutCadre + DECALAGE_HAUT)
+        
+        # Other stats of the equipement / Autres stats de l'équipement
+        EZ.trace_image(EZ.image_texte(f"Cooldown: { StatsEquipement['cooldown']}",self.policeStats), self.xDebutCadre + self.largeurCadreG + 20 + self.largeurCadreD//2 - EZ.dimension(EZ.image_texte(f"Cooldown: { StatsEquipement['cooldown']}",self.policeStats))[0]//2, self.yDebutCadre + DECALAGE_HAUT + EZ.dimension(EZ.image_texte(f"Heal: { StatsEquipement['eficiency']}",self.policeStats))[1]//0.8)
+        
+
+
+
+    
+    def tracePrix(self):
+        """Draw the price of the equipement
+        Trace le prix de l'équipement"""
+        if not(Reader.ReadEquipement()[self.equipement]):
+            Decor.nombreDeGold(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, self.price )
+        
+        else:
+            Btn.Bouton(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, 250, 80, "Upgrade", (255, 255, 255), (0, 128, 64), 1, 3)
+    
+
+    def traceBouttonBuy(self):
+        """Draw the buy button
+        Trace le bouton acheter"""
+
+        Btn.Bouton(self.largeurWidget - 250, self.yDebutWidget + self.hauteurWidget - 100, 250, 80, "Buy" if not(Reader.ReadEquipement()[self.equipement]) else "Own", (255, 255, 255), (0, 128, 64), 1, 3)
+
+
+
+
+    def DisplayMenu(self):
+        """Display the Menu
+        Trace le Menu"""
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceCadreInfo()
+        self.traceEquipement()
+        self.traceInfo()
+        self.tracePrix()
+        self.traceBouttonBuy()
+
+
+class UgradeEquipement(SousMenu):
+    """Upgrade the equipement
+    Upgrade l'équipement"""
+
+    def __init__(self, largeur, hauteur, equipement, equipementPicture, price):
+        super().__init__(largeur, hauteur, equipement)
+        self.largeurWidget = self.longeur - 100
+        self.hauteurCadre = int(2 * self.hauteurWidget/5)
+        self.hauteurCadre =  2 *self.hauteurCadre//3 if equipement == "Grenade" else self.hauteurCadre
+        self.yDebutCadre = self.yDebutWidget + 50
+        self.xDebutCadre = 100
+
+        self.largeurCadre =  2 * self.largeurWidget//3 # Length of the frame / Longueur du cadre
+        self.numberFrame = 2 # Number of frames / Nombre de cadres
+
+        self.couleurBorderCadre = (140, 140, 140) # external color of frames info / Couleur externe des cadre info
+        self.couleurFondCadre = (180, 180, 180) # Background color of frames info / Fond des cadre info
+
+        self.equipement = equipement
+        self.equipementPicture = equipementPicture
+        self.price = price # price of the upgrade / Prix de l'amélioration → Prix de l'équipement/2 * number of upgrade
+
+        self.policeStats = EZ.charge_police(70, "FichiersJeu\Interface\Entites\Police\JosefinSans-BoldItalic.ttf")
+
+
+    def traceCadreInfo(self):
+        """Draw the cadre info
+        Trace le cadre info """
+
+        if self.equipement == "Grenade":
+            self.numberFrame = 3
+        
+        else:
+            self.numberFrame = 2
+
+        for cadre in range(self.numberFrame):
+            Decor.traceCadre(self.xDebutCadre + 270, self.yDebutCadre + cadre * self.hauteurCadre//0.9, self.largeurCadre, self.hauteurCadre, 2, 1,self.couleurFondCadre, self.couleurBorderCadre) # Drawn the frames / Trace les cadres
+            Decor.traceFlecheAmelioration(int(self.xDebutCadre + 840), int(self.yDebutCadre + cadre * self.hauteurCadre//0.9 + self.hauteurCadre//2 - 60), 1.2) # Drawn the arrow / Trace les flèches (60 = 80(height arrow) * 1.5(zoom)/2)
+            
+
+    def traceInfo(self):
+        """Draw the info of the equipement
+        Trace les infos de l'équipement"""
+        StatsEquipement = Reader.ReadStatsEquipement()[self.equipement]
+
+        if self.equipement == "Grenade":
+            EZ.trace_image(EZ.image_texte(f"Bonus :",self.policeStats), self.xDebutCadre + 290, self.yDebutCadre + 2 * self.hauteurCadre//0.9 + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Bonus Range : { StatsEquipement['BonusRange']} → {int(StatsEquipement['BonusRange'] + 10 )}",self.policeStats))[1]//2)
+            EZ.trace_image(EZ.image_texte(f"{ StatsEquipement['BonusRange']}   →   {int(StatsEquipement['BonusRange'] + 10)}",self.policeStats), self.xDebutCadre + 290 + self.largeurCadre - 40 - EZ.dimension(EZ.image_texte(f"{ StatsEquipement['BonusRange']}   →   {int(StatsEquipement['BonusRange'] + 10)}",self.policeStats))[0], self.yDebutCadre + 2 * self.hauteurCadre//0.9 + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Bonus Range : { StatsEquipement['BonusRange']} → {int(StatsEquipement['BonusRange'] * 0.9)}",self.policeStats))[1]//2)
+
+        EZ.trace_image(EZ.image_texte("Damage :" if self.equipement == "Grenade" else "Heal" if self.equipement == "Potion" else "Resistance"  ,self.policeStats), self.xDebutCadre + 290, self.yDebutCadre + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Damage : { StatsEquipement['eficiency']} → {round(StatsEquipement['eficiency'] * 1.2,2)}",self.policeStats))[1]//2)
+        EZ.trace_image(EZ.image_texte(f"{ StatsEquipement['eficiency']}   →   {round(StatsEquipement['eficiency'] * 1.1,1) if len(str(int(StatsEquipement['eficiency']))) < 2 and not(self.equipement == 'Shield') else round(StatsEquipement['eficiency'] * 1.1) if not(self.equipement == 'Shield') else StatsEquipement['eficiency'] + 1 }",self.policeStats), self.xDebutCadre + 290 + self.largeurCadre - 40 - EZ.dimension(EZ.image_texte(f"{ StatsEquipement['eficiency']}   →   {round(StatsEquipement['eficiency'] * 1.2,1) if len(str(int(StatsEquipement['eficiency']))) < 2 else round(StatsEquipement['eficiency'] * 1.2)}",self.policeStats))[0], self.yDebutCadre + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Bonus Range : { StatsEquipement['BonusRange']} → {int(StatsEquipement['BonusRange'] * 0.9)}",self.policeStats))[1]//2)
+        
+
+        EZ.trace_image(EZ.image_texte(f"Cooldown : ",self.policeStats), self.xDebutCadre + 290, self.yDebutCadre + self.hauteurCadre//0.9 + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Cooldown : { StatsEquipement['cooldown']} → {int(StatsEquipement['cooldown'] * 0.9)}",self.policeStats))[1]//2)
+        EZ.trace_image(EZ.image_texte(f"{ StatsEquipement['cooldown']}   →   {int(StatsEquipement['cooldown'] * 0.9)}",self.policeStats), self.xDebutCadre + 290 + self.largeurCadre - 40 - EZ.dimension(EZ.image_texte(f"{ StatsEquipement['cooldown']}   →   {int(StatsEquipement['cooldown'] * 0.9)}",self.policeStats))[0], self.yDebutCadre + self.hauteurCadre//0.9 + self.hauteurCadre//2 - EZ.dimension(EZ.image_texte(f"Bonus Range : { StatsEquipement['BonusRange']} → {int(StatsEquipement['BonusRange'] * 0.9)}",self.policeStats))[1]//2)
+
+    def traceEquipement(self):
+        """Draw the equipement
+        Trace l'équipement"""
+
+        EZ.trace_image(self.equipementPicture, self.xDebutCadre + 10, self.yDebutWidget + self.hauteurWidget//2 - EZ.dimension(self.equipementPicture)[1]//2)
+
+    def traceBouttonUp(self):
+        """Draw the buy button
+        Trace le bouton acheter"""
+
+        for cadre in range(self.numberFrame):
+            Btn.Bouton_Vertical(self.xDebutCadre + 270 + self.largeurCadre,  self.yDebutCadre + cadre * self.hauteurCadre//0.9, 50, self.hauteurCadre, "UP", (255, 255, 255), (0, 128, 64), 1, 3, 50)
+    
+    def tracePrix(self):
+        """Draw the price of the equipement
+        Trace le prix de l'équipement"""
+
+        Decor.nombreDeGold(self.longeur - self.largeurWidget, self.yDebutWidget + self.hauteurWidget - 100, self.price * Reader.ReadStatsEquipement()[self.equipement]['numberUpgrade'])
+
+
+
+
+
+    def DisplayMenu(self):
+        """Display the Menu
+        Trace le Menu"""
+
+        self.displayFond()
+        self.TraceWidget(self.largeurWidget)
+        self.traceBouttonUp()
+        self.traceCadreInfo()
+        self.traceEquipement()
+        self.traceInfo()
+        self.tracePrix()
 
 class Game(Interface):
     """Class to display the Game and manage it

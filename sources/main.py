@@ -25,7 +25,7 @@ def Shooter():
 
         if demande == "Menu":
             demande, infoGame = ID.menu(gold, inventaire)
-        
+           
         gold = int(Reader.ReadGold()) # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
             
         if demande == "Game":

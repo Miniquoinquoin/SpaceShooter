@@ -103,3 +103,56 @@ def UpWeapon(numCaracters, weaponLevel):
         Writer = csv.writer(csvInfo, delimiter=':')
         for row in File:
             Writer.writerow(row)
+        
+def BuyEquipement(equipement):
+    """chage etats of Equipement in InfoGen
+    Change l'etat des equipements dans InfoGen
+
+    Args:
+        equipement (str): name of equipement / nom de l'equipement
+    """ 
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == equipement:
+                row[1] = row[1].replace(row[1], "True")
+        
+            File.append(row)
+        
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)
+
+def UpEquipement(equipement, element, effet):
+    """chage level of Equipement in InfoGen
+    Change le niveau des equipements dans InfoGen
+    
+        Args:
+            equipement (str): name of equipement / nom de l'equipement
+            element (str): name of element to change / nom de l'element a changer
+            effet (int): effect on the stats / effet sur les stats
+    """
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == equipement:
+                if element == "eficiency":
+                    row[4] = row[4].replace(row[4], str(int(row[4]) + int(effet)))
+                
+                elif element == "cooldown":
+                    row[3] = row[3].replace(row[3], str(int(row[3]) + int(effet)))
+                
+                elif element == "BonusRange":
+                    row[5] = row[5].replace(row[5], str(int(row[5]) + int(effet)))
+            
+                row[2] = row[2].replace(row[2], str(int(row[2]) + 1))
+        
+            File.append(row)
+        
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)

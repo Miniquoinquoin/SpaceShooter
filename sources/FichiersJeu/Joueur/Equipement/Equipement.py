@@ -125,12 +125,13 @@ class Grenade(Equipement):
     """Class for the grenade
     classe pour la grenade"""
 
-    def __init__(self, efficiency, hauteurSol ,cooldown = 5):
+    def __init__(self, efficiency, hauteurSol ,cooldown = 5, rangeBonus = 0):
         """Constructor for the grenade
         constructeur pour la grenade"""
         super().__init__("Grenade", "grenade", cooldown)
         self.chargeImage()
         self.efficiency = efficiency
+        self.rangeBonus = rangeBonus/100 # rangeBonus is the damage hit zone bonus of the grenade / rangeBonus est la zone de dégâts bonus de la grenade
         self.usable = True
         self.timeShoot = [0.5, 0] # [TimeBeforGrenadeExplosion, TimeOnStartOfShoot]
         self.hauteurSol = hauteurSol
@@ -249,7 +250,7 @@ class Grenade(Equipement):
         """Return the coordinates of the corners of the hit box
         retourne les coordonnées des coins de la hit box"""
 
-        self.zoneHitBoxlist = [[self.x, self.y], [self.x + self.hitBoxExplosion[0], self.y], [self.x + self.hitBoxExplosion[0], self.y + self.hitBoxExplosion[1]], [self.x, self.y + self.hitBoxExplosion[1] ]] # list of the coordinates of the corners of the hit box / liste des coordonnées des coins de la hit box --> [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
+        self.zoneHitBoxlist = [[self.x - (self.rangeBonus * self.hitBoxExplosion[0])//2, self.y], [self.x + self.hitBoxExplosion[0] + (self.rangeBonus * self.hitBoxExplosion[0])//2, self.y], [self.x + self.hitBoxExplosion[0] + (self.rangeBonus * self.hitBoxExplosion[0])//2, self.y + self.hitBoxExplosion[1]], [self.x - (self.rangeBonus * self.hitBoxExplosion[0])//2, self.y + self.hitBoxExplosion[1] ]] # list of the coordinates of the corners of the hit box / liste des coordonnées des coins de la hit box --> [Haut Gauche / Haut Droit / Bas Droit / Bas Gauche]
     
     def isUsable(self):
         """Check if the grenade is usable
