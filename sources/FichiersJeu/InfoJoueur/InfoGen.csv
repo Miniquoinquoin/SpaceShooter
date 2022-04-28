@@ -1,12 +1,13 @@
-Gold:29575972
+Gold:28682051
+Map:Mars
 Personnage1:True:3:1
 Personnage2:True:3:4
 Personnage3:True:1:1
 Personnage4:False:5:5
-Personnage5:False:1:1
+Personnage5:True:40:1
 Personnage6:True:1:1
 Personnage7:False:1:1
 Personnage8:False:1:1
 Shield:True:1:60:2
-Grenade:True:15:60:20:0
-Potion:True:1:60:10
+Grenade:True:61:9:39:200
+Potion:True:9:41:14

@@ -573,7 +573,7 @@ class Shop(Menu2Choice):
 
     def __init__(self, longeur, hauteur, texte):
         super().__init__(longeur, hauteur, texte)
-        self.chargesBouton = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\AmeliorationArmeEtJoueur.jpg"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\equipement.jpg")]
+        self.chargesBouton = [EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\BoutonUpPlayer.png"), EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Shop\BoutonUpWeapon.png")]
 
 
 class ShopUpgrade(SlideMenu):
@@ -1166,6 +1166,57 @@ class UgradeEquipement(SousMenu):
         self.traceEquipement()
         self.traceInfo()
         self.tracePrix()
+
+
+class MenuMap(Menu):
+    """Class to display the map of the menu mode campagne
+    Class pour afficher la map du menu mode campagne"""
+
+    def __init__(self, longeur, hauteur,zoomMap):
+        super().__init__(longeur, hauteur)
+        self.zoomMap = zoomMap
+        self.chargeMap() # load the map / charge la map
+        self.coordonnerBoutonMonde = {"Terre": [670 * self.zoomMap,3950 * self.zoomMap],
+        "Mars": [1270 * self.zoomMap,2650 * self.zoomMap],
+        "Gluton": [755 * self.zoomMap,1285 * self.zoomMap],
+        "Volcano": [2015 * self.zoomMap,315 * self.zoomMap],
+        "Forestia": [3550 * self.zoomMap,1330 * self.zoomMap],
+        "Dead Zone": [3335 * self.zoomMap,2815 * self.zoomMap],
+        "Candya": [3680 * self.zoomMap,4167 * self.zoomMap],} # Coordinates of the buttons / Coordonnées des boutons [x,y]
+
+        self.tailleBoutonMonde = [930 * self.zoomMap,510 * self.zoomMap] # Size of the buttons / Taille des boutons [l,h]
+    
+    def chargeMap(self):
+        """load the map
+        Charge la map"""
+
+        self.map = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Mode\CartesSpaceShooter.png"),0,self.zoomMap)
+    
+    def getCoordonnerBouton(self):
+        """Get the coordinates of buttons
+        Renvoie les coordonnées des boutons"""
+
+        return self.coordonnerBoutonMonde
+    
+    def getTailleBouton(self):
+        """Get the size of the button
+        Renvoie la taille du bouton"""
+
+        return self.tailleBoutonMonde
+    
+    def getTailleFond(self):
+        """Get the size of the background
+        Renvoie la taille du fond"""
+
+        return EZ.dimension(self.map)
+    
+    def displayFond(self,x,y):
+        """Display the background
+        Affiche le fond"""
+
+        EZ.trace_image(self.map, x, y)
+
+
 
 class Game(Interface):
     """Class to display the Game and manage it

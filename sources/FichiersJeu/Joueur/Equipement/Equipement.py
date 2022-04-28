@@ -112,6 +112,12 @@ class Bouclier(Equipement):
         else:
             return False
         
+    def broke(self):
+        """Break the shield
+        casse le bouclier"""
+
+        self.durability[0] = 0
+        
     def repair(self):
         """Repair the shield
         répare le bouclier"""

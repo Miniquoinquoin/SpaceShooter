@@ -411,6 +411,13 @@ class Joueur:
             self.equipement["potion"].use()
             self.stats["vie"] += self.equipement["potion"].getEfficiency() if self.equipement["potion"].getEfficiency() + self.stats["vie"] <= self.stats["maxvie"] else self.stats["maxvie"] - self.stats["vie"]
     
+    def RepaireShield(self):
+        """Break the shield for start the cooldown repair shield
+        Détruit le bouclier pour commencer le cooldown de réparation du bouclier"""
+
+        if self.equipement["shield"] != None:
+            self.equipement["shield"].broke()
+    
     def UseGrenade(self):
         """Use a grenade if possible
         Utilise une grenade si possible"""

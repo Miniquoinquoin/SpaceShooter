@@ -11,6 +11,16 @@ def ReadGold():
                 return int(row[1])
 
 
+def ReadMap():
+    """Return the hard map that the player have win
+    return la map la plus difficile gagnee"""
+
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        for row in reader:
+            if row[0] == 'Map':
+                return row[1]
+
 def ReadStatsPlayers():
     """Read the stats of Caracterse
     li les stats des personnage
@@ -65,8 +75,8 @@ def ReadInventaire():
 def ReadEquipement():
     """Read if the Equipement is buy or not
     li les equipement acheté ou pas"""
-
-    equipement = {"Shield": False, "Grenade": False, "Potion": False}
+    
+    equipement =  dict.fromkeys(["Shield", "Grenade", "Potion"], False)
     with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
         reader = csv.reader(csvInfo, delimiter=':')
         for row in reader:

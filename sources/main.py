@@ -12,7 +12,7 @@ import FichiersJeu.InfoJoueur.SaveInfo as Writer
 HAUTEUR = 720
 LONGEUR = 1280
 
-EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
+EZ.creation_fenetre(LONGEUR, HAUTEUR, "Space Shooter", "FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A1.png")
 
 def Shooter():
     inventaire = Reader.ReadInventaire()  

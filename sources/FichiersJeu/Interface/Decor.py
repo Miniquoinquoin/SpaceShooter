@@ -231,3 +231,21 @@ def TraceTextArea(x, y, texte, police, couleur = (0,0,0),delimiteur="|"):
     for i in range(len(texte)):
         texte[i] = EZ.image_texte(texte[i], police, *couleur)
         EZ.trace_image(texte[i], x, y + i * (EZ.dimension(texte[i])[1]/0.9))
+
+
+
+def bareDechargement(x, y, longueur, hauteur, pourcentage):
+    """Draw a loading bar
+    Trace une bare de chargement
+
+    Args:
+        x (int): x start of the loading bar / x de depart de la bare de chargement
+        y (int): y start of the loading bar / y de depart de la bare de chargement
+        longueur (int): lenght of the loading bar / longueur de la bare de chargement
+        hauteur (int): height of the loading bar / hauteur de la bare de chargement
+        pourcentage (int): percentage of the loading bar / pourcentage de la barre de chargement
+    """
+
+    EZ.trace_rectangle_droit_v2(x, y, longueur, hauteur, 0, 0, 0) # Rectangle
+
+    EZ.trace_rectangle_droit_v2(x + 2, y + 2, longueur * pourcentage/100 - 4 if pourcentage != 0 else 0, hauteur - 4 , 0, 200, 0) # Rectangle of loading / Rectangle de chargement

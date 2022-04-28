@@ -22,11 +22,19 @@ HAUTEUR = 720
 LONGEUR = 1280
 TIMER_VAGUE = 2 #en seconde
 
-PRIX_EQUIPEMENT = {"Shield": 10000, "Grenade": 2500, "Potion": 5000}
+ZOOM_CARTE = 0.5
 
-EZ.creation_fenetre(LONGEUR, HAUTEUR, "Prototype 1")
+PRIX_EQUIPEMENT = {"Shield": 10000, "Grenade": 2500, "Potion": 5000} # price of the different equipement / prix des differents equipements
 
+
+"""Part of the start load
+Partie du chargement de la partie"""
+
+EZ.creation_fenetre(LONGEUR, HAUTEUR, "Chargement")
+
+t = EZ.clock()
 # Joueur
+
 Joueur1 = CJ.Joueur("Bob",0,)
 
 
@@ -35,7 +43,9 @@ MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
 MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
 
 MenuMode = Menuf.Mode(LONGEUR, HAUTEUR, "Mode")
-MenuMap = Menuf.Infini(LONGEUR, HAUTEUR, "Map")
+MenuMap = Menuf.Infini(LONGEUR, HAUTEUR, "Map") # Menu to choice the map of the game in infini mode
+
+MenuCarte = Menuf.MenuMap(LONGEUR, HAUTEUR, ZOOM_CARTE) # Menu to choice the map of the game in campagne mode
 
 MenuShop = Menuf.Shop(LONGEUR, HAUTEUR, "Shop")
 MenuShopUpgrade = Menuf.ShopUpgradePersonnageSlide(LONGEUR, HAUTEUR, "Shop")
@@ -52,6 +62,11 @@ Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 
 Joueur1.charge()
 
+print(f"temps de chargement {EZ.clock() - t}")
+
+
+"""Part of menus
+Partie des menus"""
 
 def menu(gold, inventaire):
     """function of main menu
@@ -102,14 +117,23 @@ def menu(gold, inventaire):
                 if type(leave) == str:
                     demande = leave
                     if demande == "Campagne":
-                        infoGame["map"] = "Terre"
-                        infoGame["mode"] = "Campagne"
-
-                    elif demande == "Infini":
-                        infoGame = menuInfini(infoGame)
+                        infoGameTemp = menuCarte(infoGame)
                         
 
-                    leave = False
+                    elif demande == "Infini":
+                        infoGameTemp = menuInfini(infoGame)
+                    
+                    if infoGameTemp == True:
+                        leave = True
+                    
+                    elif infoGameTemp == False:
+                        leave = False
+                    
+                    else:
+                        infoGame = infoGameTemp
+                        leave = False
+                        
+                        
 
             elif 1060 < EZ.souris_x() < 1260 and 260 < EZ.souris_y() < 340: # Bouton Personnages / Player button
                 MenuPerso.TrieInventaire(inventaire)
@@ -853,6 +877,89 @@ def menuUpgradeEquipement(gold, equipement, equipementPicture):
         EZ.frame_suivante()
 
 
+def menuCarte(infoGame):
+    """Function of the menu to choose a map in campaign mode
+    Fonction du menu de choix de carte en mode campagne"""
+
+    infoGame["mode"] = "Campagne"
+
+    TAILLE_IMAGE = MenuCarte.getTailleFond()[0]
+    TAILLE_BOUTON = MenuCarte.getTailleBouton()
+    COORDONNER_BOUTON = MenuCarte.getCoordonnerBouton()
+
+    x = 0
+    xLast = x
+
+    y = -2000
+    yLast = y
+
+    click = False
+
+
+    play = True
+    while play:
+        MenuCarte.displayFond(x,y)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+            yLast = EZ.souris_y()
+        
+            for map in COORDONNER_BOUTON:
+                if COORDONNER_BOUTON[map][0] + x < xLast < COORDONNER_BOUTON[map][0] + TAILLE_BOUTON[0] + x and COORDONNER_BOUTON[map][1] + y < yLast < COORDONNER_BOUTON[map][1] + TAILLE_BOUTON[1] + y: # Check if the mouse is on a button / Check si la souris est sur un bouton
+                    infoGame["map"] = map
+                    return infoGame
+                
+                if map == Reader.ReadMap():
+                    break
+
+
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+            
+        if click and evenement == "SOURIS_MOUVEMENT":
+            x -= xLast - EZ.souris_x()
+            y -= yLast - EZ.souris_y()
+            xLast = EZ.souris_x()
+            yLast = EZ.souris_y()
+        
+
+        
+
+        # Verifie que l'image ne sort pas de l'ecran
+        if y > 0:
+            y = 0
+
+        elif y < -TAILLE_IMAGE + HAUTEUR:
+            y = -TAILLE_IMAGE + HAUTEUR
+        
+        if x > 0:
+            x = 0
+
+        elif x + TAILLE_IMAGE - LONGEUR < 0:
+            x = LONGEUR - TAILLE_IMAGE
+
+        
+
+
+        EZ.mise_a_jour()
+        EZ.frame_suivante()
+
+
+
+
+
+
+"""Start of game part
+Début de la partie jeu"""
+
 
 def genratesMob(name, hauteurSol,type = "COMMON"):
     """generate a mob
@@ -1259,6 +1366,9 @@ def game(map, mode, limiteWave = -1):
             
                 elif EZ.touche() == "e": # Lance la grenade
                     Joueur1.UseGrenade()
+
+                elif EZ.touche() == "w": # Detection en qwerty donc == z: Lance la reparation du bouclier
+                    Joueur1.RepaireShield()
 
             elif evenement == "TOUCHE_RELACHEE":
                 if EZ.touche() == "d":
