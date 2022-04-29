@@ -6,13 +6,21 @@ SpaceShooter est un jeu de tir en 2D vue de face. Il est développé en python e
 
 ## Installation
 
+Si vous ne possèdez pas python, ou une version inférieur à `python3`, il vous faudra [l'installer](https://www.python.org/downloads/). 
+
+Si vous ne possèdez pas pygame:
+
     $ pip install pygame
+
+Si vous souhaitez outilisez l'outile décomposeur de gif, il vous vaudras aussi le module Pillow:
+
+    $ pip install Pillow
 
 ## Utilisation
 
 ### Démarrage
 
-Pour démarrer le jeu, il suffit de lancer le script `main.py` dans le terminal.
+Pour démarrer le jeu, il suffit de lancer le script `main.py` dans le terminal. Le fichier se trouve dans le dossier sources.
 
 ### Contrôles
 
@@ -27,6 +35,9 @@ Pour démarrer le jeu, il suffit de lancer le script `main.py` dans le terminal.
 - **q** / **Flèche gauche**: Bouger le personnage vers la gauche
 - **d** / **Flèche droite**: Bouger le personnage vers la droite
 - **Espace**: Sauter
+- **a**: Utiliser l'équipement Potion
+- **e**: Utiliser l'équipement Grenade
+- **z**: Réparer l'équipement bouclier
 - **Echap**: accèder au Menu en Jeu
 
 ## Crédits
@@ -109,7 +120,7 @@ Ces images défile ensuite plus ou moin vite en fonction de la vitesse du joueur
 
 Lorsque le joueur tire, son arme est envoyer dans la direction qu'il regarde ou en direction du monstre le plus proche ( *cf: l.656 [InterfaceDynamique.py](../sources/FichiersJeu/InterfaceDynamique.py)*)
 
-L'arme comme annoncé dans l'introduction, est géré par la class `Arme` est au même moment que le personnage. Elle récupère les information du joueur au moment du tire. Pour ensuite déplacer et animer l'arme.
+L'arme comme annoncé dans l'introduction, est géré par la class `Arme` est au même moment que le personnage. La class récupère les information du joueur au moment du tire. Pour ensuite déplacer et animer l'arme.
 
     def Setup(self, x, y, direction, inertie = 0):
         """Charge les info au moment du lancement de l'attack
@@ -187,12 +198,12 @@ Les monstres sont générer en début de vague. Leur mode de génération depent
 
 - **Mode Infini :**
 
-    Les monstre sont générer aléatoirement. D'après le numeros de vague et la map choisie. Les monstres disponible dans chaque map sont donné dans le fichier `AllMobe.csv`
+    Les monstres sont générés aléatoirement. D'après le numéro de vague et la map choisie. Les monstres disponibles dans chaque map sont donnés dans le fichier `AllMobe.csv`
     </br>
 
-Les information transmisse sont traité dans le fichier `InterfaceDynamique.py` est stocké dans une liste qui est ensuite utilisé pour accéder aux monstres.
+Les informations transmises sont traité dans le fichier `InterfaceDynamique.py` est stocké dans une liste qui est ensuite utilisé pour accéder aux monstres.
 
-#### Le deplacement des monstre
+#### Le deplacement des monstres
 
 Les monstre se déplace en direction du joueur, la position du joueur leur est transmis au moment de leur géneration. Pour rapel le joueur ne bouge pas, c'est le fond qui bouge.
 
@@ -277,5 +288,110 @@ Des dégat sont donné à une entité, si celle-ci est touché par une autre qui
             return monstres, False, mobKill
 
         return monstres, True, mobKill
+
+### Les Déplacements dans les menus
+
+#### Menu Fixe
+
+Dans les menus fixe (Menu ou les boutons ne se déplace pas sur l'écrant), les coordoners des bouton reste constant. Ainsi il soufit de récuperer les coordonners de la souris si un click gauche est effectué. 
+
+EZ permmet de le faire simplement :
+
+    evenement = EZ.recupere_evenement()
+    elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+
+Il reste plus qu'a verifier si le click était sur un bouton, pour sa quelques conditions et le tour est joué.
+
+    if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton 'Nom du bouton'
+
+Sans oublié de renvoyer vers l'interface demander. Ex: `menuShop()`
+
+#### Menu Slide
+
+Les menus Slide(Translation sur un axe), sont des menus ou l'utilisateur a la posibiliter de naviguer de droit à gauche. Les coordonnée des bouton sont donc variable.
+
+Ex: Menu de Selection des Personnages
+![Menu de Selectition des Personnages Gif](ElementDoc\MenuSlidePersonnages.gif)
+
+L'affichage des menus Slide est gérer par la class mère `SlideMenu` `cf: l.196 Menu.py`.
+
+Le déplacement au sein du Menu est gérer de la manière suivante `cf: 562 InterfaceDynamique.py`:
+
+    x = 100 # Corespond au décalage du menu vers la droite
+    xLast = 0 # dernier coordonner x de la souris
+    click = False # True si le click est enfoncé sinon False
+
+    while True:
+        evenement = EZ.recupere_evenement()
+
+        elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            click = True
+            xLast = EZ.souris_x()
+        
+        elif evenement == "SOURIS_BOUTON_GAUCHE_RELACHE":
+            click = False
+        
+        if click and evenement == "SOURIS_MOUVEMENT":
+            decalage = xLast - EZ.souris_x()
+            if -MenuShopUpgradeWeaponSlide.largeurAllCadre + LONGEUR - 100 + decalage <= x <= 100  + decalage: 
+                x -= decalage
+                xLast = EZ.souris_x()
+
+Ainsi pour savoir sur quel bouton l'utilisateur a clicker, on ajoute x (le déclage du menu) au coordonner des extremiter du bouton. Et comme pour les menu fixe on utilise de simple condition, à la seul différence que pour les menus slide les coordonnées des bouton son calculer, en effet tout les bouton on la même taille, et son placer les un à coter de l'autre.
+
+    xSouris = EZ.souris_x()
+    for cadre in range(len(MenuShopUpgradeWeaponSlide.chargesWeapons)):
+        if cadre * MenuShopUpgradeWeaponSlide.largeurCadrePlusEspace + x < xSouris < cadre * MenuShopUpgradeWeaponSlide.largeurCadrePlusEspace + x + MenuShopUpgradeWeaponSlide.largeurCadre: # check if the click is in a box / verifie si le click est dans un cadre
+            leave = menuShopUpgradeWeapon(gold, int(MenuShopUpgradeWeaponSlide.getListPersonnage()[cadre].split("Personnage")[-1])-1)
+
+#### Menu Carte (Slide 2D)
+
+Les Menu Carte fonctionnent de la même manière que les menus silde, à la seul différence qu'ils enregistrent aussi le déplacement y, de la manière que font les menus slide pour les déplacement en x.
+
+### Sauvegarde des information
+
+Toutes les information de l'avancer dans le jeu, sont stocker dans le fichier `InfoGen.csv`. C'est information son ensuite lue est modifier par les fonction des fichiers `ReadInfo.py` et `SaveInfo.py` qui utilise le module csv de python.
+
+#### Lecture des informations
+
+Comme dit au-dessus les information du fichier son récuper grace au fonction du fichier `ReadInfo.py`
+
+Exemple avec la fonction `ReadInventaire`, qui utilise la methode `reader` et eregistre les information des personnages ligne par ligne dans un dictionnaire. 
+
+    def ReadInventaire():
+        """Read the level of the Cracters and Caracters Weapons
+        li les niveau des personnage et des armes"""
+
+        inventaire = {}
+        with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
+            reader = csv.reader(csvInfo, delimiter=':')
+            for row in reader:
+                if "Personnage" in row[0]:
+                    inventaire.update({row[0]:[ True if row[1] == "True" else False, int(row[2]), int(row[3])]})
+
+        return inventaire
+
+
+#### Modification des information
+
+Comme dit au-dessus les information du fichier son récuper grace au fonction du fichier `SaveInfo.py`
+
+Le module csv ne permet pas la modification d'une ligne, il faut donc enregistré l'ensemble du fichier dans une liste est modifier les information souhaitez.
+
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == equipement:
+                row[1] = row[1].replace(row[1], "True")
+        
+            File.append(row)
+
+Ensuite il suffit de re écrire l'ensemble du fichier csv, à partir de la liste enregistré précedament.
+
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)
 
 
