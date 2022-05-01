@@ -31,12 +31,20 @@ PRIX_EQUIPEMENT = {"Shield": 10000, "Grenade": 2500, "Potion": 5000} # price of 
 Partie du chargement de la partie"""
 
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Chargement")
+Decor.FondChargement(LONGEUR,HAUTEUR)
 
 t = EZ.clock()
 # Joueur
 
+TAILLE_BARRE_DE_CHARGEMENT = (LONGEUR//2, HAUTEUR//6)
+COORDONNEES_BARRE_DE_CHARGEMENT = (LONGEUR//2 - TAILLE_BARRE_DE_CHARGEMENT[0]//2, 2 * HAUTEUR//3 - TAILLE_BARRE_DE_CHARGEMENT[1]//2)
+
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 0)
 Joueur1 = CJ.Joueur("Bob",0,)
 
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 10)
 
 # Menu de selection
 MenuP = Menuf.MenuPricipale(LONGEUR, HAUTEUR)
@@ -45,11 +53,20 @@ MenuPerso = Menuf.Personnages(LONGEUR, HAUTEUR, "Personnages")
 MenuMode = Menuf.Mode(LONGEUR, HAUTEUR, "Mode")
 MenuMap = Menuf.Infini(LONGEUR, HAUTEUR, "Map") # Menu to choice the map of the game in infini mode
 
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 30)
+
 MenuCarte = Menuf.MenuMap(LONGEUR, HAUTEUR, ZOOM_CARTE) # Menu to choice the map of the game in campagne mode
+
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 70)
 
 MenuShop = Menuf.Shop(LONGEUR, HAUTEUR, "Shop")
 MenuShopUpgrade = Menuf.ShopUpgradePersonnageSlide(LONGEUR, HAUTEUR, "Shop")
 MenuShopUpgradeWeaponSlide = Menuf.ShopUpgradeArmeSlide(LONGEUR, HAUTEUR, "Shop")
+
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 90)
 
 MenuEquipement = Menuf.BuyEquipement(LONGEUR, HAUTEUR, "Equipement")
 
@@ -60,7 +77,13 @@ MenuG = Menuf.MenuGame(LONGEUR, HAUTEUR)
 #Objects
 Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 95)
+
 Joueur1.charge()
+
+Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
+                        TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 100)
 
 print(f"temps de chargement {EZ.clock() - t}")
 

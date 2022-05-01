@@ -180,6 +180,10 @@ Son déplacement et sa rotation est géré par :
 
 Nous verons par la suite comment elle inflige des dégats.
 
+#### Statistique du Joueur
+
+Chaque personnage à des sta...
+
 ### Monstre
 
 #### Génération des monstre
@@ -394,4 +398,32 @@ Ensuite il suffit de re écrire l'ensemble du fichier csv, à partir de la liste
         for row in File:
             Writer.writerow(row)
 
+### Son
+
+Le jeu est accompagné de son, pour amméliorer l'immersion dans le jeu. Cela peut être de la musique, ou encore des bruitage.
+
+#### Bruitages
+
+EZ permet aussi de joueur des bruitages, il faut utiliser la fonction `joue_son()` pour cela. Sans oubliez de charger le fichier son au paravant avec la fonction `charge_son()`.
+
+Exemple :
+
+    son = charge_son("FichiersSon\Bruitages\Bruitage.wav")
+    joue_son(son)
+
+
+#### Musique
+
+Comme pour les bruitage pour jouer de la musique on utilise le module EZ. On utilise respectivement les fonctions `charge_musique()` et `musique_on()` pour charger et jouer la musique. 
+
+Pour stopper la musique on utilise `musique_pause()`, pour la reprendre `musique_fin_pause()` et pour la modifier le volume `musique_volume()`.
+
+Exemple:
+
+    musique = charge_musique("FichiersSon\Musique\Musique.wav")
+    musique_on()
+    musique_volume(0.5)
+    musique_pause()
+    musique_fin_pause()
+    musique_volume(1)
 

@@ -249,3 +249,16 @@ def bareDechargement(x, y, longueur, hauteur, pourcentage):
     EZ.trace_rectangle_droit_v2(x, y, longueur, hauteur, 0, 0, 0) # Rectangle
 
     EZ.trace_rectangle_droit_v2(x + 2, y + 2, longueur * pourcentage/100 - 4 if pourcentage != 0 else 0, hauteur - 4 , 0, 200, 0) # Rectangle of loading / Rectangle de chargement
+
+    EZ.mise_a_jour()
+
+
+def FondChargement(longueur, hauteur):
+    """Draw the background of the load time
+    Trace le fond du temps de chargement"""
+
+    EZ.trace_rectangle_droit_v2(0,0,longueur,hauteur,0,0,250)
+
+    image = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A2.png"), 0, 3)
+    EZ.trace_image(EZ.transforme_image(image,0,2), longueur//2-144, hauteur//3-144) # -144 pour le centrer, 48*6 / 2
+    
