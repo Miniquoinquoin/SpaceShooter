@@ -33,7 +33,6 @@ Partie du chargement de la partie"""
 EZ.creation_fenetre(LONGEUR, HAUTEUR, "Chargement")
 Decor.FondChargement(LONGEUR,HAUTEUR)
 
-t = EZ.clock()
 # Joueur
 
 TAILLE_BARRE_DE_CHARGEMENT = (LONGEUR//2, HAUTEUR//6)
@@ -85,7 +84,6 @@ Joueur1.charge()
 Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
                         TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 100)
 
-print(f"temps de chargement {EZ.clock() - t}")
 
 
 """Part of menus
@@ -1022,7 +1020,24 @@ def genratesMob(name, hauteurSol,type = "COMMON"):
             return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
 
         return Monstref.MonstreShooter(name, Joueur1.x, hauteurSol,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
+    
+    elif type == "BOSS_COMMON":
+        if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+            return Monstref.Boss(name, Joueur1.x, hauteurSol,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+        
+        elif Joueur1.x + 250 >= Border[1].xFictif:
+            return Monstref.Boss(name, Joueur1.x, hauteurSol,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
 
+        return Monstref.Boss(name, Joueur1.x, hauteurSol,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
+
+    elif type == "BOSS_STILL":
+        if Joueur1.x - 250 <= Border[0].xFictif + Border[0].hitbox[0]:
+            return Monstref.BossShooter(name, Joueur1.x, hauteurSol,random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif)))
+        
+        elif Joueur1.x + 250 >= Border[1].xFictif:
+            return Monstref.BossShooter(name, Joueur1.x, hauteurSol,random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250))
+
+        return Monstref.BossShooter(name, Joueur1.x, hauteurSol,random.choice([random.randint(int(Border[0].xFictif), int(Joueur1.x) - 250), random.randint(int(Joueur1.x) + 250, int(Border[1].xFictif))]))
 
 
 
@@ -1052,14 +1067,15 @@ def Startwave(number, hauteurSol, mode, map= "Mars"):
         with open(f'FichiersJeu/InfoWave/Mob{map}.csv', newline='') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=';')
             for row in reader:
-                if row[f'type_wave_{number}'] == "COMMON":
-                    listMob += [genratesMob(row[f'name_wave_{number}'],hauteurSol)for monstre in range(int(row[f'number_wave_{number}']))]
+                if row[f'type_wave_{number}'] == "COMMON" or row[f'type_wave_{number}'] == "BOSS_COMMON":
+                    listMob += [genratesMob(row[f'name_wave_{number}'],hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
                 elif row[f'type_wave_{number}'] == "STRENGTH" or row[f'type_wave_{number}'] == "HEAL":
                     listWizzard += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
 
-                elif row[f'type_wave_{number}'] == "SHOOTER":
+                elif row[f'type_wave_{number}'] == "SHOOTER" or row[f'type_wave_{number}'] == "BOSS_STILL":
                     listShooter += [genratesMob(row[f'name_wave_{number}'], hauteurSol, row[f'type_wave_{number}'])for monstre in range(int(row[f'number_wave_{number}']))]
+                
 
 
                 # print(row[f'name_wave_{number}'], row[f'number_wave_{number}'], row[f'type_wave_{number}'])

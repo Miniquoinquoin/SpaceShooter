@@ -94,20 +94,24 @@ class Monstre:
 
 
         elif self.name == "Dolphin_Sprite":
-            self.__charge(6)
+            self.__charge(6,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 1000, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 1000}
+            self.hauteurSol += 50 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "Manmo_Sprite":
             self.__charge(10)
             self.setSpeedEffect(2)
             self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.hauteurSol += 20 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "Magmaite_Sprite" or self.name == "Vulcan_Sprite":
-            self.__charge(8)
+            self.__charge(8,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 50}
+            self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
+            self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
 
 
@@ -676,6 +680,7 @@ class MonstreShooter(Monstre):
     def display(self, vitesseFond):
         super().display(vitesseFond)
         self.onShoot()
+        print("shoot")
 
 
     def onShoot(self):
@@ -741,3 +746,47 @@ class MonstreShooter(Monstre):
             
             elif self.lastMove["right"]:
                 self.moveEffectRight()
+
+
+
+class Boss(Monstre):
+    """class of the boss (big and strong monster)
+    Classe du boss (monstre fort et gros)"""
+
+    def __init__(self, name, xPlayer, hauteurSol, Xspawn=0):
+        super().__init__(name, xPlayer, hauteurSol, Xspawn)
+        self.autoheal = {"cooldown": [0, 3], "heal": 2} # the boss will regen as player after a specific time[temps du dernier degat, cooldown] / Les boss regen comme les joueur après un certain temps [time of last heal, cooldown]
+    
+    def regen(self):
+        """ Heal the boss
+        Regen le boss"""
+        if EZ.clock() - self.autoheal["cooldown"][0] > self.autoheal["cooldown"][1]:
+            self.heal(self.autoheal["heal"])
+        
+    def domage(self, domage):
+        super().domage(domage)
+        self.autoheal["cooldown"][0] = EZ.clock()
+    
+    def display(self, vitesseFond):
+        super().display(vitesseFond)
+        self.regen()
+        print("boss")
+
+
+
+class BossShooter(MonstreShooter, Boss):
+    """class of the boss (big and strong monster) that shoot
+    Classe du boss (monstre fort et gros) qui tire"""
+
+    def __init__(self, name, xPlayer, HauteurSol, Xspawn=0):
+        super().__init__(name, xPlayer, HauteurSol, Xspawn)
+        self.autoheal = {"cooldown": [0, 3], "heal": 2} # the boss will regen as player after a specific time[temps du dernier degat, cooldown] / Les boss regen comme les joueur après un certain temps [time of last heal, cooldown]
+        
+        self.range = self.stats["range"] # Rayon de tir / range of monster
+        
+        self.timeShoot = self.cooldwon # [temps du dernier tire, cooldown] / [time of last shoot, cooldown]
+
+        self.lastMove = {"right": True, "left": False} # Direction vers laquelle le monstre regarde / direction of the monster
+    
+    def display(self, vitesseFond):
+        super().display(vitesseFond)
