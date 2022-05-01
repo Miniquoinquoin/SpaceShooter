@@ -79,6 +79,7 @@ Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
                         TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 95)
 
+EZ.charge_musique("FichiersJeu\son\MusiqueMenu.mp3")
 Joueur1.charge()
 
 Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
@@ -98,6 +99,8 @@ def menu(gold, inventaire):
     leave = False
     infoGame = {"map": "Terre", "mode": "Infini"}
     EZ.reglage_fps(30)
+    EZ.musique_on()
+    EZ.musique_volume(0.2)
 
     while play:
         gold = Reader.ReadGold()
@@ -111,6 +114,7 @@ def menu(gold, inventaire):
 
         elif evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
             if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton Play / Play button
+                EZ.musique_stop()
                 return "Game", infoGame
             
             elif 950 < EZ.souris_x() < 1200 and 575 < EZ.souris_y() < 700: # Bouton Shop / Shop button
