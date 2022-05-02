@@ -167,10 +167,10 @@ def menu(gold, inventaire):
             elif 1060 < EZ.souris_x() < 1260 and 380 < EZ.souris_y() < 460: # Bouton Equipement / equipments button
                 leave = menuEquipement(gold)
 
-            elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
-                print("En phase devloppement")
+            elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Parametre / settings button
+                leave = menuParametre(True)
 
-            elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton Equipement / equipments button
+            elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton quitter / leave button
                 EZ.destruction_fenetre()
                 return 0, infoGame
 
@@ -978,6 +978,25 @@ def menuCarte(infoGame):
         EZ.frame_suivante()
 
 
+def menuParametre(son):
+    """Function of the menu to set settings
+    fonction du menu de parametrage"""
+
+
+    while True:
+        Decor.BareParametre(30, 90, 200, 80, son)
+
+        evenement = EZ.recupere_evenement()
+
+        if evenement == "EXIT":
+            EZ.destruction_fenetre()
+            return True
+        
+        if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
+            if 120 < EZ.souris_x() < 200 and 90 < EZ.souris_y() < 180:
+                pass
+
+        EZ.mise_a_jour()
 
 
 

@@ -680,7 +680,6 @@ class MonstreShooter(Monstre):
     def display(self, vitesseFond):
         super().display(vitesseFond)
         self.onShoot()
-        print("shoot")
 
 
     def onShoot(self):
@@ -770,7 +769,6 @@ class Boss(Monstre):
     def display(self, vitesseFond):
         super().display(vitesseFond)
         self.regen()
-        print("boss")
 
 
 

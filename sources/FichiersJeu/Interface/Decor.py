@@ -232,6 +232,29 @@ def TraceTextArea(x, y, texte, police, couleur = (0,0,0),delimiteur="|"):
         texte[i] = EZ.image_texte(texte[i], police, *couleur)
         EZ.trace_image(texte[i], x, y + i * (EZ.dimension(texte[i])[1]/0.9))
 
+def BareParametre(x,y,longeur, hauteur, etatsSon):
+    """Draw the settings menu
+    Trace le menu des paramètres
+
+    Args:
+        x (int): x start of the framework / x de depart du cadre
+        y (int): y start of the framework / y de depart du cadre
+        longueur (int): lenght of the framework / longueur du cadre
+        hauteur (int): height of the framework / hauteur du cadre
+        etatsSon (bool): state of the sound / etat du son
+    """
+
+    TAILLE_BOUTON = hauteur * 4/5
+
+    #Trace du cadre
+    traceCadre(x, y, longeur, hauteur, 3, 0, (150,150,150), (0,0,0))
+
+    #Trace du texte
+    EZ.trace_image(EZ.image_texte("Sound", EZ.charge_police(40),255,255,255), x + 20, y + int(hauteur/2) - int(EZ.dimension(EZ.image_texte("Sound", EZ.charge_police(40),255,255,255))[1]/2))
+
+    #Trace des boutons
+    EZ.trace_rectangle_droit_v2(x + longeur - TAILLE_BOUTON//0.9, y + hauteur//2 - TAILLE_BOUTON//2, TAILLE_BOUTON, TAILLE_BOUTON, 0 if etatsSon else 255, 0 if etatsSon else 255, 0 if etatsSon else 255)
+
 
 
 def bareDechargement(x, y, longueur, hauteur, pourcentage):
