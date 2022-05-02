@@ -368,6 +368,7 @@ def recupere_evenement():
         return "SOURIS_MOUVEMENT"
     elif evenement.type==pygame.MOUSEBUTTONDOWN:
         if evenement.button==1:
+            son_click() # Propre en projet n'a rien a faire avec cette fonction de base
             return "SOURIS_BOUTON_GAUCHE_ENFONCE"
         elif evenement.button==3:
             return "SOURIS_BOUTON_DROIT_ENFONCE"
@@ -560,3 +561,21 @@ def trace_polygonne(EnsemblePoint = [(0,0), (20, 20), (40, 40), (50, 95)], rouge
     surface = __choix(canvas)
     pygame.gfxdraw.filled_polygon(surface, EnsemblePoint, pygame.Color(rouge, vert, bleu, transparence))
     
+
+
+    """Ajout d'un son pour le clic il est propre à mon projet"""
+
+sonClick = None
+
+def charge_son_clic():
+    """Charge le son du clic"""
+    global sonClick
+    sonClick = charge_son("FichiersJeu\son\Bruitage\ClickSouris.mp3")
+
+def son_click():
+    """Joue le son de clic"""
+
+    if sonClick == None:
+        charge_son_clic()
+
+    joue_son(sonClick)

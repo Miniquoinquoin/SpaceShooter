@@ -10,6 +10,15 @@ def ReadGold():
             if row[0] == 'Gold':
                 return int(row[1])
 
+def ReadSon():
+    """Return if the son is on or off
+    return si le son est on ou off"""
+
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r', newline='') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        for row in reader:
+            if row[0] == 'son':
+                return True if row[1] == 'True' else False
 
 def ReadMap():
     """Return the hard map that the player have win

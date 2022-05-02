@@ -250,10 +250,10 @@ def BareParametre(x,y,longeur, hauteur, etatsSon):
     traceCadre(x, y, longeur, hauteur, 3, 0, (150,150,150), (0,0,0))
 
     #Trace du texte
-    EZ.trace_image(EZ.image_texte("Sound", EZ.charge_police(40),255,255,255), x + 20, y + int(hauteur/2) - int(EZ.dimension(EZ.image_texte("Sound", EZ.charge_police(40),255,255,255))[1]/2))
+    EZ.trace_image(EZ.image_texte("Music", EZ.charge_police(30,"FichiersJeu\Interface\Entites\Police\RobotoMono-VariableFont_wght.ttf"),255,255,255), x + 20, y + int(hauteur/2) - int(EZ.dimension(EZ.image_texte("Music", EZ.charge_police(30,"FichiersJeu\Interface\Entites\Police\RobotoMono-VariableFont_wght.ttf"),255,255,255))[1]/2))
 
     #Trace des boutons
-    EZ.trace_rectangle_droit_v2(x + longeur - TAILLE_BOUTON//0.9, y + hauteur//2 - TAILLE_BOUTON//2, TAILLE_BOUTON, TAILLE_BOUTON, 0 if etatsSon else 255, 0 if etatsSon else 255, 0 if etatsSon else 255)
+    EZ.trace_rectangle_droit_v2(x + longeur - TAILLE_BOUTON//0.9, y + hauteur//2 - TAILLE_BOUTON//2, TAILLE_BOUTON, TAILLE_BOUTON, 0 if etatsSon else 255, 200 if etatsSon else 0, 0)
 
 
 

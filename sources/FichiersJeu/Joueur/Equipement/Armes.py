@@ -55,14 +55,47 @@ class Armes:
         elif self.name == "BouleDeFeu":
             self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),180,0.5)
         
-        elif self.name == "BouleDeFeuMini":
-            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),180,0.1)
-            self.hauteurTir = -10
 
         elif self.name == "Shuriken":
             self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme8\Arme8lvl{self.level}.png"),0,2)
             self.RotationSpeed = [15,0]
         
+        # Monster
+        elif self.name == "BouleDeFeuMini":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Arme7\Arme7lvl{self.level}.png"),0,0.1)
+            self.hauteurTir = -10
+        
+        elif self.name == "Vulcan":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\Vulcan_Magmaite.png"),0,0.2)
+            self.hauteurTir = -10
+        
+        elif self.name == "Elder":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\Elder.png"),0,0.2)
+            self.hauteurTir = -30
+
+        elif self.name == "Myrial":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\MyrialllBoss.png"),0,0.1)
+            self.hauteurTir = -50
+
+        elif self.name == "Reaper":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\Reaper.png"),0,0.4)
+            self.hauteurTir = 0
+
+        elif self.name == "Sample":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\sample.png"),0,0.2)
+            self.hauteurTir = -10
+
+        elif self.name == "Shroom":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\Shroom.png"),0,0.2)
+            self.hauteurTir = -10
+
+        elif self.name == "Vampire":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\Vampire.png"),0,0.1)
+            self.hauteurTir = -10
+
+        elif self.name == "Nue":
+            self.chargesB = EZ.transforme_image(EZ.charge_image(f"FichiersJeu\Interface\Entites\Items\Arme\Boss\_Nue.png"),0,0.4)
+            self.hauteurTir = -20
 
         self.hitbox = [EZ.dimension(self.chargesB)[0], EZ.dimension(self.chargesB)[1]]
 

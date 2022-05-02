@@ -79,7 +79,15 @@ Border = [OI.Border("border1", -3000), OI.Border("border2", LONGEUR + 3000)]
 Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
                         TAILLE_BARRE_DE_CHARGEMENT[0],TAILLE_BARRE_DE_CHARGEMENT[1], 95)
 
+
+# Part sound / Partie son
 EZ.charge_musique("FichiersJeu\son\MusiqueMenu.mp3")
+EZ.musique_volume(0.2)
+
+
+
+
+
 Joueur1.charge()
 
 Decor.bareDechargement(COORDONNEES_BARRE_DE_CHARGEMENT[0], COORDONNEES_BARRE_DE_CHARGEMENT[1], 
@@ -94,14 +102,15 @@ def menu(gold, inventaire):
     """function of main menu
     fonction du menu principal"""
 
-
-    play = True
+    son = Reader.ReadSon()
     leave = False
     infoGame = {"map": "Terre", "mode": "Infini"}
     EZ.reglage_fps(30)
-    EZ.musique_on()
-    EZ.musique_volume(0.2)
 
+    if son: # Check if the player want the music / regarde si le joueur veut la musique
+        EZ.musique_on()
+
+    play = True
     while play:
         gold = Reader.ReadGold()
         inventaire = Reader.ReadInventaire()
@@ -168,7 +177,7 @@ def menu(gold, inventaire):
                 leave = menuEquipement(gold)
 
             elif 30 < EZ.souris_x() < 110 and 10 < EZ.souris_y() < 90: # Bouton Parametre / settings button
-                leave = menuParametre(True)
+                leave, son = menuParametre(son)
 
             elif 1170 < EZ.souris_x() < 1250 and 10 < EZ.souris_y() < 90: # Bouton quitter / leave button
                 EZ.destruction_fenetre()
@@ -990,11 +999,22 @@ def menuParametre(son):
 
         if evenement == "EXIT":
             EZ.destruction_fenetre()
-            return True
+            return True, son
         
         if evenement == "SOURIS_BOUTON_GAUCHE_ENFONCE":
-            if 120 < EZ.souris_x() < 200 and 90 < EZ.souris_y() < 180:
-                pass
+            if 150 < EZ.souris_x() < 230 and 90 < EZ.souris_y() < 170:
+                son = not(son)
+            
+                if son: # Check if the sound is on / Vérifie si le son est activé
+                    EZ.musique_on()
+                
+                else:
+                    EZ.musique_stop()
+
+            elif not(30 < EZ.souris_x() < 230 and 90 < EZ.souris_y() < 170):
+                Writer.SaveSound(son)
+
+                return False, son
 
         EZ.mise_a_jour()
 
@@ -1331,6 +1351,12 @@ def game(map, mode, limiteWave = -1):
     Joueur1.setHauteurSol(Game.hauteurSol)
     Joueur1.setEquipement([equipements for equipements in Reader.ReadEquipement() if Reader.ReadEquipement()[equipements]])
     Joueur1.resetStats()
+
+    son = Reader.ReadSon() # Read if the player want the sound / lis si le joueur veut le son
+
+    if son:
+        EZ.charge_musique(f"FichiersJeu\son\Map\{map}.mp3")
+        EZ.musique_on()
 
     vague = 0
     Game.saveNumeroVague(vague)

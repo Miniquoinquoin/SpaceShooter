@@ -18,7 +18,6 @@ def Shooter():
     inventaire = Reader.ReadInventaire()  
     gold = Reader.ReadGold() # Read gold from csv InfoGen / li l'or depuis le fichier InfoGen
 
-
     demande = "Menu"
     play = True
     while play:

@@ -48,6 +48,8 @@ class Joueur:
         self.lastchargesLeft = [0, 1, 0] # [0 = PasArrier / 1 = Pied coller / 2 = Pied avant, 0 = Pas arrier / 1 = Pied avant, repetition]
         self.lastchargesEffetDomage = [2 * Anim.MAX_INTENSITE, "health"]  # [intensiter, type: "health" ou "shield"]
 
+        self.chargeSon() # Load the sounds of the player / charge les sons du joueur
+
 
     def charge(self):
         """Foncton qui charge l'image du personage"""
@@ -101,6 +103,13 @@ class Joueur:
         self.timeShoot = [EZ.clock(), self.stats['weapon']['cooldown']] # [temps du dernier tire, cooldown]
 
         self.charges = True
+
+
+    def chargeSon(self):
+        """Charge the sound of the player
+        charge le son du joueur"""
+
+        self.sound = {"damage": EZ.charge_son("FichiersJeu\son\Bruitage\Degat.mp3"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.mp3"), "saut": EZ.charge_son("FichiersJeu\son\Bruitage\saut.mp3"), "mort": EZ.charge_son("FichiersJeu\son\Bruitage\mort.mp3") }
 
     def setHauteurSol(self, hauteur):
         """Set y_sol to the height of the ground
@@ -264,6 +273,7 @@ class Joueur:
         """Prend les seconde du debut du saut"""
 
         self.timeSaut = EZ.clock()
+        EZ.joue_son(self.sound["saut"])
 
     
     def effet_saut(self):
@@ -290,6 +300,7 @@ class Joueur:
 
         if EZ.clock() - self.timeShoot[0] > self.timeShoot[1]: # cooldown de l'arme
             self.timeShoot[0] = EZ.clock()
+            EZ.joue_son(self.sound["lancer"])
 
             if self.move_etat["right"]:
                 self.arme[self.last_arme]["arme"].Setup(self.x + 72, self.y, "right", self.move_info["speed"])
@@ -334,6 +345,7 @@ class Joueur:
                 
         else:
             self.stats["vie"] -= domage
+            EZ.joue_son(self.sound["damage"])
             self.stats["regen"]["timer"] = EZ.clock()
             self.lastchargesEffetDomage[1] = "health"
 
@@ -370,7 +382,8 @@ class Joueur:
         Returns:
             bool: True if player haven't life, and False if player have life
         """
-
+        if self.stats["vie"] <= 0:
+            EZ.joue_son(self.sound["mort"])
         return self.stats["vie"] <= 0
     
     def resetStats(self):

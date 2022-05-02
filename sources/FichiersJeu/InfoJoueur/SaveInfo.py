@@ -38,6 +38,28 @@ def SaveGold(gold):
         for row in File:
             Writer.writerow(row)
 
+def SaveSound(son):
+    """Save status of sound in InfoGen
+    Savegarde du status du son dans InfoGen
+
+    Args:
+        gold (bool): status of sound / status du son
+    """
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == 'son':
+                row[1] = row[1].replace(row[1], str(son))
+                
+            File.append(row)
+    
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)
+
+
 def BuyCracters(numCaracters):
     """chage etats of Caracters in InfoGen
     Change l'etat des personnages dans InfoGen
@@ -150,6 +172,31 @@ def UpEquipement(equipement, element, effet):
             
                 row[2] = row[2].replace(row[2], str(int(row[2]) + 1))
         
+            File.append(row)
+        
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:
+        Writer = csv.writer(csvInfo, delimiter=':')
+        for row in File:
+            Writer.writerow(row)
+
+
+def winMap(map):
+    """set the map to next map, in campagne
+    Change la map a la map suivante, dans la campagne
+
+    Args:
+        map (str): name of map / nom de la map
+    """
+
+    maps = ["Terre", "Mars", "Gluton", "Volcano", "Forestia", "Dead Zone", "Candya"]
+    indice = maps.index(map)
+    with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'r') as csvInfo:
+        reader = csv.reader(csvInfo, delimiter=':')
+        File = []
+        for row in reader:
+            if row[0] == 'Map':
+                row[1] = row[1].replace(row[1], map[indice + 1] if indice < len(maps) - 1 else maps[-1])
+            
             File.append(row)
         
     with open("FichiersJeu\InfoJoueur\InfoGen.csv", 'w', newline='') as csvInfo:

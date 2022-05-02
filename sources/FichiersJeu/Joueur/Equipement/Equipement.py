@@ -4,6 +4,7 @@ import FichiersJeu.Interface.Decor as Decor
 import FichiersJeu.Interface.EZ as EZ
 import math
 
+
 class Equipement:
     """Class for the equipment
     classe pour les équipements"""
@@ -17,6 +18,7 @@ class Equipement:
         self.largeur = 50
         self.hauteur = 50
         self.chargeImage()
+        self.chargeSon()
     
     def chargeImage(self):
         """Charge the image of the equipment
@@ -38,6 +40,18 @@ class Equipement:
         elif self.type == "potion":
             self.chargesImage = EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\ImageInterface\Equipement\Potion.png"),0,0.17)
 
+    def chargeSon(self):
+        """Charge the sound of the equipment
+        charge le son de l'équipement"""
+
+        if self.type == "shield":
+            self.sound = {"Utilisation": [EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat1.mp3"),EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat2.mp3")], "Casser": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Casser.mp3"), "Reparation": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Reparation.mp3")}
+        
+        elif self.type == "grenade":
+            self.sound = {"explosion": EZ.charge_son("FichiersJeu\son\Bruitage\ExplosionGrenade.mp3"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.mp3")}
+        
+        elif self.type == "potion":
+            self.sound = EZ.charge_son("FichiersJeu\son\Bruitage\BoirPossion.mp3")
     
     def traceInfoEquipement(self,x,y):
         """Trace the equipment info at the right top in game
@@ -96,6 +110,7 @@ class Bouclier(Equipement):
         utilise le bouclier"""
 
         self.durability[0] -= 1
+        EZ.joue_son(self.sound["Utilisation"][self.durability[0]%2])
     
     def getDurability(self):
         """Get the shield durability
@@ -117,6 +132,7 @@ class Bouclier(Equipement):
         casse le bouclier"""
 
         self.durability[0] = 0
+        EZ.joue_son(self.sound["Casser"])
         
     def repair(self):
         """Repair the shield
@@ -124,6 +140,7 @@ class Bouclier(Equipement):
 
         super().repair()
         self.durability[0] = self.durability[1]
+        EZ.joue_son(self.sound["Reparation"])
     
 
 
@@ -176,6 +193,7 @@ class Grenade(Equipement):
 
         self.usable = False
         self.shoot(xShooter, yShooter, direction, hitBoxXShooter, SpeedShooter)
+        EZ.joue_son(self.sound["lancer"])
 
     
     def shoot(self,xShooter, yShooter, direction, hitBoxXShooter, SpeedShooter):
@@ -239,6 +257,7 @@ class Grenade(Equipement):
 
         # Partie animation
         self.lastchargesExplosion = 0
+        EZ.joue_son(self.sound["explosion"])
         
     def AnimationExplode(self, decalxFond):
         """Animation of the explosion
@@ -298,6 +317,7 @@ class Potion(Equipement):
         utilise la potion"""
 
         self.usable = False
+        EZ.joue_son(self.sound)
     
 
     def isUsable(self):
