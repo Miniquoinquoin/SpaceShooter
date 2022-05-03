@@ -47,6 +47,7 @@ Pour démarrer le jeu, il suffit de lancer le script `main.py` dans le terminal.
 - **Autres**
   - [EZ](http://lycee.stanislas.info.free.fr/Python/EZ/EZ.py)
   - [Monstres](http://bof.wikia.com/wiki/List_of_Breath_of_Fire_III_Enemies) : [CC BY SA](https://www.fandom.com/licensing)
+  - [Musique](https://ncs.io)
   - **Idées** : 
     - Eberlin Dorian
     - Heilmann Quentin
