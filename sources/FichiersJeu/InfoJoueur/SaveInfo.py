@@ -195,7 +195,10 @@ def winMap(map):
         File = []
         for row in reader:
             if row[0] == 'Map':
-                row[1] = row[1].replace(row[1], map[indice + 1] if indice < len(maps) - 1 else maps[-1])
+                indiceLastWin = maps.index(row[1]) - 1
+                if indiceLastWin > indice:
+                    indice = indiceLastWin
+                row[1] = row[1].replace(row[1], maps[indice + 1] if indice < len(maps) - 1 else maps[-1])
             
             File.append(row)
         
