@@ -310,7 +310,6 @@ pre[data-line] .line-highlight[data-end]:after {
 <li><a href="http://lycee.stanislas.info.free.fr/Python/EZ/EZ.py">EZ</a></li>
 <li><a href="http://bof.wikia.com/wiki/List_of_Breath_of_Fire_III_Enemies">Monstres</a> : <a href="https://www.fandom.com/licensing">CC BY SA</a></li>
 <li><a href="https://ncs.io">Musique</a></li>
-
 <li><strong>Id&#xE9;es</strong> :
 <ul>
 <li>Eberlin Dorian</li>
@@ -329,11 +328,11 @@ pre[data-line] .line-highlight[data-end]:after {
 <p>SpaceShooter est cod&#xE9; en grande partie en programation orient&#xE9;e objet. Il est compos&#xE9; de plusieurs classes principales telles que :</p>
 <ul>
 <li>Joueur : G&#xE8;re les actions du joueur</li>
-<li>Game : G&#xE8;re le deplacement du fond</li>
+<li>Game : G&#xE8;re le d&#xE9;placement du fond</li>
 <li>Monstre : G&#xE8;re les actions d&apos;un monstre</li>
 <li>Arme : G&#xE8;re les armes</li>
 </ul>
-<p>Ces classes sont ensuite utilis&#xE9;es dans <code>InterfaceDynamique.py</code> qui recup&#xE8;re les &#xE9;venements et r&#xE9;alise les actions &#xE0; l&apos;aide des classes cit&#xE9;es pr&#xE9;cedemment ou des fonctions reparties dans l&apos;ensemble des fichiers python.</p>
+<p>Ces classes sont ensuite utilis&#xE9;es dans <code>InterfaceDynamique.py</code> qui recup&#xE8;re les &#xE9;v&#xE8;nements et r&#xE9;alise les actions &#xE0; l&apos;aide des classes cit&#xE9;es pr&#xE9;cedemment ou des fonctions reparties dans l&apos;ensemble des fichiers python.</p>
 <h3 class="mume-header" id="le-joueur">Le Joueur</h3>
 
 <h4 class="mume-header" id="d%C3%A9placement-du-joueur">D&#xE9;placement du Joueur</h4>
@@ -343,7 +342,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <p>De nombreux &#xE9;l&#xE9;ments peuvent influencer le d&#xE9;placement du fond:</p>
 <ul>
 <li>La vitesse du joueur</li>
-<li>L&apos;acc&#xE9;leration du joueur</li>
+<li>L&apos;acc&#xE9;l&#xE9;ration du joueur</li>
 <li>Si le joueur est dans les airs</li>
 <li>Si le joueur est en contact avec un objet comme une bordure</li>
 </ul>
@@ -360,7 +359,7 @@ pre[data-line] .line-highlight[data-end]:after {
     self<span class="token punctuation">.</span>timeSaut <span class="token operator">=</span> EZ<span class="token punctuation">.</span>clock<span class="token punctuation">(</span><span class="token punctuation">)</span>
 </pre><p>Ce temps est ensuite utilis&#xE9; pour calculer la position y du joueur en fonction du temps passer depuis le d&#xE9;but du saut.</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">effet_saut</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token triple-quoted-string string">&quot;&quot;&quot;Trajectoir du saut du joueur&quot;&quot;&quot;</span>
+    <span class="token triple-quoted-string string">&quot;&quot;&quot;Trajectoire du saut du joueur&quot;&quot;&quot;</span>
 
     time <span class="token operator">=</span> EZ<span class="token punctuation">.</span>clock<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> self<span class="token punctuation">.</span>timeSaut
     <span class="token keyword keyword-if">if</span> self<span class="token punctuation">.</span>y <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>y_sol <span class="token keyword keyword-or">or</span> time <span class="token operator">&lt;</span> <span class="token number">0.1</span><span class="token punctuation">:</span>
@@ -372,7 +371,7 @@ pre[data-line] .line-highlight[data-end]:after {
         self<span class="token punctuation">.</span>y <span class="token operator">=</span> self<span class="token punctuation">.</span>y_sol
 </pre><h4 class="mume-header" id="animation-du-joueur">Animation du Joueur</h4>
 
-<p>L&apos;animation du joueur est g&#xE9;n&#xE9;r&#xE9;e par une suite d&apos;images. Ces images sont stock&#xE9;es dans plusieurs tableaux suivant la direction du joueur, g&#xE9;n&#xE9;r&#xE9;s au lancement du Jeux et actualis&#xE9;s &#xE0; chaque changement de personnage.</p>
+<p>L&apos;animation du joueur est g&#xE9;n&#xE9;r&#xE9;e par une suite d&apos;images. Ces images sont stock&#xE9;es dans plusieurs tableaux suivant la direction du joueur, g&#xE9;n&#xE9;r&#xE9;s au lancement du jeu et actualis&#xE9;s &#xE0; chaque changement de personnage.</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">    self<span class="token punctuation">.</span>chargesRight <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A8.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A9.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
     self<span class="token punctuation">.</span>chargesLeft <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A5.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A6.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
 </pre><p>Ces images d&#xE9;filent ensuite plus ou moins vite en fonction de la vitesse du joueur.</p>
@@ -436,7 +435,7 @@ pre[data-line] .line-highlight[data-end]:after {
 </pre><p>Nous verrons par la suite comment elle inflige des d&#xE9;g&#xE2;ts.</p>
 <h4 class="mume-header" id="statistique-du-joueur">Statistique du Joueur</h4>
 
-<p>Chaque personnage a des statistiques diff&#xE9;rentes. Certains se d&#xE9;placent plus vite, d&apos;autres ont plus de vie, d&apos;autres font plus de d&#xE9;g&#xE2;ts, d&apos;autres ont une meilleure cadence de tir... Ces statistiques sont d&#xE9;finies dans le fichier <code>StatsPersonnage.csv</code>, on peut aussi y voir les bonus d&apos;am&#xE9;lioration de statistique.</p>
+<p>Chaque personnage a des statistiques diff&#xE9;rentes. Certains se d&#xE9;placent plus vite, d&apos;autres ont plus de vie, d&apos;autres font plus de d&#xE9;g&#xE2;ts, d&apos;autres ont une meilleure cadence de tir... Ces statistiques sont d&#xE9;finies dans le fichier <code>StatsPersonnage.csv</code>, on peut aussi y voir les bonus d&apos;am&#xE9;lioration de statistiques.</p>
 <p><img src="ElementDoc/StatsPersonnage.png" alt="Statistique du Joueur"></p>
 <p>Cela permet de rendre le jeu plus vari&#xE9;, et ainsi d&apos;am&#xE9;liorer l&apos;exp&#xE9;rience du joueur.</p>
 <h3 class="mume-header" id="monstres">Monstres</h3>
@@ -447,7 +446,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <ul>
 <li>
 <p><strong>Mode Campagne :</strong></p>
-<p>Les monstres sont g&#xE9;n&#xE9;r&#xE9;s en fonction d&apos;un fichier csv popre &#xE0; chaque map.</p>
+<p>Les monstres sont g&#xE9;n&#xE9;r&#xE9;s en fonction d&apos;un fichier csv propre &#xE0; chaque map.</p>
 <blockquote>
 <p>cf: Dossier <a href="../sources/FichiersJeu/InfoWave">InfoWave</a></p>
 </blockquote>
@@ -465,7 +464,7 @@ pre[data-line] .line-highlight[data-end]:after {
 </li>
 </ul>
 <p>Les informations transmises sont trait&#xE9;es dans le fichier <code>InterfaceDynamique.py</code> et stock&#xE9;es dans une liste qui est ensuite utilis&#xE9;e pour acc&#xE9;der aux monstres.</p>
-<h4 class="mume-header" id="le-deplacement-des-monstres">Le deplacement des monstres</h4>
+<h4 class="mume-header" id="le-d%C3%A9placement-des-monstres">Le d&#xE9;placement des monstres</h4>
 
 <p>Les monstres se d&#xE9;placent en direction du joueur, la position du joueur leur est transmise au moment de leur g&#xE9;n&#xE9;ration. Pour rappel le joueur ne bouge pas, c&apos;est le fond qui bouge.</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">move</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vitesseFond<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -501,7 +500,7 @@ pre[data-line] .line-highlight[data-end]:after {
 
 <h4 class="mume-header" id="les-hitbox">Les hitbox</h4>
 
-<p>Toutes les entit&#xE9;s du jeu ont une hitbox. Celle-ci est d&#xE9;finie en fonction de la taile de l&apos;objet.</p>
+<p>Toutes les entit&#xE9;s du jeu ont une hitbox. Celle-ci est d&#xE9;finie en fonction de la taille de l&apos;objet.</p>
 <p><img src="ElementDoc/HitBox.png" alt="Image HitBox"></p>
 <h4 class="mume-header" id="les-d%C3%A9g%C3%A2ts">Les d&#xE9;g&#xE2;ts</h4>
 
@@ -544,11 +543,11 @@ pre[data-line] .line-highlight[data-end]:after {
         <span class="token keyword keyword-return">return</span> monstres<span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> mobKill
 </pre><h3 class="mume-header" id="les-%C3%A9quipements">Les &#xE9;quipements</h3>
 
-<p>Les &#xE9;quipements sont des objets qui peuvent &#xEA;tre achet&#xE9;s par le joueur dans le menu &#xE9;quipements. Il en existe trois: <strong>Bouclier</strong>, <strong>Grenade</strong> et <strong>Potion de soin</strong>. Ils peuvent chacun &#xEA;tre am&#xE9;lior&#xE9;s dans diff&#xE9;rents aspects de fa&#xE7;on ind&#xE9;pentante, attention tout de m&#xEA;me au prix de l&apos;am&#xE9;lioration qui est d&#xE9;fini par le nombre d&apos;am&#xE9;liorations que le joueur a effectu&#xE9; sur l&apos;objet ainsi que le prix d&apos;achat de l&apos;objet.</p>
+<p>Les &#xE9;quipements sont des objets qui peuvent &#xEA;tre achet&#xE9;s par le joueur dans le menu &#xE9;quipements. Il en existe trois: <strong>Bouclier</strong>, <strong>Grenade</strong> et <strong>Potion de soin</strong>. Ils peuvent chacun &#xEA;tre am&#xE9;lior&#xE9;s dans diff&#xE9;rents aspects de fa&#xE7;on ind&#xE9;pendante, attention tout de m&#xEA;me au prix de l&apos;am&#xE9;lioration qui est d&#xE9;fini par le nombre d&apos;am&#xE9;liorations que le joueur a effectu&#xE9; sur l&apos;objet ainsi que le prix d&apos;achat de l&apos;objet.</p>
 <p><img src="ElementDoc/Equipement.png" alt="Menu de Selectition des Personnages Gif"></p>
 <h4 class="mume-header" id="le-bouclier">Le Bouclier</h4>
 
-<p>Le bouclier permet au joueur d&apos;annuler les d&#xE9;g&#xE2;ts des monstres pour un certain nombres de coups. Il se r&#xE9;pare automatiquement quand il est cass&#xE9;, mais aussi en appuyant sur la touche &quot;<strong>z</strong>&quot; du clavier. Le bouclier peut &#xEA;tre achet&#xE9; pour la somme de 10 000 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;liorer en r&#xE9;sistance et temps de r&#xE9;paration.</p>
+<p>Le bouclier permet au joueur d&apos;annuler les d&#xE9;g&#xE2;ts des monstres pour un certain nombres de coups. Il se r&#xE9;pare automatiquement quand il est cass&#xE9;, mais aussi en appuyant sur la touche &quot;<strong>z</strong>&quot; du clavier. Le bouclier peut &#xEA;tre achet&#xE9; pour la somme de 10 000 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;lior&#xE9; en r&#xE9;sistance et temps de r&#xE9;paration.</p>
 <h4 class="mume-header" id="la-grenade">La Grenade</h4>
 
 <p>La grenade est un objet qui permet au joueur de mettre un grand nombre de d&#xE9;g&#xE2;ts &#xE0; plusieurs monstres dans une zone. Elle est r&#xE9;utilisable apr&#xE8;s un temps donn&#xE9;. Elle est achetable pour la somme de 2500 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;lior&#xE9;e en temps de r&#xE9;paration, d&#xE9;g&#xE2;ts et en rayon de zone d&apos;explosion.</p>
@@ -562,13 +561,13 @@ Pour utiliser la potion il faut appuyer sur la touche &quot;<strong>a</strong>&q
 
 <h4 class="mume-header" id="menu-fixe">Menu Fixe</h4>
 
-<p>Dans les menus fixe (Menu ou les boutons ne se d&#xE9;placent pas sur l&apos;&#xE9;cran), les coordonn&#xE9;es des boutons restent constantes. Ainsi il suffit de r&#xE9;cup&#xE9;rer les coordonn&#xE9;es de la souris si un click gauche est effectu&#xE9;.</p>
+<p>Dans les menus fixes (Menu ou les boutons ne se d&#xE9;placent pas sur l&apos;&#xE9;cran), les coordonn&#xE9;es des boutons restent constantes. Ainsi il suffit de r&#xE9;cup&#xE9;rer les coordonn&#xE9;es de la souris si un click gauche est effectu&#xE9;.</p>
 <p>EZ permet de le faire simplement :</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">    evenement <span class="token operator">=</span> EZ<span class="token punctuation">.</span>recupere_evenement<span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token keyword keyword-elif">elif</span> evenement <span class="token operator">==</span> <span class="token string">&quot;SOURIS_BOUTON_GAUCHE_ENFONCE&quot;</span><span class="token punctuation">:</span>
 </pre><p>Il reste plus qu&apos;a verifier si le click &#xE9;tait sur un bouton, pour sa quelques conditions et le tour est jou&#xE9;.</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-if">if</span> <span class="token number">435</span> <span class="token operator">&lt;</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">845</span> <span class="token keyword keyword-and">and</span> <span class="token number">595</span> <span class="token operator">&lt;</span> EZ<span class="token punctuation">.</span>souris_y<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">710</span><span class="token punctuation">:</span> <span class="token comment"># Bouton &apos;Nom du bouton&apos;</span>
-</pre><p>Sans oubli&#xE9; de renvoyer vers l&apos;interface demander. Ex: <code>menuShop()</code></p>
+</pre><p>Sans oublier de renvoyer vers l&apos;interface demander. Ex: <code>menuShop()</code></p>
 <h4 class="mume-header" id="menu-slide">Menu Slide</h4>
 
 <p>Les menus Slide(Translation sur un axe), sont des menus o&#xF9; l&apos;utilisateur a la posibilit&#xE9; de naviguer de droite &#xE0; gauche. Les coordonn&#xE9;es des boutons sont donc variables.</p>
@@ -602,7 +601,7 @@ Pour utiliser la potion il faut appuyer sur la touche &quot;<strong>a</strong>&q
             leave <span class="token operator">=</span> menuShopUpgradeWeapon<span class="token punctuation">(</span>gold<span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>getListPersonnage<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span>cadre<span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">&quot;Personnage&quot;</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
 </pre><h4 class="mume-header" id="menu-carte-slide-2d">Menu Carte (Slide 2D)</h4>
 
-<p>Les Menus Carte fonctionnent de la m&#xEA;me mani&#xE8;re que les menus silde, &#xE0; la seule diff&#xE9;rence qu&apos;ils enregistrent aussi le d&#xE9;placement y, de la mani&#xE8;re que font les menus slide pour les d&#xE9;placement en x.</p>
+<p>Les Menus Carte fonctionnent de la m&#xEA;me mani&#xE8;re que les menus silde, &#xE0; la seule diff&#xE9;rence qu&apos;ils enregistrent aussi le d&#xE9;placement y, de la mani&#xE8;re que font les menus slide pour les d&#xE9;placements en x.</p>
 <h3 class="mume-header" id="sauvegarde-des-informations">Sauvegarde des informations</h3>
 
 <p>Toutes les informations de l&apos;avanc&#xE9;e dans le jeu, sont stock&#xE9;es dans le fichier <code>InfoGen.csv</code>. Ces informations sont ensuite lues et modifi&#xE9;es par les fonctions des fichiers <code>ReadInfo.py</code> et <code>SaveInfo.py</code> qui utilisent le module csv de python.</p>
@@ -641,7 +640,7 @@ Pour utiliser la potion il faut appuyer sur la touche &quot;<strong>a</strong>&q
             Writer<span class="token punctuation">.</span>writerow<span class="token punctuation">(</span>row<span class="token punctuation">)</span>
 </pre><h3 class="mume-header" id="son">Son</h3>
 
-<p>Le jeu est accompagn&#xE9; de son, pour am&#xE9;liorer l&apos;immersion dans le jeu. Cela peut &#xEA;tre de la musique, ou encore des bruitages. La musique peut &#xEA;tre desactiver, &#xE0; l&apos;aide d&apos;un bouton dans le menu.</p>
+<p>Le jeu est accompagn&#xE9; de son, pour am&#xE9;liorer l&apos;immersion dans le jeu. Cela peut &#xEA;tre de la musique, ou encore des bruitages. La musique peut &#xEA;tre desactiv&#xE9;e, &#xE0; l&apos;aide d&apos;un bouton dans le menu.</p>
 <p>Le choix du joueur est comme pour les pi&#xE8;ces d&apos;or enregistr&#xE9; dans le fichier <code>infoGen.csv</code>.</p>
 <h4 class="mume-header" id="bruitages">Bruitages</h4>
 

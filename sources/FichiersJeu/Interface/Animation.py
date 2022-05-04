@@ -122,7 +122,7 @@ ESPACE_POLICE_SCORE = 50 # espace entre le chifre de uniter et le cotre droit du
 
 TAILLE_BOUTON = [300, 90] # Taille des bouton [x, y]
 
-def traceAnimationMort(longeur, hauteur, speed):
+def traceAnimationMort(longeur, hauteur, speed, win):
     """Draw the animation of the death of Player
     Trace l'animation de la mort du joueur
 
@@ -130,6 +130,7 @@ def traceAnimationMort(longeur, hauteur, speed):
         longeur (int): lenght of screen / Longeur de la Fenetre
         hauteur (int): height of screen / Hauteur de la Fenetre
         speed (int): speed of animation / vitesse de l'animation
+        win (bool): if the player win or not / si le joueur a gagne ou non
     """
 
 
@@ -137,7 +138,7 @@ def traceAnimationMort(longeur, hauteur, speed):
     RedFullScreen = 4.4 * MAX_INTENSITE
 
     while fermeture <= RedFullScreen:
-        traceEffetDegatJoueur(fermeture , longeur, hauteur)
+        traceEffetDegatJoueur(fermeture , longeur, hauteur, None, (255,0,0) if not(win) else (0,255,0))
 
         fermeture += speed
 
@@ -181,7 +182,7 @@ def traceAnimationArriverMenu(longeur, hauteur, speed):
         EZ.frame_suivante()
 
 
-def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, hauteurWidget):
+def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, hauteurWidget, win):
     """Drawn the animation that write "GAME" and the interface which the score will be display
     Trace L'animation qui écrit "GAME" et l'interface ou sur laquelle le score sera afficher
 
@@ -192,6 +193,7 @@ def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, haut
         speed (int): speed of animation / Vitesse de l'animation
         longeurWidget (int): lenght of widget
         hauteurWidget (int): lenght of widget 
+        win (bool): if the player win or not / Si le joueur a gagné ou non
     """
 
     # Premier Partie / First Part
@@ -207,7 +209,7 @@ def traceAnimationMortTexteEtWidget(longeur, hauteur, speed, longeurWidget, haut
   
 
     
-    TEXTE = "GAME"
+    TEXTE = "GAME" if not(win) else "WIN"
     DrawnFont = 0
 
     while DecalageWidget <= longeurWidget:
@@ -270,7 +272,7 @@ def tracePlayerAnimationMort(longeur, hauteur, longeurWidget, hauteurWidget, pla
 
     EZ.trace_image(EZ.transforme_image( player,0,2), x0 + DECAL_X , y0 + DECAL_Y)
 
-def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
+def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget, win):
     """Drawn the form of the fond, of stats
     Trace le fond des stats
 
@@ -300,7 +302,7 @@ def traceFondInfoScore(longeur, hauteur, speed, longeurWidget, hauteurWidget):
     CoordonneesFonts = [longeur//2 + EZ.dimension(EZ.image_texte("   ", Fonts, 0, 0, 0))[0], y0 - EZ.dimension(EZ.image_texte("OVER", Fonts, 0, 0, 0))[1]] # [x, y]
 
     
-    TEXTE = "OVER"
+    TEXTE = "OVER" if not(win) else " "
     DrawnFont = 0
 
     for xStart in range(3):
@@ -465,7 +467,7 @@ def traceAnimationBouton(longeur, hauteur, speed):
     EZ.frame_suivante()
 
 
-def traceAnimationMenuMort(longeur, hauteur, speed, gold, kill, wave, player):
+def traceAnimationMenuMort(longeur, hauteur, speed, gold, kill, wave, player, win=False):
     """Drawn the Annimation of Death Menu
     Trace l'animation du menu de la mort
 
@@ -476,16 +478,17 @@ def traceAnimationMenuMort(longeur, hauteur, speed, gold, kill, wave, player):
         gold (int): value of gold win / valeur de leur ganier
         kill (int): mob killed / mob tué
         wave (int): wave killed / vague tué
+        win (Bool): If player have win or not / si le joueur a gagné ou pas
     """
 
     LONGEUR_WIDGET = longeur - 200
     HAUTEUR_WIDGET = 2 * hauteur//3
 
-    traceAnimationMort(longeur, hauteur, speed)
+    traceAnimationMort(longeur, hauteur, speed, win)
     traceAnimationArriverMenu(longeur, hauteur, speed * 15)
-    traceAnimationMortTexteEtWidget(longeur, hauteur, speed * 15, LONGEUR_WIDGET, HAUTEUR_WIDGET)
+    traceAnimationMortTexteEtWidget(longeur, hauteur, speed * 15, LONGEUR_WIDGET, HAUTEUR_WIDGET, win)
     tracePlayerAnimationMort(longeur, hauteur, LONGEUR_WIDGET, HAUTEUR_WIDGET, player)
-    traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUTEUR_WIDGET)
+    traceFondInfoScore(longeur, hauteur, speed * 5, LONGEUR_WIDGET, HAUTEUR_WIDGET,win)
     traceInfoScore(longeur, hauteur, speed, LONGEUR_WIDGET, HAUTEUR_WIDGET, gold, kill, wave)
     traceAnimationBouton(longeur, hauteur, speed * 3)
 

@@ -108,7 +108,7 @@ class Monstre:
         elif self.name == "Magmaite_Sprite" or self.name == "Vulcan_Sprite":
             self.__charge(8,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 50}
+            self.stats = {"type": "BOSS_STILL", "vie": 2000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 2000}
             self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Vulcan", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}

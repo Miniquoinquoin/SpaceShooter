@@ -63,11 +63,11 @@ Dans cette partie nous verrons donc de quelle manière le jeu est construit.
 SpaceShooter est codé en grande partie en programation orientée objet. Il est composé de plusieurs classes principales telles que :
 
 - Joueur : Gère les actions du joueur
-- Game : Gère le deplacement du fond
+- Game : Gère le déplacement du fond
 - Monstre : Gère les actions d'un monstre
 - Arme : Gère les armes
 
-Ces classes sont ensuite utilisées dans `InterfaceDynamique.py` qui recupère les évenements et réalise les actions à l'aide des classes citées précedemment ou des fonctions reparties dans l'ensemble des fichiers python.
+Ces classes sont ensuite utilisées dans `InterfaceDynamique.py` qui recupère les évènements et réalise les actions à l'aide des classes citées précedemment ou des fonctions reparties dans l'ensemble des fichiers python.
 
 ### Le Joueur
 
@@ -80,7 +80,7 @@ Le décalage du fond est enregistré dans une variable `self.decal`, qui varie e
 De nombreux éléments peuvent influencer le déplacement du fond:
 
 - La vitesse du joueur
-- L'accéleration du joueur
+- L'accélération du joueur
 - Si le joueur est dans les airs
 - Si le joueur est en contact avec un objet comme une bordure
 
@@ -100,7 +100,7 @@ Le début du saut est généré par la remise du temps de saut au temps actuel.
 Ce temps est ensuite utilisé pour calculer la position y du joueur en fonction du temps passer depuis le début du saut.
 ```python
     def effet_saut(self):
-    """Trajectoir du saut du joueur"""
+    """Trajectoire du saut du joueur"""
 
     time = EZ.clock() - self.timeSaut
     if self.y < self.y_sol or time < 0.1:
@@ -113,7 +113,7 @@ Ce temps est ensuite utilisé pour calculer la position y du joueur en fonction 
 ```
 #### Animation du Joueur
 
-L'animation du joueur est générée par une suite d'images. Ces images sont stockées dans plusieurs tableaux suivant la direction du joueur, générés au lancement du Jeux et actualisés à chaque changement de personnage.
+L'animation du joueur est générée par une suite d'images. Ces images sont stockées dans plusieurs tableaux suivant la direction du joueur, générés au lancement du jeu et actualisés à chaque changement de personnage.
 ```python
     self.chargesRight = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A8.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A9.png"), 0, 3)]
     self.chargesLeft = [EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A5.png"), 0, 3),EZ.transforme_image(EZ.charge_image("FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A6.png"), 0, 3)]
@@ -186,7 +186,7 @@ Nous verrons par la suite comment elle inflige des dégâts.
 
 #### Statistique du Joueur
 
-Chaque personnage a des statistiques différentes. Certains se déplacent plus vite, d'autres ont plus de vie, d'autres font plus de dégâts, d'autres ont une meilleure cadence de tir... Ces statistiques sont définies dans le fichier `StatsPersonnage.csv`, on peut aussi y voir les bonus d'amélioration de statistique.
+Chaque personnage a des statistiques différentes. Certains se déplacent plus vite, d'autres ont plus de vie, d'autres font plus de dégâts, d'autres ont une meilleure cadence de tir... Ces statistiques sont définies dans le fichier `StatsPersonnage.csv`, on peut aussi y voir les bonus d'amélioration de statistiques.
 
 ![Statistique du Joueur](ElementDoc/StatsPersonnage.png)
 
@@ -200,7 +200,7 @@ Les monstres sont générés en début de vague. Leur mode de génération dépe
 
 - **Mode Campagne :**
 
-    Les monstres sont générés en fonction d'un fichier csv popre à chaque map.
+    Les monstres sont générés en fonction d'un fichier csv propre à chaque map.
     > cf: Dossier [InfoWave](../sources/FichiersJeu/InfoWave)
 
     Chaque fichier contient les informations suivantes pour chaque vague:
@@ -215,7 +215,7 @@ Les monstres sont générés en début de vague. Leur mode de génération dépe
 
 Les informations transmises sont traitées dans le fichier `InterfaceDynamique.py` et stockées dans une liste qui est ensuite utilisée pour accéder aux monstres.
 
-#### Le deplacement des monstres
+#### Le déplacement des monstres
 
 Les monstres se déplacent en direction du joueur, la position du joueur leur est transmise au moment de leur génération. Pour rappel le joueur ne bouge pas, c'est le fond qui bouge.
 ```python
@@ -256,7 +256,7 @@ Les fonctions `moveEffectRight` et `moveEffectLeft` sont utilisées pour faire d
 
 #### Les hitbox
 
-Toutes les entités du jeu ont une hitbox. Celle-ci est définie en fonction de la taile de l'objet.
+Toutes les entités du jeu ont une hitbox. Celle-ci est définie en fonction de la taille de l'objet.
 
 ![Image HitBox](ElementDoc\HitBox.png)
 
@@ -303,13 +303,13 @@ Des dégâts sont infligés à une entité, si celle-ci est touchée par une aut
 ```
 ### Les équipements
 
-Les équipements sont des objets qui peuvent être achetés par le joueur dans le menu équipements. Il en existe trois: **Bouclier**, **Grenade** et **Potion de soin**. Ils peuvent chacun être améliorés dans différents aspects de façon indépentante, attention tout de même au prix de l'amélioration qui est défini par le nombre d'améliorations que le joueur a effectué sur l'objet ainsi que le prix d'achat de l'objet.
+Les équipements sont des objets qui peuvent être achetés par le joueur dans le menu équipements. Il en existe trois: **Bouclier**, **Grenade** et **Potion de soin**. Ils peuvent chacun être améliorés dans différents aspects de façon indépendante, attention tout de même au prix de l'amélioration qui est défini par le nombre d'améliorations que le joueur a effectué sur l'objet ainsi que le prix d'achat de l'objet.
 
 ![Menu de Selectition des Personnages Gif](ElementDoc\Equipement.png)
 
 #### Le Bouclier
 
-Le bouclier permet au joueur d'annuler les dégâts des monstres pour un certain nombres de coups. Il se répare automatiquement quand il est cassé, mais aussi en appuyant sur la touche "**z**" du clavier. Le bouclier peut être acheté pour la somme de 10 000 pièces d'or, et peut être améliorer en résistance et temps de réparation.
+Le bouclier permet au joueur d'annuler les dégâts des monstres pour un certain nombres de coups. Il se répare automatiquement quand il est cassé, mais aussi en appuyant sur la touche "**z**" du clavier. Le bouclier peut être acheté pour la somme de 10 000 pièces d'or, et peut être amélioré en résistance et temps de réparation.
 
 #### La Grenade
 
@@ -328,7 +328,7 @@ Pour utiliser la potion il faut appuyer sur la touche "**a**" du clavier.
 
 #### Menu Fixe
 
-Dans les menus fixe (Menu ou les boutons ne se déplacent pas sur l'écran), les coordonnées des boutons restent constantes. Ainsi il suffit de récupérer les coordonnées de la souris si un click gauche est effectué. 
+Dans les menus fixes (Menu ou les boutons ne se déplacent pas sur l'écran), les coordonnées des boutons restent constantes. Ainsi il suffit de récupérer les coordonnées de la souris si un click gauche est effectué. 
 
 EZ permet de le faire simplement :
 ```python
@@ -339,7 +339,7 @@ Il reste plus qu'a verifier si le click était sur un bouton, pour sa quelques c
 ```python
     if 435 < EZ.souris_x() < 845 and 595 < EZ.souris_y() < 710: # Bouton 'Nom du bouton'
 ```
-Sans oublié de renvoyer vers l'interface demander. Ex: `menuShop()`
+Sans oublier de renvoyer vers l'interface demander. Ex: `menuShop()`
 
 #### Menu Slide
 
@@ -381,7 +381,7 @@ Ainsi pour savoir sur quel bouton l'utilisateur a cliqué, on ajoute x (le déca
 ```
 #### Menu Carte (Slide 2D)
 
-Les Menus Carte fonctionnent de la même manière que les menus silde, à la seule différence qu'ils enregistrent aussi le déplacement y, de la manière que font les menus slide pour les déplacement en x.
+Les Menus Carte fonctionnent de la même manière que les menus silde, à la seule différence qu'ils enregistrent aussi le déplacement y, de la manière que font les menus slide pour les déplacements en x.
 
 ### Sauvegarde des informations
 
@@ -431,7 +431,7 @@ Ensuite il suffit de réécrire l'ensemble du fichier csv, à partir de la liste
 ```
 ### Son
 
-Le jeu est accompagné de son, pour améliorer l'immersion dans le jeu. Cela peut être de la musique, ou encore des bruitages. La musique peut être desactiver, à l'aide d'un bouton dans le menu.
+Le jeu est accompagné de son, pour améliorer l'immersion dans le jeu. Cela peut être de la musique, ou encore des bruitages. La musique peut être desactivée, à l'aide d'un bouton dans le menu.
 
 Le choix du joueur est comme pour les pièces d'or enregistré dans le fichier `infoGen.csv`. 
 

@@ -22,6 +22,8 @@ HAUTEUR = 720
 LONGEUR = 1280
 TIMER_VAGUE = 2 #en seconde
 
+LIMITES_WAVES = {"Terre": 20, "Mars": 30, "Gluton":40, "Volcano": 30, "Forestia": 40, "Dead Zone": 50, "Candya": 25}
+
 ZOOM_CARTE = 0.5
 
 PRIX_EQUIPEMENT = {"Shield": 10000, "Grenade": 2500, "Potion": 5000} # price of the different equipement / prix des differents equipements
@@ -189,13 +191,13 @@ def menu(gold, inventaire):
         EZ.mise_a_jour()
         EZ.frame_suivante()
 
-def menuDeath(gold, kill, wave):
+def menuDeath(gold, kill, wave,win=False):
     """function of death menu
     fonction du menu de mort"""
 
     play = True
     EZ.reglage_fps(60)
-    MenuD.displayFond(LONGEUR, HAUTEUR, gold, kill, wave, Joueur1.chargesAvant)
+    MenuD.displayFond(LONGEUR, HAUTEUR, gold, kill, wave, Joueur1.chargesAvant, win)
 
     while play:
 
@@ -1352,6 +1354,9 @@ def game(map, mode, limiteWave = -1):
     Joueur1.setEquipement([equipements for equipements in Reader.ReadEquipement() if Reader.ReadEquipement()[equipements]])
     Joueur1.resetStats()
 
+    if mode == "Campagne":
+        limiteWave = LIMITES_WAVES[map]
+
     son = Reader.ReadSon() # Read if the player want the sound / lis si le joueur veut le son
 
     if son:
@@ -1415,11 +1420,18 @@ def game(map, mode, limiteWave = -1):
                     timeLastWave[0] = EZ.clock()
                     timeLastWave[1] = False
                 
-                if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE:
+                if EZ.clock() - timeLastWave[0] >= TIMER_VAGUE and ( vague < limiteWave or limiteWave == -1):
                     MonstreList, WizzardList , ShooterList = Startwave(vague, Game.hauteurSol, mode, map)  # Gener la nouvelle vague
                     timeLastWave[1] = True
                     vague += 1
                     Game.saveNumeroVague(vague)
+                
+                elif vague >= limiteWave and limiteWave != -1:
+                    gold = mobKill + (vague - 1) * 10
+                    Writer.SaveGold(gold + Reader.ReadGold())
+                    Writer.winMap(map)
+                    return menuDeath(gold, mobKill, vague, True)
+
             
             #Informe le fond sur l'etat du saut chez le joueur
             if not(Joueur1.move_info["saut"]):
