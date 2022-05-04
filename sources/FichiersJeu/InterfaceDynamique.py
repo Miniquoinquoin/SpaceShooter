@@ -87,7 +87,7 @@ EZ.charge_musique("FichiersJeu\son\MusiqueMenu.mp3")
 EZ.musique_volume(0.2)
 
 
-
+SON_WIN = EZ.charge_son("FichiersJeu\son\Bruitage\Win.mp3")
 
 
 Joueur1.charge()
@@ -1430,6 +1430,7 @@ def game(map, mode, limiteWave = -1):
                     gold = mobKill + (vague - 1) * 10
                     Writer.SaveGold(gold + Reader.ReadGold())
                     Writer.winMap(map)
+                    EZ.joue_son(SON_WIN)
                     return menuDeath(gold, mobKill, vague, True)
 
             

@@ -56,19 +56,19 @@ class Monstre:
         For all the monsters: name, number of picture, number of repetition before change
         Pour chaque Monstre : nom du monstre, nombre d'image, nombre de repetition avant changement, stats du Monstre"""
 
-        print(self.name)
+        # print(self.name)
 
         # Map : Terre
         if self.name == "Bolt_Sprite" or self.name == "NutTroop_Sprite":
             self.__charge(6,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 3, "cooldown": 1,"speed": 5, "maxvie": 200}
             self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "NutArcher_Sprite" or self.name == "BoltArcher_Sprite":
             self.__charge(6,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 100, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 100}
             self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -76,7 +76,7 @@ class Monstre:
         elif self.name == "KingToad_Sprite":
             self.__charge(27)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 10, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
             self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -84,25 +84,25 @@ class Monstre:
         elif self.name == "Rocky_Sprite":
             self.__charge(4)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 100, "damage": 4, "cooldown": 1,"speed": 3, "maxvie": 100}
 
         
         elif self.name == "NutMage_Sprite1":
             self.__charge(7,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 4, "maxvie": 100}
 
 
         elif self.name == "Dolphin_Sprite":
             self.__charge(6,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 1000, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 1000}
+            self.stats = {"type": "BOSS_COMMON", "vie": 1000, "damage": 10, "cooldown": 2,"speed": 3, "maxvie": 1000}
             self.hauteurSol += 50 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "Manmo_Sprite":
             self.__charge(10)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 1500, "damage": 5, "cooldown": 1,"speed": 3, "maxvie": 1500}
             self.hauteurSol += 20 # Move the monster down / Déplace le monstre vers le bas
         
         elif self.name == "Magmaite_Sprite" or self.name == "Vulcan_Sprite":
@@ -119,22 +119,22 @@ class Monstre:
         elif self.name == "Amalgam_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 4, "cooldown": 1,"speed": 3, "maxvie": 200}
 
         elif self.name == "Adept_Sprite":
             self.__charge(5)
             self.setSpeedEffect(3)
-            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1, "speed": 2, "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1, "speed": 4, "maxvie": 100}
 
         elif self.name == "ArchMage_Sprite":
             self.__charge(5)
             self.setSpeedEffect(3)
-            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1, "speed": 2, "maxvie": 100}
+            self.stats = {"type": "STRENGTH", "vie": 300, "damage": 3, "cooldown": 1, "speed": 5, "maxvie": 300}
         
         elif self.name == "Ammonite_Sprite":
             self.__charge(6)
             self.setSpeedEffect(5)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 150, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 2, "speed": 4, "maxvie": 150}
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1, (0,200,0)), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
@@ -142,19 +142,19 @@ class Monstre:
         elif self.name == "Gonger_Sprite":
             self.__charge(6,1.5)
             self.setSpeedEffect(5)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 300, "damage": 5, "cooldown": 1,"speed": 3, "maxvie": 300}
 
         elif self.name == "RedDrake_Sprite" or self.name == "Spiker_Sprite":
             self.__charge(30)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 200, "damage": 0, "shootDamage": 3, "range": 350, "cooldown": 3, "speed": 4, "maxvie": 200}
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
         elif self.name == "Shroom_Sprite":
             self.__charge(8,2)
             self.setSpeedEffect(5)
-            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 600, "cooldown": 3, "speed": 0, "maxvie": 50}
+            self.stats = {"type": "BOSS_STILL", "vie": 2500, "damage": 0, "shootDamage": 5, "range": 600, "cooldown": 3, "speed": 0, "maxvie": 2500}
             self.hauteurSol += 50 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Shroom", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -163,12 +163,12 @@ class Monstre:
         elif self.name == "Berserker_Sprite":
             self.__charge(24,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 500, "damage": 5, "cooldown": 1,"speed": 3, "maxvie": 500}
 
         elif self.name == "CharybScylla_Sprite":
             self.__charge(18, 1, True)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 300, "damage": 0, "shootDamage": 15, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 300}
             self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("BouleDeFeuMini", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -176,7 +176,7 @@ class Monstre:
         elif self.name == "IceToad_Sprite":
             self.__charge(27)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 250, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 1, "speed": 2, "maxvie": 250}
             self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -184,14 +184,14 @@ class Monstre:
         elif self.name == "Drak_Sprite" or self.name == "LizardMan_Sprite" or self.name == "Newt_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 5, "cooldown": 1,"speed": 7, "maxvie": 200}
             self.hauteurSol += 15 # Move the monster down / Déplace le monstre vers le bas
 
 
         elif self.name == "Elder_Sprite":
             self.__charge(8,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 50}
+            self.stats = {"type": "BOSS_STILL", "vie": 1000, "damage": 0, "shootDamage": 50, "range": 500, "cooldown": 5, "speed": 0, "maxvie": 1000}
             self.hauteurSol += 50 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Elder", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -204,38 +204,38 @@ class Monstre:
         elif self.name == "BarbBulb_Sprite":
             self.__charge(40,1.5)
             self.setSpeedEffect(2)
-            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 700, "damage": 5, "cooldown": 1,"speed": 2, "maxvie": 700}
 
         elif self.name == "Sleepy_Sprite" or self.name == "Hopper_Sprite":
-            self.__charge(7)
+            self.__charge(7,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1000, "damage": 7, "cooldown": 1,"speed": 3, "maxvie": 1000}
 
         elif self.name == "MadGong_Sprite":
             self.__charge(31)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 10, "cooldown": 2,"speed": 7, "maxvie": 200}
 
         elif self.name == "Roach_Sprite" or self.name == "GiantRoach_Sprite":
-            self.__charge(7)
+            self.__charge(7,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 300, "damage": 8, "cooldown": 1,"speed": 3, "maxvie": 300}
 
         elif self.name == "TarMan_Sprite" or self.name == "LavaMan_Sprite" or self.name == "ToxicMan_Sprite":
             self.__charge(8,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1000, "damage": 10, "cooldown": 1,"speed": 1, "maxvie": 1000}
 
 
         elif self.name == "Chimera_Sprite":
             self.__charge(18)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 3000, "damage": 10, "cooldown": 1,"speed": 3, "maxvie": 3000}
 
         elif self.name == "Golem_Sprite":
             self.__charge(4)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 5000, "damage": 5, "cooldown": 1,"speed": 1, "maxvie": 5000}
         
 
 
@@ -243,44 +243,44 @@ class Monstre:
         elif self.name == "Angler_Sprite":
             self.__charge(36)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 700, "damage": 9, "cooldown": 1,"speed": 3, "maxvie": 700}
             self.hauteurSol += 25 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "PainWeed_Sprite" or self.name == "RankWeed_Sprite" or self.name == "VileWeed_Sprite":
             self.__charge(8,1.2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1500, "damage": 1, "cooldown": 3,"speed": 1, "maxvie": 1500}
             self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
 
         elif self.name == "VileWeed_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
-            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 500, "damage": 4, "cooldown": 1,"speed": 3, "maxvie": 500}
         
         elif self.name == "Cacti_Sprite":
             self.__charge(8,1.3)
             self.setSpeedEffect(2)
-            self.stats = {"type": "HEAL", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "HEAL", "vie": 1000, "damage": 0, "cooldown": 1,"speed": 3, "maxvie": 1000}
 
         elif self.name == "Codger_Sprite":
             self.__charge(5)
             self.setSpeedEffect(2)
-            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "STRENGTH", "vie": 500, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 500}
 
         elif self.name == "FoulWeed_Sprite":
             self.__charge(7)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1000, "damage": 7, "cooldown": 1,"speed": 3, "maxvie": 1000}
 
         elif self.name == "Gonghead_Sprite":
             self.__charge(31,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 600, "damage": 4, "cooldown": 1,"speed": 3, "maxvie": 600}
 
         elif self.name == "Mutant_Sprite":
             self.__charge(8,1.5,True)
             self.setSpeedEffect(2)
-            self.stats = {"type": "STRENGTH", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "STRENGTH", "vie": 300, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 300}
 
         elif self.name == "Slasher_Sprite" or self.name == "Ripper_Sprite":
             self.__charge(12)
@@ -297,7 +297,7 @@ class Monstre:
         elif self.name == "Plant42_Sprite" or self.name == "Audrey_Sprite1":
             self.__charge(6)
             self.setSpeedEffect(2)
-            self.stats = {"type": "SHOOTER_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 250, "cooldown": 3, "speed": 4, "maxvie": 50}
+            self.stats = {"type": "SHOOTER", "vie": 500, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 500}
 
             self.arme = {"arme": Armef.ArmesAvecForme(self.name, self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
@@ -305,25 +305,25 @@ class Monstre:
         elif self.name == "Gazer_Sprite":
             self.__charge(24)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 1000, "damage": 10, "cooldown": 1,"speed": 3, "maxvie": 1000}
 
         elif self.name == "ManTrap_Sprite":
             self.__charge(7)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 5000, "damage": 20, "cooldown": 1,"speed": 3, "maxvie": 5000}
 
         elif self.name == "MyriaIIIBoss_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
             self.hauteurSol += 10 # Move the monster down / Déplace le monstre vers le bas
-            self.stats = {"type": "BOSS_STILL", "vie": 5000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 5000}
+            self.stats = {"type": "BOSS_STILL", "vie": 20000, "damage": 0, "shootDamage": 10, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 20000}
 
             self.arme = {"arme": Armef.Armes("Myrial", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
         elif self.name == "Nue_Sprite":
             self.__charge(11,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 50, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 50}
+            self.stats = {"type": "BOSS_STILL", "vie": 500, "damage": 0, "shootDamage": 20, "range": 500, "cooldown": 1, "speed": 0, "maxvie": 500}
             self.hauteurSol += 50 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Nue", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -331,7 +331,7 @@ class Monstre:
         elif self.name == "Insector_Sprite" or self.name == "FlyMan_Sprite":
             self.__charge(20)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 2500, "damage": 15, "cooldown": 1,"speed": 3, "maxvie": 2500}
 
 
 
@@ -340,33 +340,33 @@ class Monstre:
         elif self.name == "Bat_Sprite" :
             self.__charge(4,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1000, "damage": 8, "cooldown": 1,"speed": 4, "maxvie": 1000}
 
         elif self.name == "PipeBomb_Sprite" or self.name == "Bomber_Sprite" or self.name == "BombSeed_Sprite":
             self.__charge(3,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1200, "damage": 5, "cooldown": 1,"speed": 3, "maxvie": 1200}
 
         elif self.name == "DeathBot_Sprite" or self.name == "MultiBot_Sprite":
             self.__charge(24,1.5)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1000, "damage": 10, "cooldown": 1,"speed": 7, "maxvie": 1000}
 
         elif self.name == "MistMan_Sprite" or self.name == "Armor_Sprite":
             self.__charge(8,1.5)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 1500, "damage": 3, "cooldown": 1,"speed": 2, "maxvie": 1500}
 
 
         elif self.name == "DragonZombie_Sprite":
             self.__charge(8)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 5000, "damage": 10, "cooldown": 1,"speed": 3, "maxvie": 5000}
 
         elif self.name == "Phantom_Sprite" or self.name == "Reaper_Sprite" or self.name == "Revenant_Sprite":
             self.__charge(8,3)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 5000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 5000}
+            self.stats = {"type": "BOSS_STILL", "vie": 3000, "damage": 0, "shootDamage": 50, "range": 500, "cooldown": 2, "speed": 0, "maxvie": 3000}
 
             self.arme = {"arme": Armef.Armes("Reaper", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
 
@@ -374,7 +374,7 @@ class Monstre:
         elif self.name == "Vampire_Sprite":
             self.__charge(16,2)
             self.setSpeedEffect(1)
-            self.stats = {"type": "BOSS_STILL", "vie": 2000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 2000}
+            self.stats = {"type": "BOSS_STILL", "vie": 4000, "damage": 0, "shootDamage": 5, "range": 800, "cooldown": 1, "speed": 0, "maxvie": 4000}
             self.hauteurSol += 40 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Vampire", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
@@ -385,27 +385,27 @@ class Monstre:
         elif self.name == "Scorpion_Sprite" or self.name == "GiantCrab_Sprite":
             self.__charge(10)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 300, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 300}
 
         elif self.name == "Gooey_Sprite" or self.name == "GooKing_Sprite" or self.name == "GooTitan_Sprite" or self.name == "EyeGoo_Sprite" or self.name == "MageGoo_Sprite" or self.name == "PuffGoo_Sprite":
             self.__charge(11, 2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 3, "cooldown": 1,"speed": 3, "maxvie": 200}
 
         elif self.name == "Thunder_Sprite" or self.name == "Volt_Sprite":
             self.__charge(16)
             self.setSpeedEffect(2)
-            self.stats = {"type": "COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "COMMON", "vie": 200, "damage": 5, "cooldown": 1,"speed": 2, "maxvie": 200}
 
         elif self.name == "HugeSlug_Sprite":
             self.__charge(6)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_COMMON", "vie": 100, "damage": 1, "cooldown": 1,"speed": 3, "maxvie": 100}
+            self.stats = {"type": "BOSS_COMMON", "vie": 1000, "damage": 5, "cooldown": 1,"speed": 3, "maxvie": 1000}
 
         elif self.name == "Sample4_Sprite":
             self.__charge(30,2)
             self.setSpeedEffect(2)
-            self.stats = {"type": "BOSS_STILL", "vie": 1000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 1000}
+            self.stats = {"type": "BOSS_STILL", "vie": 10000, "damage": 0, "shootDamage": 5, "range": 500, "cooldown": 3, "speed": 0, "maxvie": 10000}
             self.hauteurSol += 30 # Move the monster down / Déplace le monstre vers le bas
 
             self.arme = {"arme": Armef.Armes("Sample", self.stats["shootDamage"], self.stats["range"], 1), "speed": 15}  # {Type d'arme, vitesse de l'arme} / {Weapon, speed}
