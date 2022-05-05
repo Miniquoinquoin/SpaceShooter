@@ -1,16 +1,1 @@
-# Info de Base
-
-## Lien utile
-
-* [Comment écrire en markdown ?](https://fr.mictests.com/)
-* [Shema gestion des dossier](https://app.creately.com/diagram/5ZaPTrJLE9p/edit)
-
-## Proprieter
-
-* Language: **Python**
-
-
-## Autres
-
-* Auteur:  1. **Dzarian**
-           2. **Mini_Quoinquoin**
+**Il faut ouvrire le projet à partir du fichier sources**
