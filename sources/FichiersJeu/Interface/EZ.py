@@ -570,7 +570,7 @@ sonClick = None
 def charge_son_clic():
     """Charge le son du clic"""
     global sonClick
-    sonClick = charge_son("FichiersJeu\son\Bruitage\ClickSouris.mp3")
+    sonClick = charge_son("FichiersJeu\son\Bruitage\ClickSouris.wav")
 
 def son_click():
     """Joue le son de clic"""

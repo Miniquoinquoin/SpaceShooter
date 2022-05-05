@@ -109,7 +109,7 @@ class Joueur:
         """Charge the sound of the player
         charge le son du joueur"""
 
-        self.sound = {"damage": EZ.charge_son("FichiersJeu\son\Bruitage\Degat.mp3"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.mp3"), "saut": EZ.charge_son("FichiersJeu\son\Bruitage\saut.mp3"), "mort": EZ.charge_son("FichiersJeu\son\Bruitage\mort.mp3") }
+        self.sound = {"damage": EZ.charge_son("FichiersJeu\son\Bruitage\Degat.wav"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.wav"), "saut": EZ.charge_son("FichiersJeu\son\Bruitage\saut.wav"), "mort": EZ.charge_son("FichiersJeu\son\Bruitage\mort.wav") }
 
     def setHauteurSol(self, hauteur):
         """Set y_sol to the height of the ground

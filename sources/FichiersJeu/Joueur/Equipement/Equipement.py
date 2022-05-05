@@ -45,13 +45,13 @@ class Equipement:
         charge le son de l'équipement"""
 
         if self.type == "shield":
-            self.sound = {"Utilisation": [EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat1.mp3"),EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat2.mp3")], "Casser": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Casser.mp3"), "Reparation": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Reparation.mp3")}
+            self.sound = {"Utilisation": [EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat1.wav"),EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Degat2.wav")], "Casser": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Casser.wav"), "Reparation": EZ.charge_son("FichiersJeu\son\Bruitage\Bouclier\Reparation.wav")}
         
         elif self.type == "grenade":
-            self.sound = {"explosion": EZ.charge_son("FichiersJeu\son\Bruitage\ExplosionGrenade.mp3"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.mp3")}
+            self.sound = {"explosion": EZ.charge_son("FichiersJeu\son\Bruitage\ExplosionGrenade.wav"), "lancer": EZ.charge_son("FichiersJeu\son\Bruitage\Lancer.wav")}
         
         elif self.type == "potion":
-            self.sound = EZ.charge_son("FichiersJeu\son\Bruitage\BoirPossion.mp3")
+            self.sound = EZ.charge_son("FichiersJeu\son\Bruitage\BoirPossion.wav")
     
     def traceInfoEquipement(self,x,y):
         """Trace the equipment info at the right top in game

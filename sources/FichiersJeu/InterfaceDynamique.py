@@ -87,7 +87,7 @@ EZ.charge_musique("FichiersJeu\son\MusiqueMenu.mp3")
 EZ.musique_volume(0.2)
 
 
-SON_WIN = EZ.charge_son("FichiersJeu\son\Bruitage\Win.mp3")
+SON_WIN = EZ.charge_son("FichiersJeu\son\Bruitage\Win.wav")
 
 
 Joueur1.charge()
