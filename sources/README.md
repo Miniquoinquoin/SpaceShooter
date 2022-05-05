@@ -1,1 +1,1 @@
-**Il faut ouvrire le projet à partir du fichier sources**
+**Il faut ouvrir le projet à partir du fichier sources**
