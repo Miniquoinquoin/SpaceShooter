@@ -1,0 +1,41 @@
+/* Vollet de Navigation */
+
+.volletNavigation{
+    background-color: rgb(102, 186, 255);
+    padding: 0% 10% 0% 0%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    display: block;
+}
+
+.volletNavigation ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.volletNavigation ul li{
+    list-style: none;
+    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+}
+
+.volletNavigation ul li img{
+    margin-left: -20%;
+    height: 50%;
+    border: #000 5px solid;
+}
+
+.volletNavigation ul li a{
+    color: #000;
+    margin-left: 1em;
+    text-decoration: none;
+}
+
+.volletNavigation ul li a:hover{
+    color: rgb(161, 132, 0);
+    text-decoration: underline;
+}
