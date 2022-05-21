@@ -39,3 +39,19 @@
     color: rgb(161, 132, 0);
     text-decoration: underline;
 }
+
+
+/* Effet en jeu */
+
+.Monde{
+    width: 100%;   
+}
+
+.Monde{
+    opacity: 0;
+    transition: 2000ms;
+}
+
+.Monde:hover{
+    opacity: 1;
+}
