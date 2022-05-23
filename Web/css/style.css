@@ -5,27 +5,27 @@ body{
 }
 
 .volletNavigation{
-    padding: 0% 10% 0% 0%;
+    padding: 0% 2em 0% 0%;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 99999;
     display: block;
 }
 
 .volletNavigation ul{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
 }
 
 .volletNavigation ul li{
-    margin-right: 20px;
     list-style: none;
     font-size: 20px;
     color: #000;
     text-decoration: none;
+    margin-right: 2em;
+    
 }
 
 .volletNavigation ul li img{
@@ -44,11 +44,10 @@ body{
     text-transform: capitalize;
     position: relative;
     transition: 0.5s;
-    margin: 0.8em;
     text-decoration: none;
     color: #2F4142;
-
 }
+
 
 .volletNavigation ul li a::before,
 .volletNavigation ul li a::after {
@@ -60,6 +59,7 @@ body{
     transition: 0.5s cubic-bezier(0.5, -0.5, 0.25, 1.5);
     top: calc(20% - 0.1em / 2);
 }
+
 
 .volletNavigation ul li a::before {left: 0; z-index: -1;}
 .volletNavigation ul li a::after {right: 0; z-index: -2;}
