@@ -1,3 +1,12 @@
+/* Core de Page */
+
+body{
+    max-width: 120em;
+    min-width: 50em;
+    margin: auto;
+}
+
+
 /* Vollet de Navigation */
 
 .volletNavigation{
@@ -41,17 +50,146 @@
 }
 
 
-/* Effet en jeu */
+/* 
+    Effet en jeu 
+*/
 
-.Monde{
-    width: 100%;   
+/* Carte */
+
+.Monde {
+    width: 100%;
+    animation: AnimMonde 3s;
+    -moz-animation: AnimMonde 3s;
+    /* Firefox */
+    -webkit-animation: AnimMonde 3s;
+    /* Safari et Chrome */
+    -o-animation: AnimMonde 3s;
+    /* Opera */
 }
 
-.Monde{
-    opacity: 0;
-    transition: 2000ms;
+@keyframes AnimMonde {
+    from {
+        opacity: 0;
+        transform: translateY(+10em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
 
-.Monde:hover{
-    opacity: 1;
+@-moz-keyframes AnimMonde {
+
+    /* sur Firefox */
+    from {
+        opacity: 0;
+        transform: translateY(+10em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes AnimMonde {
+
+    /* sur Safari et Chrome */
+    from {
+        opacity: 0;
+        transform: translateY(+10em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-o-keyframes AnimMonde {
+
+    /* sur Opera */
+    from {
+        opacity: 0;
+        transform: translateY(+10em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+/* Personnage */
+
+.Perso{
+    display: inline;
+    position: relative;
+    top: -20em;
+    left: 80%;
+    width: 10%;
+    animation: AnimPerso 3s;
+    -moz-animation: AnimPerso 3s;
+    /* Firefox */
+    -webkit-animation: AnimPerso 3s;
+    /* Safari et Chrome */
+    -o-animation: AnimPerso 3s;
+    /* Opera */
+}
+
+@keyframes AnimPerso {
+    from {
+        opacity: 0;
+        transform: translateY(+10em);
+        transform: translateX(-10em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+        transform: translateX(0%);
+    }
+}
+
+@-moz-keyframes AnimPerso {
+
+    /* sur Firefox */
+    from {
+        opacity: 0;
+        transform: translateY(+10%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes AnimPerso {
+
+    /* sur Safari et Chrome */
+    from {
+        opacity: 0;
+        transform: translateY(+10%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-o-keyframes AnimPerso {
+
+    /* sur Opera */
+    from {
+        opacity: 0;
+        transform: translateY(+10%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
