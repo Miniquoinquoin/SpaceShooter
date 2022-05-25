@@ -1,0 +1,692 @@
+<!DOCTYPE html><html><head>
+      <title>Doc</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="file:///c:\Users\User\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.6.2\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #dddddd;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #dddddd;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#96BDC6;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:deeppink;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#F8CDBB;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#F8CDBB;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#F8CDBB;border-radius:3px}@media print{html body{background-color:#96BDC6}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <link rel="stylesheet" href="css/nav.css">
+
+    </head>
+    <body for="html-export">
+        
+
+      <div class="mume markdown-preview  ">
+        <nav class="volletNavigation">
+          <ul>
+            <li><img src="images/logo.png" alt="logo" /></li>
+            <li><a href="Accueil.html">Présentation</a></li>
+            <li><a href="Download.html">Téléchargement</a></li>
+            <li><a href="Doc.html">Fonctionnement</a></li>
+          </ul>
+        </nav>
+        
+        <br>
+        <br>
+        <br>
+        
+      <h1 class="mume-header" id="documentation">Documentation</h1>
+
+<h2 class="mume-header" id="introduction">Introduction</h2>
+
+<p>SpaceShooter est un jeu de tir en 2D en vue de face. Il est d&#xE9;velopp&#xE9; en python et utilise le module <a href="http://lycee.stanislas.info.free.fr/Python/EZ/EZ.py">EZ</a>, qui a pour but de simplifier la librairie pygame. EZ &#xE9;tait impos&#xE9; au projet dans le cadre de l&apos;enseignement de NSI.</p>
+<h2 class="mume-header" id="installation">Installation</h2>
+
+<p>Si vous ne poss&#xE9;dez pas python, ou si vous poss&#xE9;dez une version inf&#xE9;rieure &#xE0; <code>python3</code>, il vous faudra <a href="https://www.python.org/downloads/">l&apos;installer</a>.</p>
+<p>Si vous ne poss&#xE9;dez pas pygame:</p>
+<pre class="language-text">$ pip install pygame
+</pre>
+<p>Si vous souhaitez utiliser l&apos;outil d&#xE9;composeur de gif, il vous faudra aussi le module Pillow:</p>
+<pre class="language-text">$ pip install Pillow
+</pre>
+<h2 class="mume-header" id="utilisation">Utilisation</h2>
+
+<h3 class="mume-header" id="d%C3%A9marrage">D&#xE9;marrage</h3>
+
+<p>Pour d&#xE9;marrer le jeu, il suffit de lancer le script <code>main.py</code> dans le terminal. Le fichier se trouve dans le dossier sources.</p>
+<h3 class="mume-header" id="contr%C3%B4les">Contr&#xF4;les</h3>
+
+<h4 class="mume-header" id="dans-les-menus">Dans les menus</h4>
+
+<ul>
+<li><strong>Echap</strong>: revenir au menu pr&#xE9;c&#xE9;dent</li>
+<li><strong>Click Gauche</strong>: Pour naviguer dans les menus</li>
+</ul>
+<h4 class="mume-header" id="en-jeu">En Jeu</h4>
+
+<ul>
+<li><strong>Click gauche</strong>/ <strong>Entrer</strong>: Tirer</li>
+<li><strong>q</strong> / <strong>Fl&#xE8;che gauche</strong>: Bouger le personnage vers la gauche</li>
+<li><strong>d</strong> / <strong>Fl&#xE8;che droite</strong>: Bouger le personnage vers la droite</li>
+<li><strong>Espace</strong>: Sauter</li>
+<li><strong>a</strong>: Utiliser l&apos;&#xE9;quipement Potion</li>
+<li><strong>e</strong>: Utiliser l&apos;&#xE9;quipement Grenade</li>
+<li><strong>z</strong>: R&#xE9;parer l&apos;&#xE9;quipement Bouclier</li>
+<li><strong>Echap</strong>: acc&#xE9;der au Menu en Jeu</li>
+</ul>
+<h2 class="mume-header" id="cr%C3%A9dits">Cr&#xE9;dits</h2>
+
+<ul>
+<li><strong>Programmation</strong> : Heilmann Jonathan</li>
+<li><strong>Graphisme</strong> / <strong>Equilibrage</strong> : Schmitt Nicolas</li>
+<li><strong>Autres</strong>
+<ul>
+<li><a href="http://lycee.stanislas.info.free.fr/Python/EZ/EZ.py">EZ</a></li>
+<li><a href="http://bof.wikia.com/wiki/List_of_Breath_of_Fire_III_Enemies">Monstres</a> : <a href="https://www.fandom.com/licensing">CC BY SA</a></li>
+<li><a href="https://ncs.io">Musique</a></li>
+<li><strong>Id&#xE9;es</strong> :
+<ul>
+<li>Eberlin Dorian</li>
+<li>Heilmann Quentin</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="fonctionnement">Fonctionnement</h2>
+
+<p>Comment le jeu est-il cod&#xE9; ? Comment se d&#xE9;place le joueur ? Comment les monstres se d&#xE9;placent-ils ? Comment les d&#xE9;g&#xE2;ts sont-ils g&#xE9;r&#xE9;s ? Ou encore, comment marche la navigation au sein des menus ? ...</p>
+<p>Dans cette partie nous verrons donc de quelle mani&#xE8;re le jeu est construit.</p>
+<h3 class="mume-header" id="introduction-1">Introduction</h3>
+
+<p>SpaceShooter est cod&#xE9; en grande partie en programation orient&#xE9;e objet. Il est compos&#xE9; de plusieurs classes principales telles que :</p>
+<ul>
+<li>Joueur : G&#xE8;re les actions du joueur</li>
+<li>Game : G&#xE8;re le d&#xE9;placement du fond</li>
+<li>Monstre : G&#xE8;re les actions d&apos;un monstre</li>
+<li>Arme : G&#xE8;re les armes</li>
+</ul>
+<p>Ces classes sont ensuite utilis&#xE9;es dans <code>InterfaceDynamique.py</code> qui recup&#xE8;re les &#xE9;v&#xE8;nements et r&#xE9;alise les actions &#xE0; l&apos;aide des classes cit&#xE9;es pr&#xE9;cedemment ou des fonctions reparties dans l&apos;ensemble des fichiers python.</p>
+<h3 class="mume-header" id="le-joueur">Le Joueur</h3>
+
+<h4 class="mume-header" id="d%C3%A9placement-du-joueur">D&#xE9;placement du Joueur</h4>
+
+<p>Les d&#xE9;placements du joueur sont illustr&#xE9;s par le d&#xE9;placement du fond ce qui permet au joueur de rester au centre de l&apos;&#xE9;cran.</p>
+<p>Le d&#xE9;calage du fond est enregistr&#xE9; dans une variable <code>self.decal</code>, qui varie en fonction des informations transmises par <code>InterfaceDynamique.py</code>.</p>
+<p>De nombreux &#xE9;l&#xE9;ments peuvent influencer le d&#xE9;placement du fond:</p>
+<ul>
+<li>La vitesse du joueur</li>
+<li>L&apos;acc&#xE9;l&#xE9;ration du joueur</li>
+<li>Si le joueur est dans les airs</li>
+<li>Si le joueur est en contact avec un objet comme une bordure</li>
+</ul>
+<blockquote>
+<p>cf : l.621 <a href="..%5Csources%5CFichiersJeu%5CInterface%5CEntites%5CMenu.py">Menu.py</a></p>
+</blockquote>
+<h4 class="mume-header" id="saut-du-joueur">Saut du Joueur</h4>
+
+<p>Le saut lui aussi varie en fonction du personnage. Ce qui permet une diversit&#xE9; entre les personnages.</p>
+<p>Le d&#xE9;but du saut est g&#xE9;n&#xE9;r&#xE9; par la remise du temps de saut au temps actuel.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">timer_saut</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">&quot;&quot;&quot;Prend les seconde du debut du saut&quot;&quot;&quot;</span>
+
+    self<span class="token punctuation">.</span>timeSaut <span class="token operator">=</span> EZ<span class="token punctuation">.</span>clock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>Ce temps est ensuite utilis&#xE9; pour calculer la position y du joueur en fonction du temps passer depuis le d&#xE9;but du saut.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">effet_saut</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">&quot;&quot;&quot;Trajectoire du saut du joueur&quot;&quot;&quot;</span>
+
+    time <span class="token operator">=</span> EZ<span class="token punctuation">.</span>clock<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> self<span class="token punctuation">.</span>timeSaut
+    <span class="token keyword keyword-if">if</span> self<span class="token punctuation">.</span>y <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>y_sol <span class="token keyword keyword-or">or</span> time <span class="token operator">&lt;</span> <span class="token number">0.1</span><span class="token punctuation">:</span>
+        
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> self<span class="token punctuation">.</span>y_sol <span class="token operator">-</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>stats<span class="token punctuation">[</span><span class="token string">&quot;jumpPower&quot;</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token operator">*</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>stats<span class="token punctuation">[</span><span class="token string">&quot;speed&quot;</span><span class="token punctuation">]</span> <span class="token operator">*</span> time <span class="token operator">-</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> self<span class="token punctuation">.</span>stats<span class="token punctuation">[</span><span class="token string">&quot;speed&quot;</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.5</span> <span class="token operator">*</span> <span class="token number">9.81</span> <span class="token operator">*</span> time<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword keyword-else">else</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>move_info<span class="token punctuation">[</span><span class="token string">&quot;saut&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> self<span class="token punctuation">.</span>y_sol
+</pre><h4 class="mume-header" id="animation-du-joueur">Animation du Joueur</h4>
+
+<p>L&apos;animation du joueur est g&#xE9;n&#xE9;r&#xE9;e par une suite d&apos;images. Ces images sont stock&#xE9;es dans plusieurs tableaux suivant la direction du joueur, g&#xE9;n&#xE9;r&#xE9;s au lancement du jeu et actualis&#xE9;s &#xE0; chaque changement de personnage.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    self<span class="token punctuation">.</span>chargesRight <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A7.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A8.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A9.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    self<span class="token punctuation">.</span>chargesLeft <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A4.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A5.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\Interface\Entites\Items\Personnages\Perso1\Perso1A6.png&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><p>Ces images d&#xE9;filent ensuite plus ou moins vite en fonction de la vitesse du joueur.</p>
+<h4 class="mume-header" id="arme-du-joueur">Arme du Joueur</h4>
+
+<p>Lorsque le joueur tire, son arme est envoy&#xE9;e dans la direction dans laquelle il regarde ou en direction du monstre le plus proche ( <em>cf: l.656 <a href="../sources/FichiersJeu/InterfaceDynamique.py">InterfaceDynamique.py</a></em>)</p>
+<p>L&apos;arme, comme annonc&#xE9; dans l&apos;introduction, est g&#xE9;r&#xE9;e par la classe <code>Arme</code> au m&#xEA;me moment que le personnage. La classe r&#xE9;cup&#xE8;re les informations du joueur au moment du tir. Pour ensuite d&#xE9;placer et animer l&apos;arme.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">Setup</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> direction<span class="token punctuation">,</span> inertie <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot;Charge les info au moment du lancement de l&apos;attack
+
+        Args:
+            x (int): cordonner x du joueur
+            y (int): coordonne y du joueur
+            direction (str): direction du joueur / dans le quel va aller l&apos;arme
+            inertie (float): vitesse du jouer
+        &quot;&quot;&quot;</span>
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> y <span class="token operator">+</span> self<span class="token punctuation">.</span>hauteurTir
+        
+
+        self<span class="token punctuation">.</span>durability<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>durability<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment"># repart l&apos;arme</span>
+        self<span class="token punctuation">.</span>Break <span class="token operator">=</span> <span class="token boolean">False</span>
+
+        self<span class="token punctuation">.</span>direction <span class="token operator">=</span> direction
+        self<span class="token punctuation">.</span>inertie <span class="token operator">=</span> inertie
+
+        self<span class="token punctuation">.</span>damage<span class="token punctuation">[</span><span class="token string">&quot;damage&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>damage<span class="token punctuation">[</span><span class="token string">&quot;basicDamage&quot;</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">+</span><span class="token builtin">abs</span><span class="token punctuation">(</span>inertie<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">5</span><span class="token punctuation">)</span>
+
+        <span class="token keyword keyword-if">if</span> direction <span class="token operator">==</span> <span class="token string">&quot;right&quot;</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span><span class="token builtin">range</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span><span class="token builtin">range</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> inertie<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment"># donne une range plus grand quand le joueur court / give a range bigger when the player is running</span>
+            self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span> <span class="token keyword keyword-if">if</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token keyword keyword-else">else</span> <span class="token number">180</span> <span class="token comment"># Rotation de l&apos;arme si l&apos;arme a une rotation / rotate the weapon if the weapon has a rotation</span>
+
+            self<span class="token punctuation">.</span>xSetup <span class="token operator">=</span> x
+            self<span class="token punctuation">.</span>x <span class="token operator">=</span> x
+        
+        <span class="token keyword keyword-else">else</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span><span class="token builtin">range</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span><span class="token builtin">range</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> inertie<span class="token operator">/</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment"># donne une range plus grand quand le joueur cour / give a range bigger when the player is running</span>
+            self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">90</span> <span class="token keyword keyword-if">if</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token keyword keyword-else">else</span> <span class="token number">0</span> <span class="token comment"># Rotation de l&apos;arme si l&apos;arme a une rotation / rotate the weapon if the weapon has a rotation</span>
+
+            self<span class="token punctuation">.</span>xSetup <span class="token operator">=</span> x <span class="token operator">-</span> self<span class="token punctuation">.</span>hitbox<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment"># position de l&apos;arme - self.hitbox[0] pour que l&apos;arme soit a gauche du joueur / position of the weapon - self.hitbox[0] to make the weapon to the left of the player</span>
+            self<span class="token punctuation">.</span>x <span class="token operator">=</span> x <span class="token operator">-</span> self<span class="token punctuation">.</span>hitbox<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment">#        ^^^^^^^^</span>
+</pre><p>Son d&#xE9;placement et sa rotation sont g&#xE9;r&#xE9;s par :</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">move</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vitesse<span class="token punctuation">,</span> vitesseFond<span class="token punctuation">,</span> direction<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot;Deplace l&apos;arme
+
+        Args:
+            vitesse (int): vitesse de l&apos;arme definie dans CaracteristiqueJoueur
+            vitesseFond (float): vitesse de deplacement du fond
+            direction (str): direction de l&apos;arme
+        &quot;&quot;&quot;</span>
+        <span class="token keyword keyword-if">if</span> direction <span class="token operator">==</span> <span class="token string">&quot;right&quot;</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>x <span class="token operator">+=</span> vitesse <span class="token operator">-</span> vitesseFond <span class="token operator">+</span> self<span class="token punctuation">.</span>inertie
+            self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-=</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            self<span class="token punctuation">.</span>charges <span class="token operator">=</span> EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>self<span class="token punctuation">.</span>chargesB<span class="token punctuation">,</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+        <span class="token keyword keyword-else">else</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>x <span class="token operator">-=</span> vitesse <span class="token operator">+</span> vitesseFond <span class="token operator">-</span> self<span class="token punctuation">.</span>inertie
+            self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+=</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            self<span class="token punctuation">.</span>charges <span class="token operator">=</span> EZ<span class="token punctuation">.</span>transforme_image<span class="token punctuation">(</span>self<span class="token punctuation">.</span>chargesB<span class="token punctuation">,</span> self<span class="token punctuation">.</span>RotationSpeed<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+        self<span class="token punctuation">.</span>xSetup <span class="token operator">-=</span> vitesseFond
+</pre><p>Nous verrons par la suite comment elle inflige des d&#xE9;g&#xE2;ts.</p>
+<h4 class="mume-header" id="statistique-du-joueur">Statistique du Joueur</h4>
+
+<p>Chaque personnage a des statistiques diff&#xE9;rentes. Certains se d&#xE9;placent plus vite, d&apos;autres ont plus de vie, d&apos;autres font plus de d&#xE9;g&#xE2;ts, d&apos;autres ont une meilleure cadence de tir... Ces statistiques sont d&#xE9;finies dans le fichier <code>StatsPersonnage.csv</code>, on peut aussi y voir les bonus d&apos;am&#xE9;lioration de statistiques.</p>
+<p><img src="ElementDoc/StatsPersonnage.png" alt="Statistique du Joueur"></p>
+<p>Cela permet de rendre le jeu plus vari&#xE9;, et ainsi d&apos;am&#xE9;liorer l&apos;exp&#xE9;rience du joueur.</p>
+<h3 class="mume-header" id="monstres">Monstres</h3>
+
+<h4 class="mume-header" id="g%C3%A9n%C3%A9ration-des-monstres">G&#xE9;n&#xE9;ration des monstres</h4>
+
+<p>Les monstres sont g&#xE9;n&#xE9;r&#xE9;s en d&#xE9;but de vague. Leur mode de g&#xE9;n&#xE9;ration d&#xE9;pend du mode de jeu choisi.</p>
+<ul>
+<li>
+<p><strong>Mode Campagne :</strong></p>
+<p>Les monstres sont g&#xE9;n&#xE9;r&#xE9;s en fonction d&apos;un fichier csv propre &#xE0; chaque map.</p>
+<blockquote>
+<p>cf: Dossier <a href="../sources/FichiersJeu/InfoWave">InfoWave</a></p>
+</blockquote>
+<p>Chaque fichier contient les informations suivantes pour chaque vague:</p>
+<ul>
+<li>Nom des monstres &#xE0; g&#xE9;n&#xE9;rer</li>
+<li>combien de fois chaque monstre doit &#xEA;tre g&#xE9;n&#xE9;r&#xE9;</li>
+<li>Le type du monstre <em>(&quot;COMMON&quot;, &quot;HEAL&quot;, &quot;SHOOTER&quot;, ...)</em></li>
+</ul>
+</li>
+<li>
+<p><strong>Mode Infini :</strong></p>
+<p>Les monstres sont g&#xE9;n&#xE9;r&#xE9;s al&#xE9;atoirement d&apos;apr&#xE8;s le num&#xE9;ro de vague et la map choisie. Les monstres disponibles dans chaque map sont donn&#xE9;s dans le fichier <code>AllMobe.csv</code><br>
+<br></p>
+</li>
+</ul>
+<p>Les informations transmises sont trait&#xE9;es dans le fichier <code>InterfaceDynamique.py</code> et stock&#xE9;es dans une liste qui est ensuite utilis&#xE9;e pour acc&#xE9;der aux monstres.</p>
+<h4 class="mume-header" id="le-d%C3%A9placement-des-monstres">Le d&#xE9;placement des monstres</h4>
+
+<p>Les monstres se d&#xE9;placent en direction du joueur, la position du joueur leur est transmise au moment de leur g&#xE9;n&#xE9;ration. Pour rappel le joueur ne bouge pas, c&apos;est le fond qui bouge.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">move</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> vitesseFond<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot;Deplace le monstre en fonction de la position du joueur
+
+        Args:
+            vitesseFond (float): deplacement du fond
+        &quot;&quot;&quot;</span>
+        
+
+        <span class="token keyword keyword-if">if</span> self<span class="token punctuation">.</span>x <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>xPlayer <span class="token operator">-</span> <span class="token number">20</span><span class="token punctuation">:</span> <span class="token comment"># -20 : evite que le montres reste sur le joueur est fait plein de droit gauche</span>
+            self<span class="token punctuation">.</span>move_info<span class="token punctuation">[</span><span class="token string">&quot;right&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">True</span>
+            self<span class="token punctuation">.</span>move_info<span class="token punctuation">[</span><span class="token string">&quot;left&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+        
+        <span class="token keyword keyword-elif">elif</span> self<span class="token punctuation">.</span>x <span class="token operator">&gt;</span> self<span class="token punctuation">.</span>xPlayer <span class="token operator">+</span> <span class="token number">20</span><span class="token punctuation">:</span> <span class="token comment"># +20: Meme raison</span>
+            self<span class="token punctuation">.</span>move_info<span class="token punctuation">[</span><span class="token string">&quot;left&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">True</span> 
+            self<span class="token punctuation">.</span>move_info<span class="token punctuation">[</span><span class="token string">&quot;right&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+</pre><h4 class="mume-header" id="les-effets-des-monstres">Les effets des monstres</h4>
+
+<p>Les monstres comme le joueur ont un effet de vie, grace &#xE0; une succession d&apos;images.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">__charge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>nb_image<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot;Charges les image du monstre et definit sa taille&quot;&quot;&quot;</span>  
+
+        self<span class="token punctuation">.</span>chargesRight <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f&quot;FichiersJeu/Interface/Entites/Items/Monstres/</span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">/base/</span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">_</span><span class="token interpolation"><span class="token punctuation">{</span>image<span class="token punctuation">}</span></span><span class="token string">.png&quot;</span></span><span class="token punctuation">)</span> <span class="token keyword keyword-for">for</span> image <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>nb_image<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>chargesLeft <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>charge_image<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f&quot;FichiersJeu/Interface/Entites/Items/Monstres/</span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">/reverse/</span><span class="token interpolation"><span class="token punctuation">{</span>self<span class="token punctuation">.</span>name<span class="token punctuation">}</span></span><span class="token string">_reverse_</span><span class="token interpolation"><span class="token punctuation">{</span>image<span class="token punctuation">}</span></span><span class="token string">.png&quot;</span></span><span class="token punctuation">)</span> <span class="token keyword keyword-for">for</span> image <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>nb_image<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>hitbox <span class="token operator">=</span> <span class="token punctuation">[</span>EZ<span class="token punctuation">.</span>dimension<span class="token punctuation">(</span>self<span class="token punctuation">.</span>chargesRight<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> EZ<span class="token punctuation">.</span>dimension<span class="token punctuation">(</span>self<span class="token punctuation">.</span>chargesRight<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+</pre><p><strong>Note :</strong> La suite d&apos;images des monstre est &#xE0; l&apos;origine un gif.</p>
+<p>Les fonctions <code>moveEffectRight</code> et <code>moveEffectLeft</code> sont utilis&#xE9;es pour faire d&#xE9;filer les images.</p>
+<blockquote>
+<p>Cf : l.90 <code>Monstre.py</code></p>
+</blockquote>
+<h3 class="mume-header" id="gestion-des-d%C3%A9g%C3%A2ts">Gestion des d&#xE9;g&#xE2;ts</h3>
+
+<h4 class="mume-header" id="les-hitbox">Les hitbox</h4>
+
+<p>Toutes les entit&#xE9;s du jeu ont une hitbox. Celle-ci est d&#xE9;finie en fonction de la taille de l&apos;objet.</p>
+<p><img src="ElementDoc/HitBox.png" alt="Image HitBox"></p>
+<h4 class="mume-header" id="les-d%C3%A9g%C3%A2ts">Les d&#xE9;g&#xE2;ts</h4>
+
+<p>Des d&#xE9;g&#xE2;ts sont inflig&#xE9;s &#xE0; une entit&#xE9;, si celle-ci est touch&#xE9;e par une autre qui a pour but de l&apos;attaquer.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">VerifDegat</span><span class="token punctuation">(</span>monstres<span class="token punctuation">,</span> armesJoueur<span class="token punctuation">,</span> Joueur<span class="token punctuation">,</span> Shooters <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot; function to check if the player is hit by the monsters and if monstre is hit by the player
+        Fonction qui compare la position des different ellement et mets des degat si nessesaire
+        
+        Args:
+            monstres(list): Liste de tout les monstre en vie
+            armes(list): Arme du joueur
+        
+        &quot;&quot;&quot;</span>
+        mobKill <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># monstre kill in function / monstre tu&#xE9; dans la fonction</span>
+        <span class="token comment"># Arme sur monstre</span>
+        <span class="token keyword keyword-for">for</span> i<span class="token punctuation">,</span>monstre <span class="token keyword keyword-in">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>monstres<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword keyword-for">for</span> arme <span class="token keyword keyword-in">in</span> armesJoueur<span class="token punctuation">:</span>
+                <span class="token keyword keyword-if">if</span> Verifzone<span class="token punctuation">(</span>monstre<span class="token punctuation">,</span> arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    monstre<span class="token punctuation">.</span>domage<span class="token punctuation">(</span>arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>damage<span class="token punctuation">[</span><span class="token string">&quot;damage&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                    arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>use<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            <span class="token keyword keyword-if">if</span> monstre<span class="token punctuation">.</span>death<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                monstres<span class="token punctuation">.</span>pop<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+                mobKill <span class="token operator">+=</span> <span class="token number">1</span>
+
+        <span class="token comment"># Monstres sur Joueur</span>
+            <span class="token keyword keyword-if">if</span> Verifzone<span class="token punctuation">(</span>Joueur<span class="token punctuation">,</span> monstre<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword keyword-if">if</span> monstre<span class="token punctuation">.</span>attaque<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    Joueur<span class="token punctuation">.</span>domage<span class="token punctuation">(</span>monstre<span class="token punctuation">.</span>stats<span class="token punctuation">[</span><span class="token string">&quot;damage&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment"># Inflige les degat au joueur</span>
+
+        <span class="token keyword keyword-for">for</span> shooter <span class="token keyword keyword-in">in</span> Shooters<span class="token punctuation">:</span>
+            <span class="token keyword keyword-if">if</span> Verifzone<span class="token punctuation">(</span>Joueur<span class="token punctuation">,</span> shooter<span class="token punctuation">.</span>arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                Joueur<span class="token punctuation">.</span>domage<span class="token punctuation">(</span>shooter<span class="token punctuation">.</span>arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>damage<span class="token punctuation">[</span><span class="token string">&quot;damage&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                shooter<span class="token punctuation">.</span>arme<span class="token punctuation">[</span><span class="token string">&quot;arme&quot;</span><span class="token punctuation">]</span><span class="token punctuation">.</span>use<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        
+        <span class="token keyword keyword-if">if</span> Joueur<span class="token punctuation">.</span>death<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword keyword-return">return</span> monstres<span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">,</span> mobKill
+
+        <span class="token keyword keyword-return">return</span> monstres<span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> mobKill
+</pre><h3 class="mume-header" id="les-%C3%A9quipements">Les &#xE9;quipements</h3>
+
+<p>Les &#xE9;quipements sont des objets qui peuvent &#xEA;tre achet&#xE9;s par le joueur dans le menu &#xE9;quipements. Il en existe trois: <strong>Bouclier</strong>, <strong>Grenade</strong> et <strong>Potion de soin</strong>. Ils peuvent chacun &#xEA;tre am&#xE9;lior&#xE9;s dans diff&#xE9;rents aspects de fa&#xE7;on ind&#xE9;pendante, attention tout de m&#xEA;me au prix de l&apos;am&#xE9;lioration qui est d&#xE9;fini par le nombre d&apos;am&#xE9;liorations que le joueur a effectu&#xE9; sur l&apos;objet ainsi que le prix d&apos;achat de l&apos;objet.</p>
+<p><img src="ElementDoc/Equipement.png" alt="Menu de Selectition des Personnages Gif"></p>
+<h4 class="mume-header" id="le-bouclier">Le Bouclier</h4>
+
+<p>Le bouclier permet au joueur d&apos;annuler les d&#xE9;g&#xE2;ts des monstres pour un certain nombres de coups. Il se r&#xE9;pare automatiquement quand il est cass&#xE9;, mais aussi en appuyant sur la touche &quot;<strong>z</strong>&quot; du clavier. Le bouclier peut &#xEA;tre achet&#xE9; pour la somme de 10 000 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;lior&#xE9; en r&#xE9;sistance et temps de r&#xE9;paration.</p>
+<h4 class="mume-header" id="la-grenade">La Grenade</h4>
+
+<p>La grenade est un objet qui permet au joueur de mettre un grand nombre de d&#xE9;g&#xE2;ts &#xE0; plusieurs monstres dans une zone. Elle est r&#xE9;utilisable apr&#xE8;s un temps donn&#xE9;. Elle est achetable pour la somme de 2500 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;lior&#xE9;e en temps de r&#xE9;paration, d&#xE9;g&#xE2;ts et en rayon de zone d&apos;explosion.</p>
+<p>La grenade est particuli&#xE8;rement utile pour les monstres qui sont trop nombreux pour &#xEA;tre attaqu&#xE9;s normalement, mais aussi pour les montres que l&apos;arme du personnage ne touche pas. Sans oublier que son grand nombre de d&#xE9;g&#xE2;ts est aussi utile contre les boss.</p>
+<p>Pour lancer la grenade il faut appuyer sur la touche &quot;<strong>e</strong>&quot; du clavier.</p>
+<h4 class="mume-header" id="la-potion-de-soin">La Potion de soin</h4>
+
+<p>La potion de soin est un objet qui permet au joueur de soigner son personnage. Elle est achetable pour la somme de 5000 pi&#xE8;ces d&apos;or, et peut &#xEA;tre am&#xE9;lior&#xE9;e en temps de remplissage et en soin re&#xE7;us.<br>
+Pour utiliser la potion il faut appuyer sur la touche &quot;<strong>a</strong>&quot; du clavier.</p>
+<h3 class="mume-header" id="les-d%C3%A9placements-dans-les-menus">Les D&#xE9;placements dans les menus</h3>
+
+<h4 class="mume-header" id="menu-fixe">Menu Fixe</h4>
+
+<p>Dans les menus fixes (Menu ou les boutons ne se d&#xE9;placent pas sur l&apos;&#xE9;cran), les coordonn&#xE9;es des boutons restent constantes. Ainsi il suffit de r&#xE9;cup&#xE9;rer les coordonn&#xE9;es de la souris si un click gauche est effectu&#xE9;.</p>
+<p>EZ permet de le faire simplement :</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    evenement <span class="token operator">=</span> EZ<span class="token punctuation">.</span>recupere_evenement<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword keyword-elif">elif</span> evenement <span class="token operator">==</span> <span class="token string">&quot;SOURIS_BOUTON_GAUCHE_ENFONCE&quot;</span><span class="token punctuation">:</span>
+</pre><p>Il reste plus qu&apos;a verifier si le click &#xE9;tait sur un bouton, pour sa quelques conditions et le tour est jou&#xE9;.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-if">if</span> <span class="token number">435</span> <span class="token operator">&lt;</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">845</span> <span class="token keyword keyword-and">and</span> <span class="token number">595</span> <span class="token operator">&lt;</span> EZ<span class="token punctuation">.</span>souris_y<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">710</span><span class="token punctuation">:</span> <span class="token comment"># Bouton &apos;Nom du bouton&apos;</span>
+</pre><p>Sans oublier de renvoyer vers l&apos;interface demander. Ex: <code>menuShop()</code></p>
+<h4 class="mume-header" id="menu-slide">Menu Slide</h4>
+
+<p>Les menus Slide(Translation sur un axe), sont des menus o&#xF9; l&apos;utilisateur a la posibilit&#xE9; de naviguer de droite &#xE0; gauche. Les coordonn&#xE9;es des boutons sont donc variables.</p>
+<p>Ex: Menu de s&#xE9;lection des personnages<br>
+<img src="ElementDoc/MenuSlidePersonnages.gif" alt="Menu de Selectition des Personnages Gif"></p>
+<p>L&apos;affichage des menus Slide est g&#xE9;r&#xE9; par la classe m&#xE8;re <code>SlideMenu</code> <code>cf: l.196 Menu.py</code>.</p>
+<p>Le d&#xE9;placement au sein du menu est g&#xE9;r&#xE9; de la mani&#xE8;re suivante <code>cf: 562 InterfaceDynamique.py</code>:</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    x <span class="token operator">=</span> <span class="token number">100</span> <span class="token comment"># Corespond au d&#xE9;calage du menu vers la droite</span>
+    xLast <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment"># dernier coordonner x de la souris</span>
+    click <span class="token operator">=</span> <span class="token boolean">False</span> <span class="token comment"># True si le click est enfonc&#xE9; sinon False</span>
+
+    <span class="token keyword keyword-while">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        evenement <span class="token operator">=</span> EZ<span class="token punctuation">.</span>recupere_evenement<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token keyword keyword-elif">elif</span> evenement <span class="token operator">==</span> <span class="token string">&quot;SOURIS_BOUTON_GAUCHE_ENFONCE&quot;</span><span class="token punctuation">:</span>
+            click <span class="token operator">=</span> <span class="token boolean">True</span>
+            xLast <span class="token operator">=</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        
+        <span class="token keyword keyword-elif">elif</span> evenement <span class="token operator">==</span> <span class="token string">&quot;SOURIS_BOUTON_GAUCHE_RELACHE&quot;</span><span class="token punctuation">:</span>
+            click <span class="token operator">=</span> <span class="token boolean">False</span>
+        
+        <span class="token keyword keyword-if">if</span> click <span class="token keyword keyword-and">and</span> evenement <span class="token operator">==</span> <span class="token string">&quot;SOURIS_MOUVEMENT&quot;</span><span class="token punctuation">:</span>
+            decalage <span class="token operator">=</span> xLast <span class="token operator">-</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword keyword-if">if</span> <span class="token operator">-</span>MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>largeurAllCadre <span class="token operator">+</span> LONGEUR <span class="token operator">-</span> <span class="token number">100</span> <span class="token operator">+</span> decalage <span class="token operator">&lt;=</span> x <span class="token operator">&lt;=</span> <span class="token number">100</span>  <span class="token operator">+</span> decalage<span class="token punctuation">:</span> 
+                x <span class="token operator">-=</span> decalage
+                xLast <span class="token operator">=</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>Ainsi pour savoir sur quel bouton l&apos;utilisateur a cliqu&#xE9;, on ajoute x (le d&#xE9;calage du menu) au coordonn&#xE9;es des extr&#xE9;mit&#xE9;s du bouton. Et comme pour les menus fixes on utilise de simples conditions, &#xE0; la seule diff&#xE9;rence que pour les menus slide les coordonn&#xE9;es des boutons sont calcul&#xE9;es, en effet tout les boutons ont la m&#xEA;me taille, et sont plac&#xE9;s les uns &#xE0; c&#xF4;t&#xE9; des autres.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    xSouris <span class="token operator">=</span> EZ<span class="token punctuation">.</span>souris_x<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword keyword-for">for</span> cadre <span class="token keyword keyword-in">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>chargesWeapons<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword keyword-if">if</span> cadre <span class="token operator">*</span> MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>largeurCadrePlusEspace <span class="token operator">+</span> x <span class="token operator">&lt;</span> xSouris <span class="token operator">&lt;</span> cadre <span class="token operator">*</span> MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>largeurCadrePlusEspace <span class="token operator">+</span> x <span class="token operator">+</span> MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>largeurCadre<span class="token punctuation">:</span> <span class="token comment"># check if the click is in a box / verifie si le click est dans un cadre</span>
+            leave <span class="token operator">=</span> menuShopUpgradeWeapon<span class="token punctuation">(</span>gold<span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>MenuShopUpgradeWeaponSlide<span class="token punctuation">.</span>getListPersonnage<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span>cadre<span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">&quot;Personnage&quot;</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+</pre><h4 class="mume-header" id="menu-carte-slide-2d">Menu Carte (Slide 2D)</h4>
+
+<p>Les Menus Carte fonctionnent de la m&#xEA;me mani&#xE8;re que les menus silde, &#xE0; la seule diff&#xE9;rence qu&apos;ils enregistrent aussi le d&#xE9;placement y, de la mani&#xE8;re que font les menus slide pour les d&#xE9;placements en x.</p>
+<h3 class="mume-header" id="sauvegarde-des-informations">Sauvegarde des informations</h3>
+
+<p>Toutes les informations de l&apos;avanc&#xE9;e dans le jeu, sont stock&#xE9;es dans le fichier <code>InfoGen.csv</code>. Ces informations sont ensuite lues et modifi&#xE9;es par les fonctions des fichiers <code>ReadInfo.py</code> et <code>SaveInfo.py</code> qui utilisent le module csv de python.</p>
+<h4 class="mume-header" id="lecture-des-informations">Lecture des informations</h4>
+
+<p>Comme dit au-dessus les informations du fichier son r&#xE9;cup&#xE9;r&#xE9;es gr&#xE2;ce aux fonctions du fichier <code>ReadInfo.py</code></p>
+<p>Exemple avec la fonction <code>ReadInventaire</code>, qui utilise la m&#xE9;thode <code>reader</code> et enregistre les informations des personnages ligne par ligne dans un dictionnaire.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-def">def</span> <span class="token function">ReadInventaire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">&quot;&quot;&quot;Read the level of the Cracters and Caracters Weapons
+        li les niveau des personnage et des armes&quot;&quot;&quot;</span>
+
+        inventaire <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword keyword-with">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\InfoJoueur\InfoGen.csv&quot;</span><span class="token punctuation">,</span> <span class="token string">&apos;r&apos;</span><span class="token punctuation">,</span> newline<span class="token operator">=</span><span class="token string">&apos;&apos;</span><span class="token punctuation">)</span> <span class="token keyword keyword-as">as</span> csvInfo<span class="token punctuation">:</span>
+            reader <span class="token operator">=</span> csv<span class="token punctuation">.</span>reader<span class="token punctuation">(</span>csvInfo<span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">&apos;:&apos;</span><span class="token punctuation">)</span>
+            <span class="token keyword keyword-for">for</span> row <span class="token keyword keyword-in">in</span> reader<span class="token punctuation">:</span>
+                <span class="token keyword keyword-if">if</span> <span class="token string">&quot;Personnage&quot;</span> <span class="token keyword keyword-in">in</span> row<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    inventaire<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token punctuation">{</span>row<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span><span class="token punctuation">[</span> <span class="token boolean">True</span> <span class="token keyword keyword-if">if</span> row<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">&quot;True&quot;</span> <span class="token keyword keyword-else">else</span> <span class="token boolean">False</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>row<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>row<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+        <span class="token keyword keyword-return">return</span> inventaire
+</pre><h4 class="mume-header" id="modification-des-informations">Modification des informations</h4>
+
+<p>Comme dit au-dessus les informations du fichier son r&#xE9;cup&#xE9;r&#xE9;es gr&#xE2;ce aux fonctions du fichier <code>SaveInfo.py</code></p>
+<p>Le module csv ne permet pas la modification d&apos;une ligne, il faut donc enregistrer l&apos;ensemble du fichier dans une liste et modifier les informations souhait&#xE9;es.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-with">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\InfoJoueur\InfoGen.csv&quot;</span><span class="token punctuation">,</span> <span class="token string">&apos;r&apos;</span><span class="token punctuation">)</span> <span class="token keyword keyword-as">as</span> csvInfo<span class="token punctuation">:</span>
+        reader <span class="token operator">=</span> csv<span class="token punctuation">.</span>reader<span class="token punctuation">(</span>csvInfo<span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">&apos;:&apos;</span><span class="token punctuation">)</span>
+        File <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword keyword-for">for</span> row <span class="token keyword keyword-in">in</span> reader<span class="token punctuation">:</span>
+            <span class="token keyword keyword-if">if</span> row<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> equipement<span class="token punctuation">:</span>
+                row<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> row<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span>row<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">&quot;True&quot;</span><span class="token punctuation">)</span>
+        
+            File<span class="token punctuation">.</span>append<span class="token punctuation">(</span>row<span class="token punctuation">)</span>
+</pre><p>Ensuite il suffit de r&#xE9;&#xE9;crire l&apos;ensemble du fichier csv, &#xE0; partir de la liste enregistr&#xE9;e pr&#xE9;c&#xE9;demment.</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword keyword-with">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">&quot;FichiersJeu\InfoJoueur\InfoGen.csv&quot;</span><span class="token punctuation">,</span> <span class="token string">&apos;w&apos;</span><span class="token punctuation">,</span> newline<span class="token operator">=</span><span class="token string">&apos;&apos;</span><span class="token punctuation">)</span> <span class="token keyword keyword-as">as</span> csvInfo<span class="token punctuation">:</span>
+        Writer <span class="token operator">=</span> csv<span class="token punctuation">.</span>writer<span class="token punctuation">(</span>csvInfo<span class="token punctuation">,</span> delimiter<span class="token operator">=</span><span class="token string">&apos;:&apos;</span><span class="token punctuation">)</span>
+        <span class="token keyword keyword-for">for</span> row <span class="token keyword keyword-in">in</span> File<span class="token punctuation">:</span>
+            Writer<span class="token punctuation">.</span>writerow<span class="token punctuation">(</span>row<span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="son">Son</h3>
+
+<p>Le jeu est accompagn&#xE9; de son, pour am&#xE9;liorer l&apos;immersion dans le jeu. Cela peut &#xEA;tre de la musique, ou encore des bruitages. La musique peut &#xEA;tre desactiv&#xE9;e, &#xE0; l&apos;aide d&apos;un bouton dans le menu.</p>
+<p>Le choix du joueur est comme pour les pi&#xE8;ces d&apos;or enregistr&#xE9; dans le fichier <code>infoGen.csv</code>.</p>
+<h4 class="mume-header" id="bruitages">Bruitages</h4>
+
+<p>EZ permet aussi de jouer des bruitages, il faut utiliser la fonction <code>joue_son()</code> pour cela. Sans oublier de charger le fichier son auparavant avec la fonction <code>charge_son()</code>.</p>
+<p>Exemple :</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    son <span class="token operator">=</span> charge_son<span class="token punctuation">(</span><span class="token string">&quot;FichiersSon\Bruitages\Bruitage.wav&quot;</span><span class="token punctuation">)</span>
+    joue_son<span class="token punctuation">(</span>son<span class="token punctuation">)</span>
+</pre><h4 class="mume-header" id="musique">Musique</h4>
+
+<p>Comme pour les bruitages pour jouer de la musique on utilise le module EZ. On utilise respectivement les fonctions <code>charge_musique()</code> et <code>musique_on()</code> pour charger et jouer la musique.</p>
+<p>Pour stopper la musique on utilise <code>musique_pause()</code>, pour la reprendre <code>musique_fin_pause()</code> et pour modifier le volume <code>musique_volume()</code>.</p>
+<p>Exemple:</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    musique <span class="token operator">=</span> charge_musique<span class="token punctuation">(</span><span class="token string">&quot;FichiersSon\Musique\Musique.wav&quot;</span><span class="token punctuation">)</span>
+    musique_on<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    musique_volume<span class="token punctuation">(</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+    musique_pause<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    musique_fin_pause<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    musique_volume<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+</pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
