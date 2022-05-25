@@ -113,8 +113,8 @@ $declage-monstre: 200%;
 
     .Monde {
         width: 100%;
-        animation: AnimMonde 3s;
-        -webkit-animation: AnimMonde 3s;
+        animation: AnimMonde 3s ease-in-out;
+        -webkit-animation: AnimMonde 3s ease-in-out;
 
 
         
@@ -128,9 +128,36 @@ $declage-monstre: 200%;
         top: 56%;
         left: 80%;
         width: 10%;
+        opacity: 0;
+        z-index: 3;
         transform: translateX($declage-joueur);
-        animation: AnimPerso 9s;
-        -webkit-animation: AnimPerso 9s;
+        animation: AnimPerso 9s ease-in-out;
+        -webkit-animation: AnimPerso 9s ease-in-out;
+    }
+
+    .PersoAv{
+        display: inline;
+        position: absolute;
+        top: 56%;
+        left: 80%;
+        width: 10%;
+        z-index: 3;
+        transform: translateX($declage-joueur);
+        animation: AnimPersoAv 9s ease-in-out;
+        -webkit-animation: AnimPersoAv 9s ease-in-out;
+    }
+
+    .PersoAr{
+        display: inline;
+        position: absolute;
+        top: 56%;
+        left: 80%;
+        width: 10%;
+        opacity: 0;
+        z-index: 3;
+        transform: translateX($declage-joueur);
+        animation: AnimPersoAr 9s ease-in-out;
+        -webkit-animation: AnimPersoAr 9s ease-in-out;
     }
 
     .Monstre{
@@ -140,9 +167,10 @@ $declage-monstre: 200%;
         left: 10%;
         width: 10%;
         opacity: 0;
+        z-index: 1;
         transform: translateX($declage-monstre);
-        animation: AnimMonstre 9s;
-        -webkit-animation: AnimMonstre 9s;
+        animation: AnimMonstre 9s ease-in-out;
+        -webkit-animation: AnimMonstre 9s ease-in-out;
     }
 
     .Arme{
@@ -152,9 +180,10 @@ $declage-monstre: 200%;
         left: 60%;
         width: 3%;
         opacity: 0;
+        z-index: 2;
         transform: translateX(0%);
-        animation: AnimArme 3s 6s;
-        -webkit-animation: AnimArme 3s ease-in 6s;
+        animation: AnimArme 3s linear 6s;
+        -webkit-animation: AnimArme 3s linear 6s;
     }
 
 }
@@ -182,8 +211,87 @@ $declage-monstre: 200%;
         transform: translateY(0%) translateX(0%);
     }
 
+    51%, 60% {
+        opacity: 0;
+    }
+
+    61%, 70%{
+        opacity: 1;
+    }
+
+    71%, 80%{
+        opacity: 0;
+    }
+
+    81%, 90%{
+        opacity: 1;
+    }
+
+    91%{
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(0%) translateX($declage-joueur);
+    }
+}
+
+@keyframes AnimPersoAv {
+    from {
+        opacity: 0;
+        transform: translateY($monter-sol);
+    }
+
+    33%, 50% {
+        opacity: 0;
+        transform: translateY(0%) translateX(0%);
+    }
+
+    51%, 60% {
+        opacity: 1;
+    }
+
+    61%, 90% {
+        opacity: 0;
+    }
+
+    91%{
+        opacity: 1;
+    }
+
+
     to {
         opacity: 1;
+        transform: translateY(0%) translateX($declage-joueur);
+    }
+}
+
+@keyframes AnimPersoAr {
+    from {
+        opacity: 0;
+        transform: translateY($monter-sol);
+    }
+
+    33%, 50% {
+        opacity: 0;
+        transform: translateY(0%) translateX(0%);
+    }
+
+    70%{
+        opacity: 0;
+    }
+
+    71%, 80%{
+        opacity: 1;
+    }
+
+    81%{
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
         transform: translateY(0%) translateX($declage-joueur);
     }
 }
@@ -207,16 +315,12 @@ $declage-monstre: 200%;
 }
 
 @keyframes AnimArme {
-    from {
+    from, 25% {
         opacity: 0;
-        transform: translateX(0%) rotate(0turn);
+        transform: translateX(200%) rotate(0turn);
     }
 
-    25%{
-        opacity: 0;
-    }
-
-    60% {
+    40% {
         opacity: 1;
 
     }
