@@ -1,0 +1,88 @@
+/* Vollet de Navigation */
+
+.volletNavigation {
+    padding: 0% 2em 0% 0%;
+    position: absolute;
+    top: 0;
+    display: block;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        li {
+            list-style: none;
+            font-size: 20px;
+            color: #000;
+            text-decoration: none;
+            margin-right: 2em;
+
+            img {
+                margin-left: -20%;
+                height: 80%;
+                image-orientation: revert;
+
+            }
+
+            a {
+                font-size: 25px;
+                width: 10em;
+                height: 2em;
+                text-align: center;
+                line-height: 2em;
+                font-family: sans-serif;
+                text-transform: capitalize;
+                position: relative;
+                transition: 0.5s;
+                text-decoration: none;
+                color: #2F4142;
+
+                &:hover {
+                    color: white;
+
+                }
+
+                &::after,
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 0.6em;
+                    height: 0.6em;
+                    border-radius: 50%;
+                    transition: 0.5s cubic-bezier(0.5, -0.5, 0.25, 1.5);
+                    top: calc(20% - 0.1em / 2);
+                }
+
+                &::before {
+                    left: 0;
+                    z-index: -1;
+                }
+
+                &::after {
+                    right: 0;
+                    z-index: -2;
+                }
+
+                &:hover::before,
+                &:hover::after {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 0;
+                    background-color: dodgerblue;
+                }
+
+                &:hover::before {
+                    top: 0;
+                }
+
+                &:hover::after {
+                    right: -0.4em;
+                    filter: brightness(0.8);
+                }
+
+            }
+        }
+    }
+}

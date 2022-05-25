@@ -5,6 +5,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/style.css">
+
+
+        
     </head>
     <body>
         <nav class="volletNavigation">
@@ -17,6 +20,19 @@
         </nav>
 
         <section>
+            <h1 class="title" id="typewriter">Space <br>Shooter</h1>
+                <script src='module/typeWriter/core.js'></script>
+                <script type='text/javascript'>
+                    const typewriter = new Typewriter('#typewriter', {
+                        loop: false,
+                        cursor: '',
+                        delay: 100,
+                    });
+
+                    typewriter.pauseFor(9500)
+                        .typeString('Space <br>Shooter')
+                        .start();
+                </script>
             <div class="Game">
                 <img class="Monde" src="images/Terre.png" alt="Monde" />
                 <img class="Perso" src="images/Perso.png" alt="Perso" />
@@ -27,6 +43,18 @@
                 <img class="Arme" src="images/Arme.png" alt="Arme" />
 
             </div>
+
         </section>
+        <section class="Intro">
+            <p>SpaceShooter est un jeu de survie en vue 2D, le joueur doit y vaincre des monstres tous plus nombreux au fil des
+                vagues.</p>
+            <p>Pour cela deux modes lui sont mis à disposition, un mode Campagne où il devra traverser plusieurs mondes, il y
+                rencontrera des boss et des monstres en tous genres. Ainsi qu’un mode infini dans lequel, il fera face à des
+                vagues
+                toujours plus difficiles, dans le but d’atteindre des vagues toujours plus imposantes.</p>
+        </section>
+
+
+
     </body>
 </html>

@@ -1,12 +1,6 @@
-/* Core de Page */
-body {
-  max-width: 120em;
-  min-width: 50em;
-  margin: auto;
-  background-color: #96BDC6;
-}
-
 /* Vollet de Navigation */
+@import url("https://fonts.googleapis.com/css2?family=Freckle+Face&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Macondo&display=swap");
 .volletNavigation {
   padding: 0% 2em 0% 0%;
   position: absolute;
@@ -103,21 +97,57 @@ body {
 /* 
     Effet en jeu 
 */
-/* Carte */
-.Game {
+/* Titre */
+section {
   position: relative;
   top: 5rem;
   width: 100%;
+  /* Carte */
+}
+
+section .title {
+  position: absolute;
+  top: 0;
+  left: 5%;
+  font-family: 'Freckle Face', cursive;
+  font-size: 12rem;
+  color: #F8CDBB;
+  text-shadow: 5px 5px 2px #285943;
+  text-align: start;
+  z-index: 5;
+  -webkit-animation: discover 0ms 9.5s both;
+          animation: discover 0ms 9.5s both;
+}
+
+@-webkit-keyframes discover {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes discover {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+section .Game {
   /* Personnage */
 }
 
-.Game .Monde {
+section .Game .Monde {
   width: 100%;
-  animation: AnimMonde 3s ease-in-out;
-  -webkit-animation: AnimMonde 3s ease-in-out;
+  animation: AnimMonde 3s ease-in-out 0.5s backwards;
+  -webkit-animation: AnimMonde 3s ease-in-out 0.5s backwards;
 }
 
-.Game .Perso {
+section .Game .Perso {
   display: inline;
   position: absolute;
   top: 56%;
@@ -127,11 +157,11 @@ body {
   z-index: 3;
   -webkit-transform: translateX(-300%);
           transform: translateX(-300%);
-  animation: AnimPerso 9s ease-in-out;
-  -webkit-animation: AnimPerso 9s ease-in-out;
+  animation: AnimPerso 9s ease-in-out 0.5s;
+  -webkit-animation: AnimPerso 9s ease-in-out 0.5s;
 }
 
-.Game .PersoAv {
+section .Game .PersoAv {
   display: inline;
   position: absolute;
   top: 56%;
@@ -140,11 +170,11 @@ body {
   z-index: 3;
   -webkit-transform: translateX(-300%);
           transform: translateX(-300%);
-  animation: AnimPersoAv 9s ease-in-out;
-  -webkit-animation: AnimPersoAv 9s ease-in-out;
+  animation: AnimPersoAv 9s ease-in-out 0.5s backwards;
+  -webkit-animation: AnimPersoAv 9s ease-in-out 0.5s backwards;
 }
 
-.Game .PersoAr {
+section .Game .PersoAr {
   display: inline;
   position: absolute;
   top: 56%;
@@ -154,11 +184,11 @@ body {
   z-index: 3;
   -webkit-transform: translateX(-300%);
           transform: translateX(-300%);
-  animation: AnimPersoAr 9s ease-in-out;
-  -webkit-animation: AnimPersoAr 9s ease-in-out;
+  animation: AnimPersoAr 9s ease-in-out 0.5s;
+  -webkit-animation: AnimPersoAr 9s ease-in-out 0.5s;
 }
 
-.Game .Monstre {
+section .Game .Monstre {
   display: inline;
   position: absolute;
   top: 54%;
@@ -168,11 +198,11 @@ body {
   z-index: 1;
   -webkit-transform: translateX(200%);
           transform: translateX(200%);
-  animation: AnimMonstre 9s ease-in-out;
-  -webkit-animation: AnimMonstre 9s ease-in-out;
+  animation: AnimMonstre 9s ease-in-out 0.5s;
+  -webkit-animation: AnimMonstre 9s ease-in-out 0.5s;
 }
 
-.Game .Arme {
+section .Game .Arme {
   display: inline;
   position: absolute;
   top: 65%;
@@ -182,8 +212,8 @@ body {
   z-index: 2;
   -webkit-transform: translateX(0%);
           transform: translateX(0%);
-  animation: AnimArme 3s linear 6s;
-  -webkit-animation: AnimArme 3s linear 6s;
+  animation: AnimArme 3s linear 6.5s;
+  -webkit-animation: AnimArme 3s linear 6.5s;
 }
 
 @-webkit-keyframes AnimMonde {
@@ -218,21 +248,26 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 1;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
   }
-  51%, 60% {
+  51%,
+  60% {
     opacity: 0;
   }
-  61%, 70% {
+  61%,
+  70% {
     opacity: 1;
   }
-  71%, 80% {
+  71%,
+  80% {
     opacity: 0;
   }
-  81%, 90% {
+  81%,
+  90% {
     opacity: 1;
   }
   91% {
@@ -251,21 +286,26 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 1;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
   }
-  51%, 60% {
+  51%,
+  60% {
     opacity: 0;
   }
-  61%, 70% {
+  61%,
+  70% {
     opacity: 1;
   }
-  71%, 80% {
+  71%,
+  80% {
     opacity: 0;
   }
-  81%, 90% {
+  81%,
+  90% {
     opacity: 1;
   }
   91% {
@@ -284,15 +324,18 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 0;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
   }
-  51%, 60% {
+  51%,
+  60% {
     opacity: 1;
   }
-  61%, 90% {
+  61%,
+  90% {
     opacity: 0;
   }
   91% {
@@ -311,15 +354,18 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 0;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
   }
-  51%, 60% {
+  51%,
+  60% {
     opacity: 1;
   }
-  61%, 90% {
+  61%,
+  90% {
     opacity: 0;
   }
   91% {
@@ -338,7 +384,8 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 0;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
@@ -346,7 +393,8 @@ body {
   70% {
     opacity: 0;
   }
-  71%, 80% {
+  71%,
+  80% {
     opacity: 1;
   }
   81% {
@@ -365,7 +413,8 @@ body {
     -webkit-transform: translateY(10em);
             transform: translateY(10em);
   }
-  33%, 50% {
+  33%,
+  50% {
     opacity: 0;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
@@ -373,7 +422,8 @@ body {
   70% {
     opacity: 0;
   }
-  71%, 80% {
+  71%,
+  80% {
     opacity: 1;
   }
   81% {
@@ -397,6 +447,8 @@ body {
     opacity: 1;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
   }
   to {
     opacity: 1;
@@ -416,6 +468,8 @@ body {
     opacity: 1;
     -webkit-transform: translateY(0%) translateX(0%);
             transform: translateY(0%) translateX(0%);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
   }
   to {
     opacity: 1;
@@ -425,7 +479,8 @@ body {
 }
 
 @-webkit-keyframes AnimArme {
-  from, 25% {
+  from,
+  25% {
     opacity: 0;
     -webkit-transform: translateX(200%) rotate(0turn);
             transform: translateX(200%) rotate(0turn);
@@ -441,7 +496,8 @@ body {
 }
 
 @keyframes AnimArme {
-  from, 25% {
+  from,
+  25% {
     opacity: 0;
     -webkit-transform: translateX(200%) rotate(0turn);
             transform: translateX(200%) rotate(0turn);
@@ -454,5 +510,58 @@ body {
     -webkit-transform: translateX(-800%) rotate(-2turn);
             transform: translateX(-800%) rotate(-2turn);
   }
+}
+
+@media all and (max-width: 120em) {
+  section .title {
+    font-size: 10vw;
+  }
+}
+
+/* Partie texte d'introduction */
+.Intro {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.Intro p {
+  width: 80%;
+  font-family: 'Macondo', cursive;
+  font-size: 2em;
+  color: #2F4142;
+  text-align: center;
+  margin-top: 2em;
+  -webkit-animation: discover 2s 11s linear both;
+          animation: discover 2s 11s linear both;
+}
+
+@keyframes discover {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Core de Page */
+body {
+  max-width: 120em;
+  min-width: 50em;
+  margin: auto;
+  background-color: #96BDC6;
 }
 /*# sourceMappingURL=style.css.map */
