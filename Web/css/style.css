@@ -137,10 +137,6 @@ section .title {
   }
 }
 
-section .Game {
-  /* Personnage */
-}
-
 section .Game .Monde {
   width: 100%;
   animation: AnimMonde 3s ease-in-out 0.5s backwards;
@@ -544,8 +540,12 @@ section .Game .Arme {
   color: #2F4142;
   text-align: center;
   margin-top: 2em;
-  -webkit-animation: discover 2s 11s linear both;
-          animation: discover 2s 11s linear both;
+  opacity: 0;
+}
+
+.Intro__animation {
+  -webkit-animation: discover 2s 0.5s linear both;
+          animation: discover 2s 0.5s linear both;
 }
 
 @keyframes discover {
@@ -557,11 +557,280 @@ section .Game .Arme {
   }
 }
 
+.Mode {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.Mode div {
+  width: 40%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #96BDC6;
+  color: #2F4142;
+  font-size: 2em;
+  font-family: 'Macondo', cursive;
+  text-align: center;
+  margin-top: 2em;
+}
+
+.Mode .Campagne__animation::after {
+  -webkit-animation: CampagneEffect 3s 0.5s ease-out both;
+          animation: CampagneEffect 3s 0.5s ease-out both;
+}
+
+.Mode .Infini__animation::before {
+  -webkit-animation: InfiniEffect 3s 0.5s ease-out both;
+          animation: InfiniEffect 3s 0.5s ease-out both;
+}
+
+.Mode #Campagne::after,
+.Mode #Infini::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #96BDC6;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Mode #Campagne::after {
+  background: -webkit-gradient(linear, right top, left top, from(rgba(150, 189, 198, 0)), color-stop(20%, #96bdc6));
+  background: linear-gradient(to left, rgba(150, 189, 198, 0) 0%, #96bdc6 20%);
+}
+
+.Mode #Infini::before {
+  background: -webkit-gradient(linear, left top, right top, from(rgba(150, 189, 198, 0)), color-stop(20%, #96bdc6));
+  background: linear-gradient(to right, rgba(150, 189, 198, 0) 0%, #96bdc6 20%);
+}
+
+.Mode .Separation {
+  -webkit-box-flex: 0.3;
+      -ms-flex: 0.3;
+          flex: 0.3;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Mode .Separation__bar {
+  height: 12%;
+  border-radius: 1em;
+  margin-top: 0.1em;
+  padding: 0;
+  background-color: #2F4142;
+}
+
+.Mode .Separation__bar__1 {
+  width: 1.5em;
+}
+
+.Mode .Separation__bar__animation__1 {
+  -webkit-animation: bareEffect 1s 0.2s ease-out both;
+          animation: bareEffect 1s 0.2s ease-out both;
+}
+
+.Mode .Separation__bar__2 {
+  width: 0.9em;
+}
+
+.Mode .Separation__bar__animation__2 {
+  -webkit-animation: bareEffect 1s 0.4s ease-out both;
+          animation: bareEffect 1s 0.4s ease-out both;
+}
+
+.Mode .Separation__bar__3 {
+  width: 1.3em;
+}
+
+.Mode .Separation__bar__animation__3 {
+  -webkit-animation: bareEffect 1s 0.6s ease-out both;
+          animation: bareEffect 1s 0.6s ease-out both;
+}
+
+.Mode .Separation__bar__4 {
+  width: 2.5em;
+}
+
+.Mode .Separation__bar__animation__4 {
+  -webkit-animation: bareEffect 1s 0.8s ease-out both;
+          animation: bareEffect 1s 0.8s ease-out both;
+}
+
+.Mode .Separation__bar__5 {
+  width: 3.6em;
+}
+
+.Mode .Separation__bar__animation__5 {
+  -webkit-animation: bareEffect 1s 1s ease-out both;
+          animation: bareEffect 1s 1s ease-out both;
+}
+
+.Mode .Separation__bar__6 {
+  width: 2.4em;
+}
+
+.Mode .Separation__bar__animation__6 {
+  -webkit-animation: bareEffect 1s 1.2s ease-out both;
+          animation: bareEffect 1s 1.2s ease-out both;
+}
+
+.Mode .Separation__bar__7 {
+  width: 2.4em;
+}
+
+.Mode .Separation__bar__animation__7 {
+  -webkit-animation: bareEffect 1s 1.4s ease-out both;
+          animation: bareEffect 1s 1.4s ease-out both;
+}
+
+.Mode .Separation__bar__8 {
+  width: 2.3em;
+}
+
+.Mode .Separation__bar__animation__8 {
+  -webkit-animation: bareEffect 1s 1.6s ease-out both;
+          animation: bareEffect 1s 1.6s ease-out both;
+}
+
+.Mode .Separation__bar__9 {
+  width: 1.6em;
+}
+
+.Mode .Separation__bar__animation__9 {
+  -webkit-animation: bareEffect 1s 1.8s ease-out both;
+          animation: bareEffect 1s 1.8s ease-out both;
+}
+
+.Mode .Separation__bar__10 {
+  width: 1.6em;
+}
+
+.Mode .Separation__bar__animation__10 {
+  -webkit-animation: bareEffect 1s 2s ease-out both;
+          animation: bareEffect 1s 2s ease-out both;
+}
+
+@-webkit-keyframes bareEffect {
+  from {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bareEffect {
+  from {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes CampagneEffect {
+  from {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: left;
+            transform-origin: left;
+  }
+  to {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    -webkit-transform-origin: left;
+            transform-origin: left;
+  }
+}
+
+@keyframes CampagneEffect {
+  from {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: left;
+            transform-origin: left;
+  }
+  to {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    -webkit-transform-origin: left;
+            transform-origin: left;
+  }
+}
+
+@-webkit-keyframes InfiniEffect {
+  from {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: right;
+            transform-origin: right;
+  }
+  to {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    -webkit-transform-origin: right;
+            transform-origin: right;
+  }
+}
+
+@keyframes InfiniEffect {
+  from {
+    -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+    -webkit-transform-origin: right;
+            transform-origin: right;
+  }
+  to {
+    -webkit-transform: scaleX(0);
+            transform: scaleX(0);
+    -webkit-transform-origin: right;
+            transform-origin: right;
+  }
+}
+
 /* Core de Page */
 body {
   max-width: 120em;
   min-width: 50em;
   margin: auto;
   background-color: #96BDC6;
+}
+
+section {
+  margin-bottom: 3em;
 }
 /*# sourceMappingURL=style.css.map */

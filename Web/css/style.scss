@@ -2,6 +2,7 @@
 @import "section/_game";
 @import "section/_Intro";
 @import "section/_telechargement";
+@import "section/_Mode";
 
 /* Core de Page */
 
@@ -10,6 +11,10 @@ body {
     min-width: 50em;
     margin: auto;
     background-color: #96BDC6;
+}
+
+section{
+    margin-bottom: 3em;
 }
 
 

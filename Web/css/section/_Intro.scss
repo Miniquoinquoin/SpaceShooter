@@ -17,7 +17,12 @@
         color: #2F4142;
         text-align: center;
         margin-top: 2em;
-        animation: discover 2s 11s linear both;
+        opacity: 0;
+        
+    }
+
+    &__animation{
+        animation: discover 2s 0.5s linear both;
     }
 
     @keyframes discover {

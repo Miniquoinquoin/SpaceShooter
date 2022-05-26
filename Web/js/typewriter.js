@@ -7,6 +7,6 @@ const typewriter = new Typewriter(titre, {
     cursor: '',
 });
 
-typewriter.pauseFor(9500)
+typewriter.pauseFor(12000)
     .typeString('Space <br>Shooter')
     .start();
