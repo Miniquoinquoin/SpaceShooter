@@ -1,0 +1,39 @@
+/* Partie texte d'introduction */
+
+@import url('https://fonts.googleapis.com/css2?family=Macondo&display=swap');
+
+.Paragraphes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+   
+}
+
+.Paragraphe {
+    width: 80%;
+    font-family: 'Macondo', cursive;
+    font-size: 2em;
+    color: #2F4142;
+    text-align: center;
+    opacity: 0;
+
+    &__animation {
+        animation: discover 2s 0.5s linear both;
+    }
+
+
+}
+
+@keyframes discover {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SpaceShooter</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/scrollDetection.js"></script>
+
+
+        
+    </head>
+    <body>
+        <nav class="volletNavigation">
+            <ul>
+                <li><img src="images/logo.png" alt="logo" /></li>
+                <li><a href="Accueil.html">Présentation</a></li>
+                <li><a href="Download.html">Téléchargement</a></li>
+                <li><a href="Doc.html">Fonctionnement</a></li>
+            </ul>
+        </nav>
+
+        <section>
+            <h1 class="title" id="typewriter">Space <br>Shooter</h1>
+                <script src='module/typeWriter/core.js'></script>
+                <script type='text/javascript'>
+                    const typewriter = new Typewriter('#typewriter', {
+                        loop: false,
+                        cursor: '',
+                        delay: 100,
+                    });
+
+                    typewriter.pauseFor(9500)
+                        .typeString('Space <br>Shooter')
+                        .start();
+                </script>
+            <div class="Game">
+                <img class="Monde" src="images/Terre.png" alt="Monde" />
+                <img class="Perso" src="images/Perso.png" alt="Perso" />
+                <img class="PersoAv" src="images/PersoAv.png" alt="Perso" />
+                <img class="PersoAr" src="images/PersoAr.png" alt="Perso" />
+
+                <img class="Monstre" src="images/Monstre.png" alt="Monstre" />
+                <img class="Arme" src="images/Arme.png" alt="Arme" />
+
+            </div>
+
+        </section>
+        <section class="Paragraphes" id="Intro">
+            <p class="Paragraphe ParagrapheIntro">SpaceShooter est un jeu de survie en vue 2D, le joueur doit y vaincre des monstres tous plus nombreux au fil des
+                vagues.</p>
+            <p class="Paragraphe ParagrapheIntro">Pour cela deux modes lui sont mis à disposition !</p>
+        </section>
+        <section class="Mode dark" id="Mode">
+            <div id="Campagne">
+                <h2>Campagne</h2>
+                <p>Vous devrez traverser plusieurs mondes, et y vaincre des boss et des monstres en tous genres.
+                    <br />
+                    <br />
+                    La crate vous permet de voyager entre les mondes, mais pour passer au monde suivant il vous vaudra d'abord achevé le
+                    précédent.
+                </p>
+            </div>
+            <div class="Separation">
+                <div class="Separation__bar Separation__bar__1"></div>
+                <div class="Separation__bar Separation__bar__2"></div>
+                <div class="Separation__bar Separation__bar__3"></div>
+                <div class="Separation__bar Separation__bar__4"></div>
+                <div class="Separation__bar Separation__bar__5"></div>
+                <div class="Separation__bar Separation__bar__6"></div>
+                <div class="Separation__bar Separation__bar__7"></div>
+                <div class="Separation__bar Separation__bar__8"></div>
+                <div class="Separation__bar Separation__bar__9"></div>
+                <div class="Separation__bar Separation__bar__10"></div>
+
+            </div>
+            <div id="Infini">
+                <h2>Infini</h2>
+                <p>Vous ferez face à des vagues toujours plus difficiles, dans le but d’atteindre des vagues toujours plus imposantes.
+                    <br />
+                    <br />
+                    Dans ce mode vous pouvez accéder directement à toutes les maps, mais les boss sont désactivés.
+                </p>
+
+        </section>
+
+        <section class="Paragraphes" id="Amelioration">
+            <p class="Paragraphe ParagrapheAm">Lors de ces parties le joueur accumule des pièces d’or lui permettant d’acquérir des armes toujours plus fortes, mais
+            aussi de nouveaux personnages. Ces personnages pourront eux aussi être améliorés à l'aide de ces pièces.</p>
+            <p class="Paragraphe ParagrapheAm">Elle permet aussi l’achat d’équipements.</p>
+        </section>
+        <section class="Equipement dark">
+            <div class="Presentation">
+
+                <div class="Bouclier" id="bouclier" onmouseover="EquipementOver('Bouclier')" onmouseleave="EquipementLeave()">
+                    <h2>Bouclier</h2>
+                    <div class="Info">
+                        <img src="images/Bouclier.png" alt="Bouclier" />
+                        <p id="TextBouclier">Le bouclier est un équipement qui vous protège de tous les dégâts.</p>
+                    </div>    
+                </div>
+
+                <div class="Grenade" onmouseover="EquipementOver('Grenade')" onmouseleave="EquipementLeave()">
+                    <h2>Grenade</h2>
+                    <div class="Info">
+                        <img src="images/Grenade.png" alt="Grenade" />
+                        <p id="TextGrenade">La grenade inflige des dégâts à tous les ennemis qui se trouvent dans la zone de lancement.</p>
+                    </div>
+                </div>
+
+                <div class="Potion" onmouseover="EquipementOver('Potion')" onmouseleave="EquipementLeave()">
+                    <h2>Potion</h2>
+                    <div class="Info">
+                        <img src="images/Potion.png" alt="Potion" />
+                        <p id="TextPotion">La potion est un équipement qui vous permet de récupérer des points de vie.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text">
+                <h2>Les Equipement</h2>
+                <p>Les équipements sont des objets qui vise à faciliter la progression du joueur.</p>
+            </div>
+        </section>
+
+
+
+    </body>
+</html>

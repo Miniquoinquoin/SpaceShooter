@@ -1,0 +1,125 @@
+$bareSize: 0.1em;
+$backgroundColor: #2F4142;
+$textColor: #96BDC6;
+
+.Mode{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+
+    div{
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: $backgroundColor;
+        color: $textColor;
+        font-size: 2em;
+        font-family: 'Macondo', cursive;
+        text-align: center;
+    }
+
+    .Campagne__animation::after{
+        animation: CampagneEffect 3s 0.5s ease-out both;
+    }
+
+    .Infini__animation::before {
+        animation: InfiniEffect 3s 0.5s ease-out both;
+    }
+
+    #Campagne::after,
+    #Infini::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background-color: $backgroundColor;
+        
+        opacity: 1;
+        z-index: 1;
+    }
+
+    #Campagne::after{
+        background: linear-gradient(to left, rgba(150, 189, 198, 0) 0%, rgba(150, 189, 198, 110) 20%);
+    }
+
+    #Infini::before{
+        background: linear-gradient(to right, rgba(150, 189, 198, 0) 0%, rgba(150, 189, 198, 110) 20%);
+    }
+
+
+
+
+    .Separation{
+        flex: 0.3;
+        justify-content: space-evenly;
+        align-items: center;
+
+        &__bar{
+            height: 12%;
+            border-radius: 1em;
+            margin-top: 0.1em;
+            padding: 0;
+            opacity: 0;
+            background-color: $textColor;
+
+            @for $i from 1 through 10 {
+                @if $i < 5{
+                    &__#{$i} {
+                        width: $bareSize * ($i * 4 + random(12));
+                    }
+                }
+                @else {
+                    &__#{$i} {
+                        width: $bareSize * ((11 - $i) * 4 + random(12));
+                    }
+                }
+
+                &__animation__#{$i} {
+                    animation: bareEffect 1s 0.2s*$i ease-out both;
+                }
+            }
+            
+        }
+    }
+}
+
+@keyframes bareEffect {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+@keyframes CampagneEffect {
+    from {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+
+    to {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+}
+
+@keyframes InfiniEffect {
+    from {
+        transform: scaleX(1);
+        transform-origin: right;
+    }
+
+    to {
+        transform: scaleX(0);
+        transform-origin: right;
+    }
+}
