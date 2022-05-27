@@ -1,6 +1,7 @@
 /* Vollet de Navigation */
 @import url("https://fonts.googleapis.com/css2?family=Freckle+Face&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Macondo&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 .volletNavigation {
   padding: 0% 2em 0% 0%;
   position: absolute;
@@ -557,6 +558,205 @@ section .Game .Arme {
   }
 }
 
+.Instalateur {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-top: 5em;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.Instalateur div {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Instalateur .text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+  -webkit-animation: boder-discover 1s 4s ease-in-out both;
+          animation: boder-discover 1s 4s ease-in-out both;
+}
+
+.Instalateur .text .acroche {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.Instalateur .Buttons {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-animation: discover 2s 4s ease-out both;
+          animation: discover 2s 4s ease-out both;
+}
+
+.Instalateur .Buttons div {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0.5em 0em;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Instalateur .Buttons .button {
+  background-color: #1c87c9;
+  border-radius: 60px;
+  border: none;
+  color: #eeeeee;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  width: 10em;
+  height: 6em;
+}
+
+.Instalateur .Buttons .button:hover {
+  -webkit-animation: glowing 1300ms infinite;
+          animation: glowing 1300ms infinite;
+}
+
+.Instalateur .Buttons h2 {
+  text-align: center;
+  color: white;
+}
+
+.pour {
+  width: 100%;
+  font-size: 2em;
+  color: #2F4142;
+  text-align: center;
+  margin-top: 0em;
+  -webkit-animation: discover 2s 1s ease-out both;
+          animation: discover 2s 1s ease-out both;
+}
+
+.telecharger {
+  width: 100%;
+  font-size: 2em;
+  color: #2F4142;
+  text-align: center;
+  margin-left: 2em;
+  -webkit-animation: discover 2s 2s ease-out both;
+          animation: discover 2s 2s ease-out both;
+}
+
+.SpaceShooter {
+  width: 100%;
+  font-size: 4em;
+  color: #466995;
+  text-align: center;
+  margin-top: 1em;
+  margin-left: 2%;
+  -webkit-animation: discover 2s 3s ease-out both;
+          animation: discover 2s 3s ease-out both;
+}
+
+@-webkit-keyframes glowing {
+  0% {
+    background-color: #2ba805;
+    -webkit-box-shadow: 0 0 5px #2ba805;
+            box-shadow: 0 0 5px #2ba805;
+  }
+  50% {
+    background-color: #49e819;
+    -webkit-box-shadow: 0 0 20px #49e819;
+            box-shadow: 0 0 20px #49e819;
+  }
+  100% {
+    background-color: #2ba805;
+    -webkit-box-shadow: 0 0 5px #2ba805;
+            box-shadow: 0 0 5px #2ba805;
+  }
+}
+
+@keyframes glowing {
+  0% {
+    background-color: #2ba805;
+    -webkit-box-shadow: 0 0 5px #2ba805;
+            box-shadow: 0 0 5px #2ba805;
+  }
+  50% {
+    background-color: #49e819;
+    -webkit-box-shadow: 0 0 20px #49e819;
+            box-shadow: 0 0 20px #49e819;
+  }
+  100% {
+    background-color: #2ba805;
+    -webkit-box-shadow: 0 0 5px #2ba805;
+            box-shadow: 0 0 5px #2ba805;
+  }
+}
+
+@-webkit-keyframes boder-discover {
+  0% {
+    border: #2F4142 0px dashed;
+    border-right: none;
+  }
+  100% {
+    border: #2F4142 5px dashed;
+    border-right: none;
+  }
+}
+
+@keyframes boder-discover {
+  0% {
+    border: #2F4142 0px dashed;
+    border-right: none;
+  }
+  100% {
+    border: #2F4142 5px dashed;
+    border-right: none;
+  }
+}
+
 .Mode {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -648,7 +848,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__1 {
-  width: 1.3em;
+  width: 0.9em;
 }
 
 .Mode .Separation__bar__animation__1 {
@@ -657,7 +857,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__2 {
-  width: 1.5em;
+  width: 1.4em;
 }
 
 .Mode .Separation__bar__animation__2 {
@@ -666,7 +866,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__3 {
-  width: 1.4em;
+  width: 1.8em;
 }
 
 .Mode .Separation__bar__animation__3 {
@@ -675,7 +875,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__4 {
-  width: 2.8em;
+  width: 2.3em;
 }
 
 .Mode .Separation__bar__animation__4 {
@@ -684,7 +884,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__5 {
-  width: 2.8em;
+  width: 3.6em;
 }
 
 .Mode .Separation__bar__animation__5 {
@@ -693,7 +893,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__6 {
-  width: 2.1em;
+  width: 3.2em;
 }
 
 .Mode .Separation__bar__animation__6 {
@@ -702,7 +902,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__7 {
-  width: 1.8em;
+  width: 2.2em;
 }
 
 .Mode .Separation__bar__animation__7 {
@@ -711,7 +911,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__8 {
-  width: 2.2em;
+  width: 1.3em;
 }
 
 .Mode .Separation__bar__animation__8 {
@@ -720,7 +920,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__9 {
-  width: 1.5em;
+  width: 1.9em;
 }
 
 .Mode .Separation__bar__animation__9 {
@@ -729,7 +929,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__10 {
-  width: 0.9em;
+  width: 0.5em;
 }
 
 .Mode .Separation__bar__animation__10 {

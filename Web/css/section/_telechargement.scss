@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+$backgroundColor: #2F4142;
+
+.Instalateur{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5em;
+    font-family: 'Press Start 2P', cursive;
+    
+
+    div{
+        align-items: center;
+    }
+
+    .text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 5;
+        animation: boder-discover 1s 4s ease-in-out both;
+        
+
+        .acroche{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+    }
+
+    .Buttons{
+        flex: 2;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        animation: discover 2s 4s ease-out both;
+
+        div{
+            width: 100%;
+            display: flex;
+            margin: 0.5em 0em;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .button {
+                background-color: #1c87c9;
+                border-radius: 60px;
+                border: none;
+                color: #eeeeee;
+                cursor: pointer;
+                font-family: sans-serif;
+                font-size: 20px;
+                text-align: center;
+                text-decoration: none;
+                width: 10em;
+                height: 6em;
+
+                &:hover {    
+                    animation: glowing 1300ms infinite;               
+                }
+            }
+        
+        h2{
+            text-align: center;
+            color: white;
+        }
+    }
+}
+
+.pour{
+    width: 100%;
+    font-size: 2em;
+    color: #2F4142;
+    text-align: center;
+    margin-top: 0em;
+    animation: discover 2s 1s ease-out both;
+}
+
+.telecharger{
+    width: 100%;
+    font-size: 2em;
+    color: #2F4142;
+    text-align: center;
+    margin-left: 2em;
+    animation: discover 2s 2s ease-out both;
+}
+
+.SpaceShooter {
+    width: 100%;
+    font-size: 4em;
+    color: #466995;
+    text-align: center;
+    margin-top: 1em;
+    margin-left: 2%;
+    animation: discover 2s 3s ease-out both;
+}
+
+
+
+
+@keyframes glowing {
+  0% {
+    background-color: #2ba805;
+    box-shadow: 0 0 5px #2ba805;
+    }
+  50% {
+    background-color: #49e819;
+    box-shadow: 0 0 20px #49e819;
+    }
+  100% {
+    background-color: #2ba805;
+    box-shadow: 0 0 5px #2ba805;
+    }
+}
+
+
+@keyframes boder-discover {
+  0% {
+    border: $backgroundColor 0px dashed;
+        border-right: none;
+    }
+
+  100% {
+        border: $backgroundColor 5px dashed;
+        border-right: none;
+    }
+}
