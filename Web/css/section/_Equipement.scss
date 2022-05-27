@@ -1,0 +1,94 @@
+.Equipement{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 2em;
+    font-family: 'Macondo', cursive;
+
+    .Presentation{
+        flex: 3;
+        display: flex;
+        flex-direction: row;
+
+        > div{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 2em;
+            margin: 0 0.7em;
+            transition: flex 0.5s 0.1s ease-out;
+
+            p{
+                display: none;
+                opacity: 1;
+                height: 1px;
+            }
+            
+            .Info{
+                display:flex;
+                flex-direction: row;
+
+                &__animation{
+                    animation: EquipementEffect 1s ease-out;
+                }
+
+            }
+
+            &:hover{
+
+                flex: 2;
+
+                
+
+                
+            }
+            
+        }
+
+        .Bouclier{
+            background-color: lightblue;
+        }
+
+        .Grenade{
+            background-color: lightgreen;
+        }
+
+        .Potion{
+            background-color: lightpink;
+        }
+    }
+
+    .text{
+        flex: 1;
+        text-align: center;
+        color: $textColor;
+        
+
+        p{
+            width: 80%;
+            margin: auto;
+        }
+
+    }
+
+}
+
+@keyframes EquipementEffect {
+    from {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scaleY(1);
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}

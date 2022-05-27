@@ -516,7 +516,7 @@ section .Game .Arme {
 }
 
 /* Partie texte d'introduction */
-.Intro {
+.Paragraphes {
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -534,17 +534,16 @@ section .Game .Arme {
           justify-content: center;
 }
 
-.Intro p {
+.Paragraphe {
   width: 80%;
   font-family: 'Macondo', cursive;
   font-size: 2em;
   color: #2F4142;
   text-align: center;
-  margin-top: 2em;
   opacity: 0;
 }
 
-.Intro__animation {
+.Paragraphe__animation {
   -webkit-animation: discover 2s 0.5s linear both;
           animation: discover 2s 0.5s linear both;
 }
@@ -791,7 +790,6 @@ section .Game .Arme {
   font-size: 2em;
   font-family: 'Macondo', cursive;
   text-align: center;
-  margin-top: 2em;
 }
 
 .Mode .Campagne__animation::after {
@@ -848,7 +846,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__1 {
-  width: 0.9em;
+  width: 1.5em;
 }
 
 .Mode .Separation__bar__animation__1 {
@@ -857,7 +855,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__2 {
-  width: 1.4em;
+  width: 1em;
 }
 
 .Mode .Separation__bar__animation__2 {
@@ -866,7 +864,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__3 {
-  width: 1.8em;
+  width: 2.1em;
 }
 
 .Mode .Separation__bar__animation__3 {
@@ -875,7 +873,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__4 {
-  width: 2.3em;
+  width: 2em;
 }
 
 .Mode .Separation__bar__animation__4 {
@@ -884,7 +882,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__5 {
-  width: 3.6em;
+  width: 2.9em;
 }
 
 .Mode .Separation__bar__animation__5 {
@@ -893,7 +891,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__6 {
-  width: 3.2em;
+  width: 2.6em;
 }
 
 .Mode .Separation__bar__animation__6 {
@@ -902,7 +900,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__7 {
-  width: 2.2em;
+  width: 2.7em;
 }
 
 .Mode .Separation__bar__animation__7 {
@@ -911,7 +909,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__8 {
-  width: 1.3em;
+  width: 2.3em;
 }
 
 .Mode .Separation__bar__animation__8 {
@@ -920,7 +918,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__9 {
-  width: 1.9em;
+  width: 1.6em;
 }
 
 .Mode .Separation__bar__animation__9 {
@@ -929,7 +927,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__10 {
-  width: 0.5em;
+  width: 1.6em;
 }
 
 .Mode .Separation__bar__animation__10 {
@@ -1023,6 +1021,147 @@ section .Game .Arme {
   }
 }
 
+.Equipement {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  font-size: 2em;
+  font-family: 'Macondo', cursive;
+}
+
+.Equipement .Presentation {
+  -webkit-box-flex: 3;
+      -ms-flex: 3;
+          flex: 3;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.Equipement .Presentation > div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  border-radius: 2em;
+  margin: 0 0.7em;
+  -webkit-transition: -webkit-box-flex 0.5s 0.1s ease-out;
+  transition: -webkit-box-flex 0.5s 0.1s ease-out;
+  transition: flex 0.5s 0.1s ease-out;
+  transition: flex 0.5s 0.1s ease-out, -webkit-box-flex 0.5s 0.1s ease-out, -ms-flex 0.5s 0.1s ease-out;
+}
+
+.Equipement .Presentation > div p {
+  display: none;
+  opacity: 1;
+  height: 1px;
+}
+
+.Equipement .Presentation > div .Info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.Equipement .Presentation > div .Info__animation {
+  -webkit-animation: EquipementEffect 1s ease-out;
+          animation: EquipementEffect 1s ease-out;
+}
+
+.Equipement .Presentation > div:hover {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+
+.Equipement .Presentation .Bouclier {
+  background-color: lightblue;
+}
+
+.Equipement .Presentation .Grenade {
+  background-color: lightgreen;
+}
+
+.Equipement .Presentation .Potion {
+  background-color: lightpink;
+}
+
+.Equipement .text {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  text-align: center;
+  color: #96BDC6;
+}
+
+.Equipement .text p {
+  width: 80%;
+  margin: auto;
+}
+
+@-webkit-keyframes EquipementEffect {
+  from {
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    opacity: 0;
+  }
+  50% {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+
+@keyframes EquipementEffect {
+  from {
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    opacity: 0;
+  }
+  50% {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+}
+
 /* Core de Page */
 body {
   max-width: 120em;
@@ -1036,7 +1175,7 @@ section {
 }
 
 .dark {
-  padding: 2em 0 2em 0;
+  padding: 3em 0;
   background-color: #2F4142;
 }
 /*# sourceMappingURL=style.css.map */

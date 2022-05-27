@@ -1,8 +1,9 @@
 @import "section/_nav";
 @import "section/_game";
-@import "section/_Intro";
+@import "section/_Paragraphe";
 @import "section/_telechargement";
 @import "section/_Mode";
+@import "section/_Equipement";
 
 $backgroundColor: #2F4142;
 $textColor: #96BDC6;
@@ -22,9 +23,12 @@ section{
 
 
 .dark {
-    padding: 2em 0 2em 0;
+    padding: 3em 0;
     background-color: $backgroundColor;
 }
+
+
+
 
 
 
