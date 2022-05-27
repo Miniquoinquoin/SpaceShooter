@@ -586,8 +586,8 @@ section .Game .Arme {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background-color: #96BDC6;
-  color: #2F4142;
+  background-color: #2F4142;
+  color: #96BDC6;
   font-size: 2em;
   font-family: 'Macondo', cursive;
   text-align: center;
@@ -611,7 +611,7 @@ section .Game .Arme {
   top: 0;
   width: 50%;
   height: 100%;
-  background-color: #96BDC6;
+  background-color: #2F4142;
   opacity: 1;
   z-index: 1;
 }
@@ -643,11 +643,12 @@ section .Game .Arme {
   border-radius: 1em;
   margin-top: 0.1em;
   padding: 0;
-  background-color: #2F4142;
+  opacity: 0;
+  background-color: #96BDC6;
 }
 
 .Mode .Separation__bar__1 {
-  width: 1.5em;
+  width: 1.3em;
 }
 
 .Mode .Separation__bar__animation__1 {
@@ -656,7 +657,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__2 {
-  width: 0.9em;
+  width: 1.5em;
 }
 
 .Mode .Separation__bar__animation__2 {
@@ -665,7 +666,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__3 {
-  width: 1.3em;
+  width: 1.4em;
 }
 
 .Mode .Separation__bar__animation__3 {
@@ -674,7 +675,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__4 {
-  width: 2.5em;
+  width: 2.8em;
 }
 
 .Mode .Separation__bar__animation__4 {
@@ -683,7 +684,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__5 {
-  width: 3.6em;
+  width: 2.8em;
 }
 
 .Mode .Separation__bar__animation__5 {
@@ -692,7 +693,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__6 {
-  width: 2.4em;
+  width: 2.1em;
 }
 
 .Mode .Separation__bar__animation__6 {
@@ -701,7 +702,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__7 {
-  width: 2.4em;
+  width: 1.8em;
 }
 
 .Mode .Separation__bar__animation__7 {
@@ -710,7 +711,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__8 {
-  width: 2.3em;
+  width: 2.2em;
 }
 
 .Mode .Separation__bar__animation__8 {
@@ -719,7 +720,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__9 {
-  width: 1.6em;
+  width: 1.5em;
 }
 
 .Mode .Separation__bar__animation__9 {
@@ -728,7 +729,7 @@ section .Game .Arme {
 }
 
 .Mode .Separation__bar__10 {
-  width: 1.6em;
+  width: 0.9em;
 }
 
 .Mode .Separation__bar__animation__10 {
@@ -831,6 +832,11 @@ body {
 }
 
 section {
-  margin-bottom: 3em;
+  margin-bottom: 5em;
+}
+
+.dark {
+  padding: 2em 0 2em 0;
+  background-color: #2F4142;
 }
 /*# sourceMappingURL=style.css.map */

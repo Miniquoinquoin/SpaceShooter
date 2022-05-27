@@ -4,6 +4,9 @@
 @import "section/_telechargement";
 @import "section/_Mode";
 
+$backgroundColor: #2F4142;
+$textColor: #96BDC6;
+
 /* Core de Page */
 
 body {
@@ -14,9 +17,14 @@ body {
 }
 
 section{
-    margin-bottom: 3em;
+    margin-bottom: 5em;
 }
 
+
+.dark {
+    padding: 2em 0 2em 0;
+    background-color: $backgroundColor;
+}
 
 
 

@@ -1,5 +1,6 @@
 $bareSize: 0.1em;
-$backgroundColor: #96BDC6;
+$backgroundColor: #2F4142;
+$textColor: #96BDC6;
 
 .Mode{
     display: flex;
@@ -14,7 +15,7 @@ $backgroundColor: #96BDC6;
         align-items: center;
         justify-content: center;
         background-color: $backgroundColor;
-        color: #2F4142;
+        color: $textColor;
         font-size: 2em;
         font-family: 'Macondo', cursive;
         text-align: center;
@@ -63,7 +64,8 @@ $backgroundColor: #96BDC6;
             border-radius: 1em;
             margin-top: 0.1em;
             padding: 0;
-            background-color: #2F4142;
+            opacity: 0;
+            background-color: $textColor;
 
             @for $i from 1 through 10 {
                 @if $i < 5{
